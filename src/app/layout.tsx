@@ -10,6 +10,7 @@ const mainFontFamily = Noto_Sans({
   weight: ['300', '500', '700', '900'],
   subsets: ['latin'],
   variable: '--font-family-main',
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
