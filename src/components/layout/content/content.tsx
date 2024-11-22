@@ -11,10 +11,10 @@ export function Content({ children }: { children: ReactNode }) {
   return (
     <main
       className={cn(
-        'w-full p-4 transition-all my-4 bg-background md:p-0 scrollbar-thin',
+        'w-full transition-all bg-background md:p-0 scrollbar-thin',
         isCollapse
-          ? 'md:ml-[80px] md:max-w-[calc(100vw_-_130px)]'
-          : 'md:ml-[220px]  md:max-w-[calc(100vw_-_270px)]',
+          ? 'md:ml-[80px] md:max-w-[calc(100vw_-_12rem)]'
+          : 'md:ml-[220px] md:max-w-[calc(100vw_-_20rem)]',
       )}
     >
       {children}
