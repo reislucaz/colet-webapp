@@ -17,7 +17,6 @@ export function HeaderContent() {
 
   return (
     <div className="flex items-center justify-center space-x-4 rounded-full bg-accent py-2 pl-4 pr-6 shadow-default">
-      <p>Colet</p>
       <ModeToggle />
       <Button size="icon" variant="link" onClick={handleSignOut}>
         <LogOut className="size-5" />

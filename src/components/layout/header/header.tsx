@@ -1,24 +1,12 @@
 import { cn } from '@/utils/class-name'
 import { HeaderContent } from './header-content'
-import { usePageTitle } from '@/utils/set-page-title'
-import { usePathname } from 'next/navigation'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
-import React from 'react'
-import { routeTitles } from '@/utils/route-titles'
-import { PrivateRoutes } from '@/constants/routes/private-routes'
 import Link from 'next/link'
 
 export function Header() {
-  const pageTitle = usePageTitle()
-  const pathname = usePathname()
+  // const pageTitle = usePageTitle()
+  // const pathname = usePathname()
 
-  const breadcrumb = pathname === '/' ? [] : pathname.split('/')
+  // const breadcrumb = pathname === '/' ? [] : pathname.split('/')
 
   return (
     <header
@@ -31,7 +19,7 @@ export function Header() {
     >
       <div className="flex h-12 w-full items-center justify-between px-10 pt-2">
         <div className="flex items-center justify-center">
-          <div className="space-y-1">
+          {/* <div className="space-y-1">
             <Breadcrumb>
               <BreadcrumbList className="text-sm text-gray-400">
                 {breadcrumb.length === 0 ? (
@@ -64,9 +52,18 @@ export function Header() {
             <h3 className="mt-2 text-2xl font-semibold text-textPrimary">
               {pageTitle}
             </h3>
-          </div>
+          </div> */}
+          <p>Colet logo</p>
         </div>
-        <nav className="flex items-center gap-3">
+        <ul className="flex gap-2">
+          <li>
+            <Link href="/">Home</Link>
+          </li>
+          <li>
+            <Link href="/">Produtos</Link>
+          </li>
+        </ul>
+        <nav className="flex items-center justify-center gap-3">
           <HeaderContent />
         </nav>
       </div>
