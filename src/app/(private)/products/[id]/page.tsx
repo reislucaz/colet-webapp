@@ -90,7 +90,7 @@ export default function ProductPage() {
             </div>
             <Link
               className="mt-5 flex items-center gap-2 hover:text-primary"
-              href={''}
+              href={`/products?salesPerson=Gustavo`}
             >
               <List size={16} />
               Visualizar anúncios
