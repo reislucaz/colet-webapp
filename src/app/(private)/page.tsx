@@ -15,9 +15,10 @@ export default function Home() {
     }
   })
 
-  const productsCategories = Array.from({ length: 4 }).map((_, index) => {
+  const productsCategories = Array.from({ length: 4 }).map(() => {
     return {
-      name: `item-${index}`,
+      name: `category`,
+      value: 'metal',
     }
   })
 

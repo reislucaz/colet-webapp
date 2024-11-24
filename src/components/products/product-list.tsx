@@ -10,7 +10,7 @@ export function ProductList({ data }: { data: any[] }) {
   return (
     <div className="grid lg:grid-cols-4 xl:grid-cols-6 gap-3 md:grid-cols-3 grid-cols-1">
       {data.map((item, index) => (
-        <Link href={`/${index}`} key={index}>
+        <Link href={`/products/${index}`} key={index}>
           <Card className="cursor-pointer p-0 group bg-accent">
             <CardHeader className="p-0 h-[200px] overflow-hidden rounded-t-md">
               <Image

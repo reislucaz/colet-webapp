@@ -60,7 +60,7 @@ export function Header() {
             <Link href="/">Home</Link>
           </li>
           <li>
-            <Link href="/">Produtos</Link>
+            <Link href="/products">Produtos</Link>
           </li>
         </ul>
         <nav className="flex items-center justify-center gap-3">

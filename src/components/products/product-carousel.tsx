@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { Card, CardContent } from '../ui/card'
 import {
   Carousel,
@@ -27,11 +28,13 @@ export function ProductCarousel({ products }: { products: any[] }) {
       <CarouselContent className="w-full">
         {products.map((product, index) => (
           <CarouselItem key={index}>
-            <Card className="flex h-72 w-full items-center justify-center">
-              <CardContent className="flex items-center justify-center">
-                <span className="text-3xl font-semibold">{product.name}</span>
-              </CardContent>
-            </Card>
+            <Link href={`/products/${index}`} key={index}>
+              <Card className="flex h-72 w-full items-center justify-center">
+                <CardContent className="flex items-center justify-center">
+                  <span className="text-3xl font-semibold">{product.name}</span>
+                </CardContent>
+              </Card>
+            </Link>
           </CarouselItem>
         ))}
       </CarouselContent>
