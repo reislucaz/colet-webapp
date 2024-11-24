@@ -27,7 +27,9 @@ export function renderStatic(item: NavItem) {
       title={item.title}
     >
       {item?.icon}
-      {!isCollapse && <span className="font-normal">{item.title}</span>}
+      {!isCollapse && (
+        <span className="font-normal text-primary">{item.title}</span>
+      )}
     </CustomLink>
   )
 }

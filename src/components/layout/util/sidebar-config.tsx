@@ -41,7 +41,7 @@ export const sidebarConfig: SidebarConfig = {
           title: 'Início',
           href: PrivateRoutes.HOME,
           items: [],
-          icon: <HomeIcon className="size-4" />,
+          icon: <HomeIcon className="size-4 stroke-primary" />,
         },
       ],
     },

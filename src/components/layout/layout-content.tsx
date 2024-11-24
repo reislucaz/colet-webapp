@@ -4,7 +4,6 @@ import { type ReactNode } from 'react'
 
 import { Content } from './content/content'
 import { Header } from './header/header'
-import { Sidebar } from './sidebar/sidebar'
 import ThemeContext from '@/providers/theme'
 import { TooltipProvider } from '../ui/tooltip'
 
@@ -17,7 +16,7 @@ export function LayoutContent({ children }: LayoutContentProps) {
     <ThemeContext>
       <div className="flex min-h-screen w-full px-2 pb-5 pt-24 md:px-8">
         <TooltipProvider delayDuration={0}>
-          <Sidebar />
+          {/* <Sidebar /> */}
           <Header />
           <Content>{children}</Content>
         </TooltipProvider>
