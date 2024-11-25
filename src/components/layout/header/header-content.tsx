@@ -16,9 +16,9 @@ export function HeaderContent() {
   }
 
   return (
-    <div className="flex items-center justify-center space-x-4 rounded-full bg-accent py-2 pl-4 pr-6 shadow-default">
+    <div className="flex items-center justify-center space-x-4 rounded-full bg-accent px-4 py-2 shadow-default">
       <ModeToggle />
-      <Button
+      {/* <Button
         size="icon"
         className="text-foreground"
         variant="link"
@@ -34,7 +34,7 @@ export function HeaderContent() {
             username && <AvatarFallback>{fallback(username)}</AvatarFallback>
           )}
         </Avatar>
-      </button>
+      </button> */}
     </div>
   )
 }

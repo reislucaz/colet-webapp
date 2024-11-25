@@ -45,15 +45,26 @@ export function ProductForm() {
     onError: handleError,
   })
 
+  const routes = useRouter()
+
   return (
     <FormRender<CreateProductType>
       constant={PRODUCT_FORM_FIELD}
       form={form}
       onSubmit={mutateAsync}
     >
-      <div className="flex w-full flex-col space-y-4">
-        <Button className="w-full" type="submit" isLoading={isPending}>
-          Enviar
+      <div className="flex w-full items-center justify-end gap-2">
+        <Button
+          className="w-fit"
+          type="button"
+          variant={'outline'}
+          onClick={() => routes.back()}
+          isLoading={isPending}
+        >
+          Cancelar
+        </Button>
+        <Button className="w-fit" type="submit" isLoading={isPending}>
+          Adicionar
         </Button>
       </div>
     </FormRender>
