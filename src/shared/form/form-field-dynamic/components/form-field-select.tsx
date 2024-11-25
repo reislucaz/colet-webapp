@@ -28,7 +28,7 @@ export function FormFieldSelect({ field, slot }: FormFieldSelectProps) {
       >
         <SelectValue
           placeholder={
-            <span className="text-gray-400">{slot.placeHolder}</span> ?? ''
+            <span className="text-gray-400">{slot.placeHolder}</span>
           }
         />
       </SelectTrigger>
@@ -36,7 +36,11 @@ export function FormFieldSelect({ field, slot }: FormFieldSelectProps) {
         <SelectGroup className="max-h-52">
           {slot.options.map((item, index) => {
             return (
-              <SelectItem key={index} value={String(item.value)}>
+              <SelectItem
+                key={index}
+                value={String(item.value)}
+                className="hover:!bg-input"
+              >
                 {item.label}
               </SelectItem>
             )

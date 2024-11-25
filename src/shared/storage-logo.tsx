@@ -1,16 +1,22 @@
 export function StorageLogo() {
   return (
     <svg
-      width="35"
-      height="35"
-      viewBox="0 0 47 48"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="#17cf91"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
     >
-      <path
-        d="M1 12.5V35L20.5 46.5M1 12.5L26.5 1L46 12.5M1 12.5L8 16.5M20.5 46.5L46 35V12.5M20.5 46.5V24M46 12.5L20.5 24M20.5 24L14.25 20.25M8 16.5V24L14.25 27.5V20.25M8 16.5L32.5 4.53846M8 16.5L14.25 20.25M14.25 20.25L38.5 8.07692"
-        className="stroke-textPrimary stroke-2 dark:stroke-white"
-      />
+      <path d="M7 19H4.815a1.83 1.83 0 0 1-1.57-.881 1.785 1.785 0 0 1-.004-1.784L7.196 9.5" />
+      <path d="M11 19h8.203a1.83 1.83 0 0 0 1.556-.89 1.784 1.784 0 0 0 0-1.775l-1.226-2.12" />
+      <path d="m14 16-3 3 3 3" />
+      <path d="M8.293 13.596 7.196 9.5 3.1 10.598" />
+      <path d="m9.344 5.811 1.093-1.892A1.83 1.83 0 0 1 11.985 3a1.784 1.784 0 0 1 1.546.888l3.943 6.843" />
+      <path d="m13.378 9.633 4.096 1.098 1.097-4.096" />
     </svg>
   )
 }

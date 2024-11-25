@@ -18,7 +18,7 @@ export function useRegisterFormField() {
         name: 'name',
         label: 'Nome',
         className: 'col-span-full',
-        placeholder: 'Ex: Pedro Veras',
+        placeholder: 'Ex: Gustavo Bertonsin',
         type: 'text',
       },
     ],

@@ -1,4 +1,3 @@
 export enum PrivateRoutes {
-  HOME = '/',
-  PRODUCT = `/products`,
+  HOME = '/me',
 }

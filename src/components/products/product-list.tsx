@@ -5,12 +5,17 @@
 import Image from 'next/image'
 import { Card, CardContent, CardHeader } from '../ui/card'
 import Link from 'next/link'
+import { timeAgo } from '@/utils/time-ago';
+
+
 
 export function ProductList({ data }: { data: any[] }) {
-  return (
+  return data.length ? (
     <div className="grid lg:grid-cols-4 xl:grid-cols-6 gap-3 md:grid-cols-3 grid-cols-1">
-      {data.map((item, index) => (
-        <Link href={`/products/${index}`} key={index}>
+      {data.map((item, index) => {
+        const description = item.description.length > 59 ? `${item.description.slice(0, 59)}...` : item.description
+        return (
+        <Link href={`/products/${item.id}`} key={index}>
           <Card className="cursor-pointer p-0 group bg-accent">
             <CardHeader className="p-0 h-[200px] overflow-hidden rounded-t-md">
               <Image
@@ -22,16 +27,20 @@ export function ProductList({ data }: { data: any[] }) {
               />
             </CardHeader>
             <CardContent className="flex flex-col justify-around p-5 gap-3">
-              <h3 className="text-2xl">Price</h3>
-              <p className="text-base">{item.name}</p>
+              <h3 className="text-2xl">{item.name}</h3>
+              <p className="text-base">{description}</p>
               <div>
-                <p className="text-sm">Localization</p>
-                <p className="text-sm">Date</p>
+                <p className="text-sm">{`${item.neighborhood}, ${item.city}/${item.state}`}</p>
+                <p className="text-sm">{
+                  timeAgo(new Date(item.createdAt))
+                  }</p>
               </div>
             </CardContent>
           </Card>
         </Link>
-      ))}
+      )})}
     </div>
+  ) : (
+    <p className="text-center">No products found</p>
   )
 }

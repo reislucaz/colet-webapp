@@ -10,11 +10,13 @@ interface FormFieldSwitchProps {
 
 export function FormFieldSwitch({ field }: FormFieldSwitchProps) {
   return (
-    <Switch
-      id={field.name}
-      defaultChecked={field.value}
-      onCheckedChange={field.onChange}
-      value={field.value}
-    />
+    <div id={field.name} className="my-auto">
+      <Switch
+        id={field.name}
+        defaultChecked={field.value}
+        onCheckedChange={field.onChange}
+        value={field.value}
+      />
+    </div>
   )
 }

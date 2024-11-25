@@ -7,7 +7,8 @@ export default async function RegisterPage() {
       <div>
         <img
           src="./sign-up-bg.png"
-          className="contain h-screen w-[50vw] rounded-br-[120px] bg-contain"
+          alt="Sign up background"
+          className="h-screen w-[50vw] rounded-br-[120px] bg-contain"
         />
       </div>
       <div className="flex h-screen w-[50vw] max-w-[50vw] flex-col items-center justify-center space-y-4">
