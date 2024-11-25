@@ -32,7 +32,7 @@ export default async function ProductListPage({
 
   return (
     <section className="flex size-full flex-col gap-5">
-      <h2 className="border-l-2 border-l-primary pl-2 text-2xl">Produtos</h2>
+      <h2 className="border-l-4 border-l-primary pl-2 text-3xl">Produtos</h2>
       {/* Filters list */}
       {/* Tags indicating filter */}
 
