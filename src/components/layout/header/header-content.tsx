@@ -8,8 +8,8 @@ import { fallback } from '@/utils/fallback'
 export function HeaderContent() {
   const { data: session } = useSession()
 
-  const userPhoto = session?.user?.image
-  const username = session?.user?.name
+  // const userPhoto = session?.user?.image
+  // const username = session?.user?.name
 
   function handleSignOut() {
     signOut()
