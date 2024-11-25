@@ -1,6 +1,8 @@
+'use client'
 import { cn } from '@/utils/class-name'
 import { HeaderContent } from './header-content'
 import Link from 'next/link'
+import Image from 'next/image'
 
 export function Header() {
   // const pageTitle = usePageTitle()
@@ -53,16 +55,22 @@ export function Header() {
               {pageTitle}
             </h3>
           </div> */}
-          <p>Colet logo</p>
+          <div className="w-40">
+            <Link href="/">
+              <Image
+                src="/logo.png"
+                alt="Logo - Colet"
+                width={200}
+                height={160}
+                sizes="(max-width: 768px) 100vw,
+                  (max-width: 1200px) 50vw,
+                  33vw"
+                style={{ height: '100%', width: '100%' }}
+              />
+            </Link>
+          </div>
         </div>
-        <ul className="flex gap-2">
-          <li>
-            <Link href="/">Home</Link>
-          </li>
-          <li>
-            <Link href="/products">Produtos</Link>
-          </li>
-        </ul>
+
         <nav className="flex items-center justify-center gap-3">
           <HeaderContent />
         </nav>

@@ -1,3 +1,3 @@
 export enum PrivateRoutes {
-  HOME = '/me',
+  HOME = '/',
 }

@@ -65,7 +65,7 @@ export default async function ProductPage({
             <div className="mt-3 flex items-center justify-center gap-5">
               <Button className="flex gap-2 rounded-full">
                 <PhoneCallIcon size={16} />
-                <>Whatsapp</>
+                Whatsapp
               </Button>
             </div>
           </div>
@@ -83,7 +83,7 @@ export default async function ProductPage({
               <div className="flex items-center justify-center gap-2">
                 <h5 className="font-medium">Estado:</h5>
                 <div className="flex items-center justify-center rounded-full bg-accent p-2 px-5">
-                  <p className="font-light">{productData.state}</p>
+                  <p className="font-light ">{productData.state}</p>
                 </div>
               </div>
               <div className="flex items-center justify-center gap-2">
