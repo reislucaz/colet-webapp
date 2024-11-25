@@ -6,5 +6,4 @@ export type RouteTitles = {
 
 export const routeTitles: RouteTitles = {
   [PrivateRoutes.HOME]: 'Início',
-  [PrivateRoutes.PRODUCT]: 'Categorias',
 }

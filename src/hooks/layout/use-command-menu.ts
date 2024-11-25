@@ -22,7 +22,7 @@ export function useCommandMenu() {
 
     document.addEventListener('keydown', down)
     return () => document.removeEventListener('keydown', down)
-  }, [])
+  }, [router])
 
   const runCommand = useCallback((command: () => unknown) => {
     setOpen(false)

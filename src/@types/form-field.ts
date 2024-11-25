@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable no-undef */
 export type FormRadioOption = {
   value: string | number | boolean

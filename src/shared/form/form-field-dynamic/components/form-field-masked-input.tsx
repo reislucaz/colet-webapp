@@ -66,7 +66,7 @@ export const FormFieldMaskedInput = forwardRef(
           maskRef.current?.destroy()
         }
       }
-    }, [value])
+    }, [mask, value])
 
     return (
       <Input

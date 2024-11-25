@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { AuthenticateForm } from '@/components/routes/sign-in/authenticate-form'
 
 export default async function SignInPage() {
@@ -17,7 +18,8 @@ export default async function SignInPage() {
       <div>
         <img
           src="./sign-up-bg.png"
-          className="contain h-screen w-[50vw] rounded-bl-[120px] bg-contain"
+          alt="Sign up background"
+          className="h-screen w-[50vw] rounded-bl-[120px] bg-contain"
         />
       </div>
     </div>

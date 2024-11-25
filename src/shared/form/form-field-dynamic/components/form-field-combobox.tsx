@@ -46,7 +46,7 @@ export function FormFieldCombobox({ field, slot }: FormFieldComboboxProps) {
     if (field.value && slot.multiple) {
       setMultipleOptionSelected(field.value)
     }
-  }, [field.value])
+  }, [field.value, slot.multiple])
 
   return (
     <Popover>
