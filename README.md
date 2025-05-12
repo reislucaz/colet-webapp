@@ -34,6 +34,7 @@ npm install
 
 ### 🚦 Execução
 Antes de rodar o front-end, é necessário iniciar a API do projeto, que deve estar disponível separadamente. Certifique-se de que a API esteja em execução e acessível localmente (por exemplo, em http://localhost:3333).
+Para acessar e rodar a API do projeto acesse o link e siga os passos do Readme: https://github.com/reislucaz/colet-service.
 
 ### Em seguida, inicie o ambiente de desenvolvimento do front-end com:
 
