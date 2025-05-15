@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable no-undef */
+import { FieldValues, UseFormReturn } from 'react-hook-form'
+
 export type FormRadioOption = {
   value: string | number | boolean
   translateKey: string
@@ -81,12 +83,12 @@ export type IFormFieldDateRangeSlot = {
   mode?: 'default' | 'range' | 'single'
 }
 
-export type IFormFieldInputDefaultSlot = {
-  label: string
+export interface IFormFieldInputDefaultSlot {
+  type?: string
   className?: string
-  placeholder: string
-  autoComplete?: string
-  type?: 'text' | 'email' | 'password' | 'number'
+  disabled?: boolean
+  isLoading?: boolean
+  placeholder?: string
 }
 
 export type IFormFieldSwitchSlot = {
@@ -117,4 +119,22 @@ export type FormFields<T> = {
     }
 )
 
-export type FormFieldsConstant<T> = Array<FormFields<T> | FormFields<T>[]>
+export interface IFormFieldSlot<T extends FieldValues> {
+  name: keyof T
+  label?: string
+  disabled?: boolean
+  isLoading?: boolean
+  placeholder?: string
+  className?: string
+  type?: string
+}
+
+export type FormFieldsConstant<T extends FieldValues> = IFormFieldSlot<T>[]
+
+export interface IFormRenderProps<T extends FieldValues> {
+  form: UseFormReturn<T>
+  constant: FormFieldsConstant<T>
+  onSubmit: (data: T) => void
+  children?: React.ReactNode
+  className?: string
+}

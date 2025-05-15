@@ -28,14 +28,14 @@ export const sidebarConfig: SidebarConfig = {
   mainNav: [],
   shortcuts: [
     {
-      href: '',
+      href: '/shortcuts',
       title: 'Atalhos',
       items: [],
     },
   ],
   sidebarNav: [
     {
-      href: '',
+      href: '/',
       items: [
         {
           title: 'Início',
