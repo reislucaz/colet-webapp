@@ -2,12 +2,13 @@
 
 import { FormRender } from '@/shared/form/form-field-dynamic/FormRender'
 import { Button } from '@/components/ui/button'
-import { PublicRoutes } from '@/constants/routes/public-routes'
+import { PrivateRoutes } from '@/constants/routes/private-routes'
 import { useProductFormField } from './product-form-field'
 import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
 import { useToast } from '@/components/ui/use-toast'
 import { CreateProductType } from '@/validations/create-product-schema'
+import { coletApi } from '@/services/axios'
 
 export function ProductForm() {
   const router = useRouter()
@@ -20,26 +21,21 @@ export function ProductForm() {
       title: 'Anúncio criado com sucesso',
     })
 
-    router.push(PublicRoutes.HOME)
+    router.push(PrivateRoutes.PRODUCTS)
   }
 
   function handleError(e: any) {
     toast({
       variant: 'destructive',
-      title: 'Erro ao criar anúncio: ' + JSON.stringify(e, null, 2),
+      title:
+        'Erro ao criar anúncio: ' + (e.response?.data?.message || e.message),
     })
   }
 
   const { mutateAsync, isPending } = useMutation({
     mutationFn: async (data: CreateProductType) => {
-      return fetch(process.env.NEXT_PUBLIC_API_URL + '/products', {
-        cache: 'no-cache',
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }).then((res) => res.json())
+      const response = await coletApi.post('/products', data)
+      return response.data
     },
     onSuccess: handleSuccess,
     onError: handleError,

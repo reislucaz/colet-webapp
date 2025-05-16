@@ -18,15 +18,6 @@ export const createProductSchema = z.object({
   state: z.string({
     required_error: 'Campo obrigatório',
   }),
-  author_name: z.string({
-    required_error: 'Campo obrigatório',
-  }),
-  author_email: z.string({
-    required_error: 'Campo obrigatório',
-  }),
-  author_phone: z.string({
-    required_error: 'Campo obrigatório',
-  }),
   category: z.string({
     required_error: 'Campo obrigatório',
   }),

@@ -127,6 +127,7 @@ export interface IFormFieldSlot<T extends FieldValues> {
   placeholder?: string
   className?: string
   type?: string
+  options?: SelectOptions[]
 }
 
 export type FormFieldsConstant<T extends FieldValues> = IFormFieldSlot<T>[]

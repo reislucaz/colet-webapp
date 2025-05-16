@@ -4,9 +4,12 @@ import { useCallback, useEffect, useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { useSession } from 'next-auth/react'
 import { useToast } from '@/components/ui/use-toast'
+import { coletApi } from '@/services/axios'
+import { ChatSkeleton } from '@/components/ui/chat-skeleton'
+import { timeAgo } from '@/utils/time-ago'
 
 interface Message {
   id: string
@@ -44,38 +47,18 @@ export function ChatInterface() {
   const fetchChats = useCallback(async () => {
     setIsLoading(true)
     try {
-      // TODO: Replace with actual API call
-      // const response = await fetch('/api/chats')
-      // const data = await response.json()
-      // setChats(data)
-
-      // Mocked data for now
-      setChats([
-        {
-          id: '1',
-          title: 'Coleta de Papelão',
-          participants: [{ id: '2', name: 'Maria Silva' }],
-          lastMessage: {
-            content: 'Olá, quando podemos agendar a coleta?',
-            createdAt: new Date().toISOString(),
-          },
-        },
-        {
-          id: '2',
-          title: 'Coleta de Eletrônicos',
-          participants: [{ id: '3', name: 'João Pereira' }],
-          lastMessage: {
-            content: 'Tenho alguns eletrônicos para descartar',
-            createdAt: new Date(Date.now() - 86400000).toISOString(),
-          },
-        },
-      ])
+      const response = await coletApi.get('/chats')
+      // Ensure we're working with an array
+      const chatsData = Array.isArray(response.data) ? response.data : []
+      setChats(chatsData)
     } catch (error) {
       toast({
         variant: 'destructive',
         title: 'Erro',
         description: 'Não foi possível carregar os chats.',
       })
+      // Set empty array on error
+      setChats([])
     } finally {
       setIsLoading(false)
     }
@@ -85,40 +68,8 @@ export function ChatInterface() {
   const fetchMessages = useCallback(
     async (chatId: string) => {
       try {
-        // TODO: Replace with actual API call
-        // const response = await fetch(`/api/chats/${chatId}/messages`)
-        // const data = await response.json()
-        // setMessages(data)
-
-        // Mocked data for now
-        if (chatId === '1') {
-          setMessages([
-            {
-              id: '1',
-              content: 'Olá, estou interessado em seus serviços de coleta.',
-              sender: {
-                id: session?.user?.id || 'current-user',
-                name: session?.user?.name || 'Você',
-              },
-              createdAt: new Date(Date.now() - 3600000).toISOString(),
-            },
-            {
-              id: '2',
-              content: 'Olá, quando podemos agendar a coleta?',
-              sender: { id: '2', name: 'Maria Silva' },
-              createdAt: new Date().toISOString(),
-            },
-          ])
-        } else if (chatId === '2') {
-          setMessages([
-            {
-              id: '3',
-              content: 'Tenho alguns eletrônicos para descartar',
-              sender: { id: '3', name: 'João Pereira' },
-              createdAt: new Date(Date.now() - 86400000).toISOString(),
-            },
-          ])
-        }
+        const response = await coletApi.get(`/chats/${chatId}/messages`)
+        setMessages(response.data)
       } catch (error) {
         toast({
           variant: 'destructive',
@@ -127,7 +78,7 @@ export function ChatInterface() {
         })
       }
     },
-    [session, toast],
+    [toast],
   )
 
   // Send a new message
@@ -135,25 +86,12 @@ export function ChatInterface() {
     if (!newMessage.trim() || !selectedChat) return
 
     try {
-      // TODO: Replace with actual API call
-      // await fetch(`/api/chats/${selectedChat}/messages`, {
-      //   method: 'POST',
-      //   body: JSON.stringify({ content: newMessage }),
-      //   headers: { 'Content-Type': 'application/json' }
-      // })
-
-      // Add message locally for now
-      const newMsg: Message = {
-        id: `temp-${Date.now()}`,
+      const response = await coletApi.post('/messages', {
+        chatId: selectedChat,
         content: newMessage,
-        sender: {
-          id: session?.user?.id || 'current-user',
-          name: session?.user?.name || 'Você',
-        },
-        createdAt: new Date().toISOString(),
-      }
+      })
 
-      setMessages((prev) => [...prev, newMsg])
+      setMessages((prev) => [...prev, response.data])
       setNewMessage('')
     } catch (error) {
       toast({
@@ -174,14 +112,8 @@ export function ChatInterface() {
     }
   }, [selectedChat, fetchMessages])
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-    })
+  if (isLoading) {
+    return <ChatSkeleton />
   }
 
   return (
@@ -189,9 +121,7 @@ export function ChatInterface() {
       {/* Chat list */}
       <div className="h-full w-1/4 overflow-y-auto rounded-lg border">
         <div className="border-b p-4 font-medium">Conversas</div>
-        {isLoading ? (
-          <div className="p-4 text-center">Carregando conversas...</div>
-        ) : chats.length === 0 ? (
+        {chats.length === 0 ? (
           <div className="p-4 text-center text-muted-foreground">
             Nenhuma conversa encontrada
           </div>
@@ -199,7 +129,9 @@ export function ChatInterface() {
           chats.map((chat) => (
             <div
               key={chat.id}
-              className={`cursor-pointer border-b p-4 transition-colors hover:bg-muted ${selectedChat === chat.id ? 'bg-muted' : ''}`}
+              className={`cursor-pointer border-b p-4 transition-colors hover:bg-muted ${
+                selectedChat === chat.id ? 'bg-muted' : ''
+              }`}
               onClick={() => setSelectedChat(chat.id)}
             >
               <div className="flex items-center gap-3">
@@ -216,7 +148,7 @@ export function ChatInterface() {
                         {chat.lastMessage.content}
                       </p>
                       <span className="text-xs text-muted-foreground">
-                        {formatDate(chat.lastMessage.createdAt)}
+                        {timeAgo(new Date(chat.lastMessage.createdAt))}
                       </span>
                     </div>
                   )}
@@ -242,30 +174,44 @@ export function ChatInterface() {
               {messages.map((message) => (
                 <div
                   key={message.id}
-                  className={`flex ${message.sender.id === session?.user?.id || message.sender.id === 'current-user' ? 'justify-end' : 'justify-start'}`}
+                  className={`flex ${
+                    message.sender.id === session?.user?.id
+                      ? 'justify-end'
+                      : 'justify-start'
+                  }`}
                 >
+                  {message.sender.id !== session?.user?.id && (
+                    <Avatar>
+                      <AvatarFallback>
+                        {message.sender.name.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                  )}
                   <div
-                    className={`max-w-[70%] rounded-lg p-3 ${
-                      message.sender.id === session?.user?.id ||
-                      message.sender.id === 'current-user'
+                    className={`max-w-[70%] rounded-lg p-4 ${
+                      message.sender.id === session?.user?.id
                         ? 'bg-primary text-primary-foreground'
                         : 'bg-muted'
                     }`}
                   >
-                    <div className="flex items-start justify-between gap-2">
-                      <p>{message.content}</p>
-                    </div>
+                    <p className="text-sm">{message.content}</p>
                     <p
                       className={`mt-1 text-xs ${
-                        message.sender.id === session?.user?.id ||
-                        message.sender.id === 'current-user'
+                        message.sender.id === session?.user?.id
                           ? 'text-primary-foreground/70'
                           : 'text-muted-foreground'
                       }`}
                     >
-                      {formatDate(message.createdAt)}
+                      {timeAgo(new Date(message.createdAt))}
                     </p>
                   </div>
+                  {message.sender.id === session?.user?.id && (
+                    <Avatar>
+                      <AvatarFallback>
+                        {message.sender.name.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                  )}
                 </div>
               ))}
             </CardContent>
