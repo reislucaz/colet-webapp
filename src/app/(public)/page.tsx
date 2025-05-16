@@ -1,93 +1,80 @@
-import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import {
-  ArrowRight,
-  Package,
-  Users,
-  MessageSquare,
-  TrendingUp,
-} from 'lucide-react'
-import Link from 'next/link'
+import { ProductList } from '@/components/products/product-list'
+import { ProductsCategories } from '@/components/products/products-categories'
 
-export default function HomePage() {
+interface PaginatedResponse<T> {
+  data: T[]
+  total: number
+  page: number
+  limit: number
+}
+
+interface Category {
+  id: string
+  name: string
+  description: string
+  image?: string
+}
+
+interface Product {
+  id: string
+  name: string
+  description: string
+  price: number
+  rating?: number
+  image?: string
+}
+
+export default async function Home() {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'
+
+  const fetchCategories = fetch(`${apiUrl}/categories`, {
+    cache: 'no-store',
+    next: { revalidate: 60 }, // Revalidate every minute
+  })
+
+  const fetchProducts = fetch(`${apiUrl}/products`, {
+    cache: 'no-store',
+    next: { revalidate: 60 }, // Revalidate every minute
+  })
+
+  const [responseCategories, responseProducts] = await Promise.all([
+    fetchCategories,
+    fetchProducts,
+  ])
+
+  const [productsCategories, productsList] = await Promise.all([
+    responseCategories.json() as Promise<PaginatedResponse<Category>>,
+    responseProducts.json() as Promise<PaginatedResponse<Product>>,
+  ])
+
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1">
-        <section className="container py-12 md:py-24 lg:py-32">
-          <div className="mx-auto flex max-w-[980px] flex-col items-center gap-4 text-center">
-            <h1 className="text-3xl font-bold leading-tight tracking-tighter md:text-6xl lg:leading-[1.1]">
-              Gestão Inteligente de Resíduos
-            </h1>
-            <p className="max-w-[750px] text-lg text-muted-foreground sm:text-xl">
-              Simplifique a gestão de resíduos da sua empresa com nossa
-              plataforma. Agende coletas, acompanhe métricas e contribua para um
-              futuro mais sustentável.
-            </p>
-            <div className="flex gap-4">
-              <Link href="/register">
-                <Button size="lg">
-                  Começar Agora
-                  <ArrowRight className="ml-2 size-4" />
-                </Button>
-              </Link>
-              <Link href="/sign-in">
-                <Button variant="outline" size="lg">
-                  Saiba Mais
-                </Button>
-              </Link>
+        {/* Categories Section */}
+        {productsCategories.total > 0 && (
+          <section className="container py-16">
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold">Categorias</h2>
+              <p className="text-muted-foreground">
+                Explore nossos serviços por categoria
+              </p>
             </div>
-          </div>
-        </section>
+            <ProductsCategories categories={productsCategories.data} />
+          </section>
+        )}
 
-        <section className="container py-12 md:py-24 lg:py-32">
-          <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <Card>
-              <CardHeader>
-                <Package className="size-10 text-primary" />
-                <CardTitle>Gestão de Produtos</CardTitle>
-                <CardDescription>
-                  Controle seu inventário de resíduos de forma eficiente
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <Users className="size-10 text-primary" />
-                <CardTitle>Colaboração</CardTitle>
-                <CardDescription>
-                  Conecte-se com outros usuários e empresas
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <MessageSquare className="size-10 text-primary" />
-                <CardTitle>Comunicação</CardTitle>
-                <CardDescription>
-                  Mantenha-se informado sobre suas coletas
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <TrendingUp className="size-10 text-primary" />
-                <CardTitle>Métricas</CardTitle>
-                <CardDescription>
-                  Acompanhe o desempenho da sua gestão
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </div>
-        </section>
+        {/* Products Section */}
+        {productsList.total > 0 && (
+          <section className="container py-16">
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold">Serviços em Destaque</h2>
+              <p className="text-muted-foreground">
+                Conheça nossos serviços mais populares
+              </p>
+            </div>
+            <ProductList data={productsList.data} />
+          </section>
+        )}
       </main>
 
       <footer className="border-t">
