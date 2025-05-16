@@ -27,15 +27,18 @@ export function FormRender<T>({
         className={cn(className, 'space-y-4')}
         onSubmit={form.handleSubmit((data) => onSubmit?.(data))}
       >
-        {constant.map((slot, key) =>
-          Array.isArray(slot) ? (
-            <div key={key} className="grid grid-cols-12 items-baseline gap-4">
-              {slot.map((s) => (
-                <RenderField<T> form={form} key={s.name as string} slot={s} />
-              ))}
-            </div>
-          ) : null,
-        )}
+        {constant.map((slot, key) => {
+          if (Array.isArray(slot)) {
+            return (
+              <div key={key} className="grid grid-cols-12 items-baseline gap-4">
+                {slot.map((s) => (
+                  <RenderField<T> form={form} key={s.name as string} slot={s} />
+                ))}
+              </div>
+            )
+          }
+          return <RenderField<T> form={form} key={key} slot={slot} />
+        })}
         {children}
       </form>
     </FormProvider>
