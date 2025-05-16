@@ -1,5 +1,6 @@
 'use client'
 
+import { JSX, useState } from 'react'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -25,14 +26,28 @@ import {
   Menu,
   X,
 } from 'lucide-react'
-import { useState } from 'react'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import Image from 'next/image'
 
 const navigation = [
   { name: 'Início', href: PrivateRoutes.HOME, icon: Home },
   { name: 'Produtos', href: PrivateRoutes.PRODUCTS, icon: Package },
   { name: 'Mensagens', href: PrivateRoutes.CHAT, icon: MessageSquare },
 ]
+
+function Logo() {
+  return (
+    <Link href="/">
+      <Image
+        src="/logo.png"
+        alt="Logo - Colet"
+        width={75}
+        height={75}
+        style={{ height: '100%', width: '100%' }}
+      />
+    </Link>
+  )
+}
 
 export function Navbar() {
   const { data: session } = useSession()
@@ -48,22 +63,8 @@ export function Navbar() {
   if (!session) {
     return (
       <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-between py-6">
-          <div className="flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="size-6"
-            >
-              <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
-            </svg>
-            <span className="text-xl font-bold">Colet</span>
-          </div>
+        <div className="container flex h-16 items-center justify-between gap-2 py-6">
+          <Logo />
           <div className="flex items-center gap-4">
             <Link href={PublicRoutes.SIGN_IN}>
               <Button variant="ghost">Entrar</Button>
@@ -81,12 +82,10 @@ export function Navbar() {
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
         {/* Logo */}
-        <Link href={PrivateRoutes.HOME} className="mr-8">
-          <span className="text-xl font-bold">Colet</span>
-        </Link>
+        <Logo />
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex md:gap-6">
+        <div className="ml-auto hidden md:flex md:gap-6">
           {navigation.map((item) => {
             const isActive = pathname === item.href
             return (

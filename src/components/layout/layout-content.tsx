@@ -16,7 +16,6 @@ export function LayoutContent({ children }: LayoutContentProps) {
     <ThemeContext>
       <div className="flex min-h-screen w-full px-2 pb-5 pt-24 md:px-8">
         <TooltipProvider delayDuration={0}>
-          <Header />
           <Content>{children}</Content>
         </TooltipProvider>
       </div>
