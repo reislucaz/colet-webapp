@@ -10,8 +10,10 @@ import {
   CarouselPrevious,
 } from '../ui/carousel'
 import Autoplay from 'embla-carousel-autoplay'
+import Image from 'next/image'
+import { Product } from '@/@types/product'
 
-export function ProductCarousel({ products }: { products: any[] }) {
+export function ProductCarousel({ products }: { products: Product[] }) {
   return (
     <Carousel
       opts={{
@@ -31,7 +33,16 @@ export function ProductCarousel({ products }: { products: any[] }) {
             <Link href={`/products/${index}`} key={index}>
               <Card className="flex h-72 w-full items-center justify-center">
                 <CardContent className="flex items-center justify-center">
-                  <span className="text-3xl font-semibold">{product.name}</span>
+                  <div>
+                    {product.images?.[0]?.key && (
+                      <Image
+                        alt="Carousel image"
+                        className="object-cover"
+                        src={product.images?.[0]?.key}
+                      />
+                    )}
+                    <p className="text-3xl font-semibold">{product.name}</p>
+                  </div>
                 </CardContent>
               </Card>
             </Link>

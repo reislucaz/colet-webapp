@@ -1,3 +1,6 @@
+import { Category } from '@/@types/category'
+import { Product } from '@/@types/product'
+import { ProductCarousel } from '@/components/products/product-carousel'
 import { ProductList } from '@/components/products/product-list'
 import { ProductsCategories } from '@/components/products/products-categories'
 
@@ -6,22 +9,6 @@ interface PaginatedResponse<T> {
   total: number
   page: number
   limit: number
-}
-
-interface Category {
-  id: string
-  name: string
-  description: string
-  image?: string
-}
-
-interface Product {
-  id: string
-  name: string
-  description: string
-  price: number
-  rating?: number
-  image?: string
 }
 
 export default async function Home() {
@@ -48,9 +35,11 @@ export default async function Home() {
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1">
+        <ProductCarousel products={productsList.data}></ProductCarousel>
+
         {/* Categories Section */}
         {productsCategories.total > 0 && (
-          <section className="container py-16">
+          <section className="container">
             <div className="mb-8">
               <h2 className="text-3xl font-bold">Categorias</h2>
               <p className="text-muted-foreground">
@@ -63,7 +52,7 @@ export default async function Home() {
 
         {/* Products Section */}
         {productsList.total > 0 && (
-          <section className="container py-16">
+          <section className="container">
             <div className="mb-8">
               <h2 className="text-3xl font-bold">Serviços em Destaque</h2>
               <p className="text-muted-foreground">
