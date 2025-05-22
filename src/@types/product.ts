@@ -1,11 +1,13 @@
+import { Category } from './category'
 import { Image } from './image'
 
 export interface Product {
   id: string
   name: string
   price: number
+  status: string
   description: string
-  categoryId: string
+  category: Category
   authorId: string
   neighborhood: string
   city: string

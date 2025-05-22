@@ -7,10 +7,10 @@ import { ProductItem } from './product-item';
 
 export function ProductList({ data }: { data: Product[] }) {
   return data.length ? (
-    <div className="w-full grid items-start lg:grid-cols-4 xl:grid-cols-5 gap-3 md:grid-cols-3 grid-cols-1 justify-center">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {data.map((item) => {
         return (
-          <ProductItem item={item} key={item.id}/>
+          <ProductItem product={item} key={item.id}/>
         )
       })}
     </div>

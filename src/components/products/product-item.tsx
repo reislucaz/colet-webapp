@@ -1,42 +1,90 @@
-import { timeAgo } from '@/utils/time-ago'
-import { Card, CardHeader, CardContent } from '../ui/card'
 import { Product } from '@/@types/product'
-import Image from 'next/image'
-import Link from 'next/link'
+import {
+  formattedStatusProduct,
+  StatusProduct,
+} from '@/constants/product/product-status-enum'
+import { coletApi } from '@/services/axios'
+import { timeAgo } from '@/utils/time-ago'
+import { Edit, Trash2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { Button } from '../ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '../ui/card'
+import { toast } from '../ui/use-toast'
 
-export function ProductItem({ item }: { item: Product }) {
-  const description =
-    item.description.length > 40
-      ? `${item.description.slice(0, 40)}...`
-      : item.description
-  const formattedPrice = Intl.NumberFormat('pt-BR', {
-    currency: 'BRL',
-    style: 'currency',
-  }).format(item.price)
-
+export function ProductItem({ product }: { product: Product }) {
+  const handleDelete = async (id: string) => {
+    try {
+      await coletApi.delete(`/products/${id}`)
+      toast({
+        title: 'Produto excluído com sucesso',
+        variant: 'success',
+      })
+    } catch (error) {
+      toast({
+        title: 'Erro ao excluir produto',
+        variant: 'destructive',
+      })
+    }
+  }
+  const router = useRouter()
   return (
-    <Link href={`/products/${item.id}`} key={item.id}>
-      <Card className="group max-h-96 cursor-pointer bg-accent p-0">
-        <CardHeader className="max-h-40 overflow-hidden rounded-t-md p-0">
-          <Image
-            width={500}
-            height={50}
-            className="object-contain transition-all ease-in group-hover:scale-125"
-            src="https://plus.unsplash.com/premium_vector-1728388670725-b1194018b52b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxpbGx1c3RyYXRpb25zLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D"
-            alt=""
-          />
-        </CardHeader>
-        <CardContent className="flex h-48 flex-col justify-between gap-3 p-5">
-          <h3 className="text-xl text-gray-900">{formattedPrice}</h3>
-          <p className="text-sm text-gray-800">{description}</p>
-          <div className="flex flex-col justify-center gap-1">
-            <p className="text-xs text-gray-500">{`${item.neighborhood}, ${item.city}/${item.state}`}</p>
-            <p className="text-xs text-gray-500">
-              {timeAgo(new Date(item.createdAt))}
-            </p>
+    <Card key={product.id} className="group relative">
+      <CardHeader>
+        <CardTitle className="line-clamp-1">{product.name}</CardTitle>
+        <CardDescription>{product.category.name}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-2">
+          <div className="flex justify-between text-sm">
+            <span className="text-muted-foreground">Preço:</span>
+            <span className="font-medium">
+              {product.price ? `R$ ${product.price.toFixed(2)}` : 'Grátis'}
+            </span>
           </div>
-        </CardContent>
-      </Card>
-    </Link>
+          <div className="flex justify-between text-sm">
+            <span className="text-muted-foreground">Status:</span>
+            <span
+              className={`font-medium ${
+                product.status === StatusProduct.ACTIVE
+                  ? 'text-green-600'
+                  : product.status === StatusProduct.INACTIVE
+                    ? 'text-yellow-600'
+                    : 'text-red-600'
+              }`}
+            >
+              {formattedStatusProduct?.[product.status as never]}
+            </span>
+          </div>
+          <div className="flex justify-between text-sm">
+            <span className="text-muted-foreground">Criado:</span>
+            <span className="font-medium">
+              {timeAgo(new Date(product.createdAt))}
+            </span>
+          </div>
+        </div>
+      </CardContent>
+      <div className="absolute right-2 top-2 hidden gap-2 group-hover:flex">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => router.push(`/products/${product.id}/edit`)}
+        >
+          <Edit className="size-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => handleDelete(product.id)}
+        >
+          <Trash2 className="size-4" />
+        </Button>
+      </div>
+    </Card>
   )
 }
