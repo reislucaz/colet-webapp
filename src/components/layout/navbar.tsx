@@ -28,6 +28,7 @@ import {
 } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import Image from 'next/image'
+import { ModeToggle } from './header/mode-toggle'
 
 const navigation = [
   { name: 'Início', href: PrivateRoutes.HOME, icon: Home },
@@ -66,6 +67,7 @@ export function Navbar() {
         <div className="container flex h-16 items-center justify-between gap-2 py-6">
           <Logo />
           <div className="flex items-center gap-4">
+            <ModeToggle />
             <Link href={PublicRoutes.SIGN_IN}>
               <Button variant="ghost">Entrar</Button>
             </Link>
