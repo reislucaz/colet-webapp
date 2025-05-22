@@ -108,6 +108,7 @@ export function Navbar() {
 
         <div className="ml-auto flex items-center gap-4">
           {/* User Menu */}
+          <ModeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative size-8 rounded-full">
