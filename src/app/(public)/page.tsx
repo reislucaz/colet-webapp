@@ -34,8 +34,8 @@ export default async function Home() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <main className="flex-1">
-        <ProductCarousel products={productsList.data}></ProductCarousel>
+      <main className="flex flex-col items-center justify-center gap-5 py-4">
+        <ProductCarousel products={productsList.data} />
 
         {/* Categories Section */}
         {productsCategories.total > 0 && (

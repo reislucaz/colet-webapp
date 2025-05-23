@@ -16,11 +16,11 @@ import { Product } from '@/@types/product'
 export function ProductCarousel({ products }: { products: Product[] }) {
   return (
     <Carousel
+      className="flex w-2/3"
       opts={{
         align: 'center',
         loop: true,
       }}
-      className="w-11/12"
       plugins={[
         Autoplay({
           delay: 2000,
