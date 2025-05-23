@@ -39,13 +39,7 @@ const navigation = [
 function Logo() {
   return (
     <Link href="/">
-      <Image
-        src="/logo.png"
-        alt="Logo - Colet"
-        width={75}
-        height={75}
-        style={{ height: '100%', width: '100%' }}
-      />
+      <Image src="/logo.svg" alt="Logo - Colet" width={90} height={90} />
     </Link>
   )
 }
