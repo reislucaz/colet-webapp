@@ -47,7 +47,7 @@ export function ProductItem({ product }: { product: Product }) {
               {product.price ? `R$ ${product.price.toFixed(2)}` : 'Grátis'}
             </span>
           </div>
-          <div className="flex justify-between text-sm">
+          {/* <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Status:</span>
             <span
               className={`font-medium ${
@@ -60,7 +60,7 @@ export function ProductItem({ product }: { product: Product }) {
             >
               {formattedStatusProduct?.[product.status as never]}
             </span>
-          </div>
+          </div> */}
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Criado:</span>
             <span className="font-medium">
