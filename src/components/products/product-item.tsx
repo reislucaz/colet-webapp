@@ -36,30 +36,16 @@ export function ProductItem({ product }: { product: Product }) {
         <CardDescription>{product.category.name}</CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="space-y-2">
+        <div className="flex flex-col gap-2">
           <div className="flex justify-between text-sm">
             <span className="text-muted-foreground">Preço:</span>
             <span className="font-medium">
               {product.price ? `R$ ${product.price.toFixed(2)}` : 'Grátis'}
             </span>
           </div>
-          {/* <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Status:</span>
-            <span
-              className={`font-medium ${
-                product.status === StatusProduct.ACTIVE
-                  ? 'text-green-600'
-                  : product.status === StatusProduct.INACTIVE
-                    ? 'text-yellow-600'
-                    : 'text-red-600'
-              }`}
-            >
-              {formattedStatusProduct?.[product.status as never]}
-            </span>
-          </div> */}
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Criado:</span>
-            <span className="font-medium">
+            <span className="text-muted-foreground font-light">Criado:</span>
+            <span className="font-light">
               {timeAgo(new Date(product.createdAt))}
             </span>
           </div>
