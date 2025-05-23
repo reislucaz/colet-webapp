@@ -1,29 +1,33 @@
 'use client'
 /* eslint-disable tailwindcss/classnames-order */
-import Link from 'next/link'
-import { Card, CardContent, CardHeader } from '../ui/card'
 import { Icon } from '@/shared/icon'
+import { AnimatePresence, motion } from 'motion/react'
+import Link from 'next/link'
+import { Category } from '../../@types/category'
+import { Card, CardContent } from '../ui/card'
 
-export function ProductsCategories({ categories }: { categories: any[] }) {
+export function ProductsCategories({ categories }: { categories: Category[] }) {
   return (
-    <div className="flex w-full items-center justify-start gap-5">
-      {categories.map((item, index) => {
-        return (
-          <Link href={`/products?category=${item.id}`} key={index}>
-            <Card className="group cursor-pointer aspect-square bg-transparent shadow-none flex-col p-0 flex gap-2 justify-center items-center">
-              <CardHeader className="rounded-full group-hover:bg-primary group-hover:text-background transition-all duration-75 bg-accent p-5 flex w-fit justify-center items-center">
-                <Icon
-                  name={item.iconKey}
-                  className="group-hover:scale-125 transition-all ease-in"
-                />
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm">{item.name}</p>
-              </CardContent>
-            </Card>
-          </Link>
-        )
-      })}
-    </div>
+    <AnimatePresence mode='wait'>
+      <motion.div className="flex w-full items-center justify-center gap-5">
+        {categories.map((item, index) => {
+          return (
+            <motion.div animate={{ opacity: [0, 1], transition: { duration: 0.5, delay: index * 0.05, ease: 'easeInOut' } }} layout>
+              <Link href={`/products?category=${item.id}`} key={index}>
+                <Card className='rounded-full group cursor-pointer shadow-none hover:bg-primary hover:text-white transition-all ease-out'>
+                  <CardContent className='p-0 flex gap-2 justify-center items-center bg-transparent'>
+                    <Icon
+                      name={item.iconKey}
+                      className="group-hover:scale-110 transition-all ease-in"
+                    />
+                    <p className="text-sm whitespace-nowrap">{item.name}</p>
+                  </CardContent>
+                </Card>
+              </Link>
+            </motion.div>
+          )
+        })}
+      </motion.div>
+    </AnimatePresence>
   )
 }
