@@ -1,9 +1,6 @@
 'use client'
 
-import { JSX, useState } from 'react'
-import { useSession, signOut } from 'next-auth/react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -13,21 +10,23 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { cn } from '@/utils/class-name'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { PrivateRoutes } from '@/constants/routes/private-routes'
 import { PublicRoutes } from '@/constants/routes/public-routes'
+import { cn } from '@/utils/class-name'
 import {
   Home,
-  MessageSquare,
-  Package,
-  User,
   LogOut,
   Menu,
-  X,
+  MessageSquare,
+  Package,
+  User
 } from 'lucide-react'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useState } from 'react'
 import { ModeToggle } from './header/mode-toggle'
 
 const navigation = [

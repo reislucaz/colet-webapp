@@ -1,25 +1,10 @@
 'use client'
 
+import { Product } from '@/@types/product'
+import { ProductItem } from '@/components/products/product-item'
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Plus, Search, Filter, Edit, Trash2 } from 'lucide-react'
-import { timeAgo } from '@/utils/time-ago'
-import { useQuery } from '@tanstack/react-query'
-import { coletApi } from '@/services/axios'
-import { useState } from 'react'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+import { ProductSkeleton } from '@/components/ui/product-skeleton'
 import {
   Select,
   SelectContent,
@@ -31,11 +16,10 @@ import {
   StatusProduct,
   formattedStatusProduct,
 } from '@/constants/product/product-status-enum'
-import { useToast } from '@/components/ui/use-toast'
-import { useRouter } from 'next/navigation'
-import { ProductSkeleton } from '@/components/ui/product-skeleton'
-import { ProductItem } from '@/components/products/product-item'
-import { Product } from '@/@types/product'
+import { coletApi } from '@/services/axios'
+import { useQuery } from '@tanstack/react-query'
+import { Plus, Search } from 'lucide-react'
+import { useState } from 'react'
 
 interface PaginatedResponse<T> {
   data: T[]
@@ -45,8 +29,6 @@ interface PaginatedResponse<T> {
 }
 
 export default function ProductsPage() {
-  const router = useRouter()
-  const { toast } = useToast()
   const [search, setSearch] = useState('')
   const [status, setStatus] = useState<StatusProduct | 'ALL'>('ALL')
   const [page, setPage] = useState(1)

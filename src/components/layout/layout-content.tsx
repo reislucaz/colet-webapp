@@ -2,10 +2,9 @@
 
 import { type ReactNode } from 'react'
 
-import { Content } from './content/content'
 import ThemeContext from '@/providers/theme'
 import { TooltipProvider } from '../ui/tooltip'
-import { Header } from './header/header'
+import { Content } from './content/content'
 
 type LayoutContentProps = {
   children: ReactNode

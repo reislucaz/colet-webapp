@@ -1,8 +1,4 @@
 import { Product } from '@/@types/product'
-import {
-  formattedStatusProduct,
-  StatusProduct,
-} from '@/constants/product/product-status-enum'
 import { coletApi } from '@/services/axios'
 import { timeAgo } from '@/utils/time-ago'
 import { Edit, Trash2 } from 'lucide-react'
