@@ -1,15 +1,15 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
-import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { useSession } from 'next-auth/react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { ChatSkeleton } from '@/components/ui/chat-skeleton'
+import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
 import { coletApi } from '@/services/axios'
-import { ChatSkeleton } from '@/components/ui/chat-skeleton'
 import { timeAgo } from '@/utils/time-ago'
+import { useSession } from 'next-auth/react'
+import { useCallback, useEffect, useState } from 'react'
 
 interface Message {
   id: string
@@ -129,9 +129,8 @@ export function ChatInterface() {
           chats.map((chat) => (
             <div
               key={chat.id}
-              className={`cursor-pointer border-b p-4 transition-colors hover:bg-muted ${
-                selectedChat === chat.id ? 'bg-muted' : ''
-              }`}
+              className={`cursor-pointer border-b p-4 transition-colors hover:bg-muted ${selectedChat === chat.id ? 'bg-muted' : ''
+                }`}
               onClick={() => setSelectedChat(chat.id)}
             >
               <div className="flex items-center gap-3">
@@ -174,11 +173,10 @@ export function ChatInterface() {
               {messages.map((message) => (
                 <div
                   key={message.id}
-                  className={`flex ${
-                    message.sender.id === session?.user?.id
+                  className={`flex ${message.sender.id === session?.user?.id
                       ? 'justify-end'
                       : 'justify-start'
-                  }`}
+                    }`}
                 >
                   {message.sender.id !== session?.user?.id && (
                     <Avatar>
@@ -188,19 +186,17 @@ export function ChatInterface() {
                     </Avatar>
                   )}
                   <div
-                    className={`max-w-[70%] rounded-lg p-4 ${
-                      message.sender.id === session?.user?.id
+                    className={`max-w-[70%] rounded-lg p-4 ${message.sender.id === session?.user?.id
                         ? 'bg-primary text-primary-foreground'
                         : 'bg-muted'
-                    }`}
+                      }`}
                   >
                     <p className="text-sm">{message.content}</p>
                     <p
-                      className={`mt-1 text-xs ${
-                        message.sender.id === session?.user?.id
+                      className={`mt-1 text-xs ${message.sender.id === session?.user?.id
                           ? 'text-primary-foreground/70'
                           : 'text-muted-foreground'
-                      }`}
+                        }`}
                     >
                       {timeAgo(new Date(message.createdAt))}
                     </p>
