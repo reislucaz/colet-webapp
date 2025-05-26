@@ -1,15 +1,15 @@
 'use client'
 
-import { FormRender } from '@/shared/form/form-field-dynamic/FormRender'
 import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import { PublicRoutes } from '@/constants/routes/public-routes'
-import { CreateUserType } from '@/validations/create-user-schema'
-import { useRegisterFormField } from './register-form-field'
-import { useMutation } from '@tanstack/react-query'
-import { useRouter } from 'next/navigation'
 import { useToast } from '@/components/ui/use-toast'
+import { PublicRoutes } from '@/constants/routes/public-routes'
 import { useUsersService } from '@/services/user'
+import { FormRender } from '@/shared/form/form-field-dynamic/FormRender'
+import { CreateUserType } from '@/validations/create-user-schema'
+import { useMutation } from '@tanstack/react-query'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useRegisterFormField } from './register-form-field'
 
 export function RegisterForm() {
   const router = useRouter()
@@ -44,6 +44,7 @@ export function RegisterForm() {
       constant={REGISTER_FORM_FIELD}
       form={form}
       onSubmit={mutateAsync}
+      className='w-full'
     >
       <div className="flex w-full flex-col space-y-4">
         <Button className="w-full" type="submit" isLoading={isPending}>
