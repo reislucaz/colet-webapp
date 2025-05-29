@@ -13,7 +13,7 @@ export default async function PrivateLayout({
     redirect('/sign-in')
   }
 
-  return <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background flex flex-col justify-between">
     {children}
     <footer className="border-t">
       <div className="container flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">
