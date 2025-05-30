@@ -1,6 +1,6 @@
 import { Product } from '@/@types/product'
 import { coletApi } from '@/services/axios'
-import { Edit, Trash2 } from 'lucide-react'
+import { Edit, Eye, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { timeAgo } from '../../utils/time-ago'
 import { Button } from '../ui/button'
@@ -52,6 +52,13 @@ export function ProductItem({ product }: { product: Product }) {
         </div>
       </CardContent>
       <div className="absolute right-2 top-2 hidden gap-2 group-hover:flex">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => router.push(`/products/${product.id}`)}
+        >
+          <Eye className="size-4" />
+        </Button>
         <Button
           variant="ghost"
           size="icon"
