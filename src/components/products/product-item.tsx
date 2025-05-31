@@ -44,7 +44,7 @@ export function ProductItem({ product }: { product: Product }) {
             </span>
           </div>
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground font-light">Criado:</span>
+            <span className="font-light text-muted-foreground">Criado:</span>
             <span className="font-light">
               {timeAgo(new Date(product.createdAt))}
             </span>

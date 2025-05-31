@@ -20,6 +20,7 @@ import { coletApi } from '@/services/axios'
 import { useQuery } from '@tanstack/react-query'
 import { Plus, Search } from 'lucide-react'
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 
 interface PaginatedResponse<T> {
   data: T[]
@@ -97,7 +98,7 @@ export default function ProductsPage() {
       {isLoading ? (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => (
-            <ProductSkeleton key={i} />
+            <ProductSkeleton key={i} index={i} />
           ))}
         </div>
       ) : products?.total ? (
