@@ -1,5 +1,7 @@
+import { authOptions } from '@/lib/auth/auth-options'
 import { ApplicationError } from '@/utils/application-error'
 import axios, { AxiosError } from 'axios'
+import { getServerSession } from 'next-auth'
 import { getSession } from 'next-auth/react'
 
 export interface ApiResponseError {
@@ -16,7 +18,7 @@ const ApiClient = () => {
   const instance = axios.create(defaultOptions)
 
   instance.interceptors.request.use(async (request) => {
-    const session = await getSession()
+    const session = await getServerSession(authOptions)
     if (session) {
       request.headers.Authorization = `Bearer ${session.user.access_token}`
     }
