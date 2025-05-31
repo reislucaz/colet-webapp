@@ -212,8 +212,6 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
       ...rest
     } = props
 
-    console.log(children)
-
     const childArr = React.Children.toArray(children)
 
     const items = [] as React.ReactElement[]

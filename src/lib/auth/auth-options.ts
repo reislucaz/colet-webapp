@@ -25,7 +25,6 @@ export const authOptions: NextAuthOptions = {
           })
 
           const userResponse = jwtDecode(data.access_token)
-
           if (userResponse) {
             return {
               ...data,
@@ -55,7 +54,7 @@ export const authOptions: NextAuthOptions = {
 
       return token
     },
-    session: ({ session, token }) => {
+    session: async ({ session, token }) => {
       if (token?.user) {
         session.user = token.user
         session.user.id = String(token.sub)
