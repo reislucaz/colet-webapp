@@ -8,6 +8,12 @@ export const editProductSchema = z.object({
   city: z.string().optional(),
   state: z.string().optional(),
   images: z.array(z.string()).optional().default([]),
+  category: z
+    .object({
+      label: z.string(),
+      value: z.string(),
+    })
+    .transform((item) => item.value),
 })
 
 export type EditProductSchemaType = z.infer<typeof editProductSchema>

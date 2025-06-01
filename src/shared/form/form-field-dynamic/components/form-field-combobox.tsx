@@ -89,7 +89,7 @@ export function FormFieldCombobox({ field, slot }: FormFieldComboboxProps) {
           <CommandEmpty>Nenhum resultado encontrado</CommandEmpty>
 
           <CommandList>
-            <ScrollArea className="max-h-[200px]">
+            <div className="max-h-[200px] overflow-y-auto">
               <CommandGroup>
                 {options.map((option, index) => (
                   <CommandItem
@@ -160,8 +160,7 @@ export function FormFieldCombobox({ field, slot }: FormFieldComboboxProps) {
                   </CommandItem>
                 ))}
               </CommandGroup>
-              <Scrollbar orientation="vertical" />
-            </ScrollArea>
+            </div>
           </CommandList>
         </Command>
       </PopoverContent>

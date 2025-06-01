@@ -1,22 +1,16 @@
 'use client'
 
-import {
-  QueryClient,
-  QueryClientProvider as TanstackQueryClientProvider,
-} from '@tanstack/react-query'
-import { useState } from 'react'
+import { queryClient } from '@/utils/query-client'
+import { QueryClientProvider as TanstackQueryClientProvider } from '@tanstack/react-query'
 
 export function QueryClientProvider({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const [queryClient] = useState(() => new QueryClient())
-
   return (
     <TanstackQueryClientProvider client={queryClient}>
       {children}
-      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </TanstackQueryClientProvider>
   )
 }

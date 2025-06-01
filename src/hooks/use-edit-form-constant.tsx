@@ -1,7 +1,12 @@
 import { FormFieldsConstant } from '@/@types/form-field'
 import { EditProductSchemaType } from '../validations/edit-product-schema'
+import { Category } from '@/@types/category'
 
-export function useEditFormConstant() {
+export function useEditFormConstant(categories: Category[]) {
+  const formattedCategories = categories?.map((item) => ({
+    label: item.name,
+    value: item.id,
+  }))
   const EDIT_FORM_CONSTANT: FormFieldsConstant<EditProductSchemaType> = [
     {
       name: 'name',
@@ -9,6 +14,14 @@ export function useEditFormConstant() {
       type: 'text',
       placeholder: 'Digite o nome do produto',
       className: 'col-span-full',
+    },
+    {
+      name: 'category',
+      label: 'Categoria do produto',
+      type: 'combobox',
+      placeholder: 'Insira a categoria do produto',
+      className: 'col-span-full',
+      options: formattedCategories,
     },
     {
       name: 'price',
