@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Product } from '../../../@types/product'
 import { formattedDateFNS } from '../../../utils/format-date'
 import { Card, CardContent } from '../../ui/card'
+import * as motion from 'motion/react-client'
 
 export function ProductDetailsSession({ product }: { product: Product }) {
   const currencyFormatter = Intl.NumberFormat('pt-BR', {
@@ -20,7 +21,9 @@ export function ProductDetailsSession({ product }: { product: Product }) {
           </CardContent>
         </Card>
       )}
-      <Card className="size-full shadow-md">
+      <div>
+        <h2 className="mb-4 text-3xl font-bold">Informações do produto:</h2>
+        <Card className="size-full shadow-md">
         <CardContent className="flex flex-col gap-2">
           <div className="flex w-full justify-between">
             <h3 className="text-3xl font-bold">{product.name}</h3>
@@ -50,6 +53,7 @@ export function ProductDetailsSession({ product }: { product: Product }) {
           </div>
         </CardContent>
       </Card>
+      </div>
     </div>
   )
 }

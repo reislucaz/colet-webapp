@@ -13,9 +13,9 @@ import {
   CardTitle,
 } from '../ui/card'
 import { toast } from '../ui/use-toast'
-import { useSession } from 'next-auth/react'
+import * as motion from 'motion/react-client'
 
-export function ProductItem({ product }: { product: Product }) {
+export function ProductItem({ product, idx }: { product: Product, idx: number }) {
   const handleDelete = async (id: string) => {
     try {
       await coletApi.delete(`/products/${id}`)
@@ -32,7 +32,7 @@ export function ProductItem({ product }: { product: Product }) {
   }
   const router = useRouter()
   return (
-    <div className="group">
+    <motion.div animate={{opacity:[0,1], transition: {duration: 0.5, ease: 'easeInOut', delay: 0.5 * idx}}} className="group">
       <Card
         key={product.id}
         onClick={() => router.push(`/products/${product.id}/details`)}
@@ -75,6 +75,6 @@ export function ProductItem({ product }: { product: Product }) {
           </Button>
         </div>
       </Card>
-    </div>
+    </motion.div>
   )
 }

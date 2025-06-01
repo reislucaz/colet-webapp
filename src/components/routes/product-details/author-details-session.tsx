@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { usersQueryKey } from '@/constants/query-key/users-query-key'
 import { coletApi } from '@/services/axios'
 import { useQuery } from '@tanstack/react-query'
+import * as motion from 'motion/react-client'
 
 export async function AuthorDetailsSession(params: { id: string }) {
   const { data: author } = useQuery({

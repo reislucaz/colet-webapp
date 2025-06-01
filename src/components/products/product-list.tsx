@@ -12,9 +12,9 @@ export function ProductList({ data }: { data: Product[] }) {
       animate={{ y: 0, opacity: 1 }}
       layout
       transition={{ ease: "easeInOut", duration: 0.5, delay: 0.5 }} className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {data.map((item) => {
+      {data.map((item, index) => {
         return (
-          <ProductItem product={item} key={item.id} />
+          <ProductItem product={item} key={item.id} idx={index} />
         )
       })}
     </motion.div>
