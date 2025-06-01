@@ -1,6 +1,6 @@
 export interface Pagination<T> {
   total: number
-  items: T[]
+  data: T[]
   perPage: number
   currentPage: number
 }
