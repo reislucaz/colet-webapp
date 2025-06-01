@@ -1,13 +1,11 @@
-import { CategoryService } from '@/services/category'
+import { Category } from '@/@types/category'
+import { Pagination } from '@/@types/pagination'
 import { Product } from '../../../../../@types/product'
 import { BackButton } from '../../../../../components/routes/edit/back-button'
 import { EditForm } from '../../../../../components/routes/edit/edit-form'
 import { coletApi } from '../../../../../services/axios'
-import { Suspense } from 'react'
-import { Pagination } from '@/@types/pagination'
-import { Category } from '@/@types/category'
 
-export default async function ProductDetails({
+export default async function ProductUpdate({
   params,
 }: {
   params: { id: string }
@@ -21,9 +19,7 @@ export default async function ProductDetails({
     <div className="container my-10 flex flex-col items-center justify-center gap-8">
       <BackButton />
       <div className="container flex w-full flex-row justify-between">
-        <Suspense>
-          <EditForm product={product} categories={categories.data} />
-        </Suspense>
+        <EditForm product={product} categories={categories.data} />
       </div>
     </div>
   )

@@ -1,10 +1,18 @@
 'use client'
 
-import { useRouter } from "next/navigation";
-import { Button } from "../../ui/button";
+import { useRouter } from 'next/navigation'
+import { Button } from '../../ui/button'
 
 export function BackButton() {
-  const { back } = useRouter();
+  const { push } = useRouter()
 
-  return <Button className="self-start" variant='outline' onClick={back}>Voltar</Button>
+  return (
+    <Button
+      className="self-start"
+      variant="outline"
+      onClick={() => push('/products')}
+    >
+      Voltar
+    </Button>
+  )
 }
