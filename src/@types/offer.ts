@@ -7,4 +7,5 @@ export interface Offer {
   sender: User
   recipient: User
   chat: Chat
+  createdAt: Date
 }

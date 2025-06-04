@@ -1,6 +1,6 @@
+import axios from 'axios'
 import { jwtDecode } from 'jwt-decode'
 import { NextAuthOptions } from 'next-auth'
-import axios from 'axios'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
@@ -57,7 +57,7 @@ export const authOptions: NextAuthOptions = {
     session: async ({ session, token }) => {
       if (token?.user) {
         session.user = token.user
-        session.user.id = String(token.sub)
+        session.user.id = token.user.sub
       }
       return session
     },

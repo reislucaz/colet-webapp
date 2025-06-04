@@ -20,31 +20,48 @@ export function OfferModal(product: Product) {
   const methods = useForm<CreateOfferType>({
     resolver: zodResolver(createOfferSchema)
   })
-  const [chatId, setChatId] = useState<string | null>(null)
 
-  const { mutateAsync: createChat } = useMutation({
+  const { mutateAsync: createChat, isPending: isCreatingChat } = useMutation({
     mutationFn: ChatService.create
   })
 
-  const { mutateAsync: createOffer } = useMutation({
-    mutationFn: async (data: { amount: number }) => {
-      if (chatId) {
-        await OfferService.create(chatId, data)
-      }
-      return null
+  const { mutateAsync: createOffer, isPending: isCreatingOffer } = useMutation({
+    mutationFn: async (data: { amount: number, chatId: string }) => {
+      await OfferService.create(data.chatId, data)
     }
   })
+
+  async function createChatAndOffer(data: { amount: number }) {
+    return await createChat({
+      userId: userId!,
+      productId: product.id,
+      sellerId: product.authorId,
+    }).then(async (chat: any) => {
+      console.log('chat', chat)
+      await createOffer({ ...data, chatId: chat.data.id })
+    })
+  }
+
+  if (isCreatingChat) {
+    return <div className="w-full h-full flex items-center justify-center">
+      <span className="w-full">Criando chat...</span>
+    </div>
+  }
+
+  if (isCreatingOffer) {
+    return <div className="w-full h-full flex items-center justify-center">
+      <span className="w-full">Criando oferta...</span>
+    </div>
+  }
 
   return <Dialog onOpenChange={setIsOpen} open={isOpen} modal>
     <DialogTrigger asChild>
       <Button onClick={async () => {
         setIsOpen(true)
-        userId && setChatId(await createChat({ buyerId: userId, productId: product.id, sellerId: product.authorId }))
-        console.log(userId)
       }} className="w-full">Realizar oferta</Button>
     </DialogTrigger>
     <DialogContent>
-      <FormRender constant={OFFER_CONSTANT} form={methods} onSubmit={createOffer} className="w-full">
+      <FormRender constant={OFFER_CONSTANT} form={methods} onSubmit={createChatAndOffer} className="w-full">
         <div className="flex mt-2 items-center justify-end">
           <Button className="self-end">Confirmar</Button>
         </div>
