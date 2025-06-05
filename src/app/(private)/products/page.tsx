@@ -104,8 +104,8 @@ export default function ProductsPage() {
       ) : products?.total ? (
         <>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {products.data.map((product) => (
-              <ProductItem product={product} key={product.id} />
+            {products.data.map((product, index) => (
+              <ProductItem idx={index} product={product} key={product.id} />
             ))}
           </div>
 

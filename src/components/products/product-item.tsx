@@ -15,7 +15,13 @@ import {
 import { toast } from '../ui/use-toast'
 import * as motion from 'motion/react-client'
 
-export function ProductItem({ product, idx }: { product: Product, idx: number }) {
+export function ProductItem({
+  product,
+  idx,
+}: {
+  product: Product
+  idx: number
+}) {
   const handleDelete = async (id: string) => {
     try {
       await coletApi.delete(`/products/${id}`)
@@ -32,7 +38,13 @@ export function ProductItem({ product, idx }: { product: Product, idx: number })
   }
   const router = useRouter()
   return (
-    <motion.div animate={{opacity:[0,1], transition: {duration: 0.5, ease: 'easeInOut', delay: 0.5 * idx}}} className="group">
+    <motion.div
+      animate={{
+        opacity: [0, 1],
+        transition: { duration: 0.5, ease: 'easeInOut', delay: 0.5 * idx },
+      }}
+      className="group"
+    >
       <Card
         key={product.id}
         onClick={() => router.push(`/products/${product.id}/details`)}
