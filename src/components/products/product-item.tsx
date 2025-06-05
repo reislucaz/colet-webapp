@@ -41,7 +41,7 @@ export function ProductItem({
     <motion.div
       animate={{
         opacity: [0, 1],
-        transition: { duration: 0.5, ease: 'easeInOut', delay: 0.5 * idx },
+        transition: { duration: 0.5, ease: 'easeInOut', delay: 0.1 * idx },
       }}
       className="group"
     >
