@@ -38,7 +38,7 @@ export default function ProductsPage() {
   const { data: products, isLoading } = useQuery<PaginatedResponse<Product>>({
     queryKey: ['products', search, status, page],
     queryFn: async () => {
-      const response = await coletApi.get('/products/my-products', {
+      const response = await coletApi.get('/products', {
         params: {
           search,
           status: status !== 'ALL' ? status : undefined,
