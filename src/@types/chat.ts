@@ -4,8 +4,9 @@ import { Product } from './product'
 import { User } from './users'
 
 export interface Chat {
+  id?: string
   product: Product
   participants: User[]
   offers: Offer[]
-  messages: Message
+  messages: Message[]
 }
