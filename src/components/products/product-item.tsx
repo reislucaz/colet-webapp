@@ -46,20 +46,17 @@ export function ProductItem({
     <div className="group">
       <Card
         key={product.id}
-        onClick={() => navigate.push(`/product/${product.id}`)}
+        onClick={() => navigate.push(`/products/${product.id}/details`)}
         className="relative cursor-pointer overflow-hidden border-0 bg-gradient-to-br from-white to-gray-50/50 shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/10 dark:from-gray-900 dark:to-gray-800/50"
       >
-        {/* Gradient overlay on hover */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
-        {/* Category badge */}
         <div className="absolute left-4 top-4 z-10">
           <span className="inline-flex items-center rounded-full bg-gradient-to-r from-green-500 to-primary px-3 py-1 text-xs font-semibold text-white shadow-lg">
             {product.category.name}
           </span>
         </div>
 
-        {/* Action buttons */}
         <div className="absolute right-4 top-4 z-10 flex gap-2 opacity-0 transition-all duration-300 group-hover:opacity-100">
           <Button
             variant="secondary"
@@ -78,7 +75,7 @@ export function ProductItem({
             className="size-8 bg-white/90 shadow-lg backdrop-blur-sm hover:bg-white"
             onClick={(e) => {
               e.stopPropagation()
-              navigate.push(`/edit-product/${product.id}`)
+              navigate.push(`/products/${product.id}/edit`)
             }}
           >
             <Edit className="size-4" />
@@ -108,7 +105,6 @@ export function ProductItem({
         </CardHeader>
 
         <CardContent className="space-y-4">
-          {/* Price section */}
           <div className="flex items-center justify-between">
             <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
               Preço:
@@ -120,7 +116,6 @@ export function ProductItem({
             </span>
           </div>
 
-          {/* Location and time info */}
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
               <MapPin className="size-4" />
@@ -134,7 +129,6 @@ export function ProductItem({
             </div>
           </div>
 
-          {/* Bottom gradient line */}
           <div className="h-1 w-full rounded-full bg-gradient-to-r from-green-500 to-primary opacity-20 transition-opacity duration-300 group-hover:opacity-100" />
         </CardContent>
       </Card>
