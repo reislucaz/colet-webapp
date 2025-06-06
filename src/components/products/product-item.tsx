@@ -1,10 +1,9 @@
 'use client'
 import { Product } from '@/@types/product'
 import { coletApi } from '@/services/axios'
-import { Edit, Eye, Trash2 } from 'lucide-react'
+import { Edit, Eye, Trash2, MapPin, Clock } from 'lucide-react'
+import { toast } from '../ui/use-toast'
 import { useRouter } from 'next/navigation'
-import { timeAgo } from '../../utils/time-ago'
-import { Button } from '../ui/button'
 import {
   Card,
   CardContent,
@@ -12,8 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card'
-import { toast } from '../ui/use-toast'
-import * as motion from 'motion/react-client'
+import { Button } from '../ui/button'
+import { timeAgo } from '@/utils/time-ago'
 
 export function ProductItem({
   product,
@@ -27,7 +26,6 @@ export function ProductItem({
       await coletApi.delete(`/products/${id}`)
       toast({
         title: 'Produto excluído com sucesso',
-        variant: 'success',
       })
     } catch (error) {
       toast({
@@ -36,57 +34,110 @@ export function ProductItem({
       })
     }
   }
-  const router = useRouter()
+
+  const navigate = useRouter()
+
+  const currencyFormatter = new Intl.NumberFormat('pt-BR', {
+    currency: 'BRL',
+    style: 'currency',
+  })
+
   return (
-    <motion.div
-      animate={{
-        opacity: [0, 1],
-        transition: { duration: 0.5, ease: 'easeInOut', delay: 0.1 * idx },
-      }}
-      className="group"
-    >
+    <div className="group">
       <Card
         key={product.id}
-        onClick={() => router.push(`/products/${product.id}/details`)}
-        className="relative cursor-pointer transition-all duration-300 group-hover:scale-105 group-hover:bg-gradient-to-br group-hover:from-accent group-hover:to-background"
+        onClick={() => navigate.push(`/product/${product.id}`)}
+        className="relative cursor-pointer overflow-hidden border-0 bg-gradient-to-br from-white to-gray-50/50 shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/10 dark:from-gray-900 dark:to-gray-800/50"
       >
-        <CardHeader>
-          <CardTitle className="line-clamp-1">{product.name}</CardTitle>
-          <CardDescription>{product.category.name}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col gap-2">
-            <div className="flex justify-between text-sm">
-              <span className="text-muted-foreground">Preço:</span>
-              <span className="font-medium">
-                {product.price ? `R$ ${product.price.toFixed(2)}` : 'Grátis'}
-              </span>
-            </div>
-            <div className="flex justify-between text-sm">
-              <span className="font-light text-muted-foreground">Criado:</span>
-              <span className="font-light">
-                {timeAgo(new Date(product.createdAt))}
-              </span>
-            </div>
-          </div>
-        </CardContent>
-        <div className="absolute right-2 top-2 hidden gap-2 group-hover:flex">
+        {/* Gradient overlay on hover */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+
+        {/* Category badge */}
+        <div className="absolute left-4 top-4 z-10">
+          <span className="inline-flex items-center rounded-full bg-gradient-to-r from-green-500 to-green-800 px-3 py-1 text-xs font-semibold text-white shadow-lg">
+            {product.category.name}
+          </span>
+        </div>
+
+        {/* Action buttons */}
+        <div className="absolute right-4 top-4 z-10 flex gap-2 opacity-0 transition-all duration-300 group-hover:opacity-100">
           <Button
-            variant="ghost"
+            variant="secondary"
             size="icon"
-            onClick={() => router.push(`/products/${product.id}/edit`)}
+            className="size-8 bg-white/90 shadow-lg backdrop-blur-sm hover:bg-white"
+            onClick={(e) => {
+              e.stopPropagation()
+              navigate.push(`/product/${product.id}`)
+            }}
+          >
+            <Eye className="size-4" />
+          </Button>
+          <Button
+            variant="secondary"
+            size="icon"
+            className="size-8 bg-white/90 shadow-lg backdrop-blur-sm hover:bg-white"
+            onClick={(e) => {
+              e.stopPropagation()
+              navigate.push(`/edit-product/${product.id}`)
+            }}
           >
             <Edit className="size-4" />
           </Button>
           <Button
-            variant="ghost"
+            variant="destructive"
             size="icon"
-            onClick={() => handleDelete(product.id)}
+            className="size-8 shadow-lg"
+            onClick={(e) => {
+              e.stopPropagation()
+              handleDelete(product.id)
+            }}
           >
             <Trash2 className="size-4" />
           </Button>
         </div>
+
+        <CardHeader className="pb-3 pt-12">
+          <CardTitle className="line-clamp-2 text-xl font-bold text-gray-800 transition-colors group-hover:text-green-600 dark:text-white dark:group-hover:text-green-400">
+            {product.name}
+          </CardTitle>
+          <CardDescription className="text-sm text-gray-600 dark:text-gray-400">
+            {product.description && product.description.length > 100
+              ? `${product.description.substring(0, 100)}...`
+              : product.description || 'Sem descrição'}
+          </CardDescription>
+        </CardHeader>
+
+        <CardContent className="space-y-4">
+          {/* Price section */}
+          <div className="flex items-center justify-between">
+            <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+              Preço:
+            </span>
+            <span className="text-2xl font-bold text-green-600 dark:text-green-400">
+              {product.price
+                ? currencyFormatter.format(product.price)
+                : 'Grátis'}
+            </span>
+          </div>
+
+          {/* Location and time info */}
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+              <MapPin className="size-4" />
+              <span>
+                {product.city}, {product.state}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+              <Clock className="size-4" />
+              <span>Publicado {timeAgo(product.createdAt)}</span>
+            </div>
+          </div>
+
+          {/* Bottom gradient line */}
+          <div className="h-1 w-full rounded-full bg-gradient-to-r from-green-500 to-green-800 opacity-20 transition-opacity duration-300 group-hover:opacity-100" />
+        </CardContent>
       </Card>
-    </motion.div>
+    </div>
   )
 }
