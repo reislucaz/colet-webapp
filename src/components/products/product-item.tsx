@@ -54,7 +54,7 @@ export function ProductItem({
 
         {/* Category badge */}
         <div className="absolute left-4 top-4 z-10">
-          <span className="inline-flex items-center rounded-full bg-gradient-to-r from-green-500 to-green-800 px-3 py-1 text-xs font-semibold text-white shadow-lg">
+          <span className="inline-flex items-center rounded-full bg-gradient-to-r from-green-500 to-primary px-3 py-1 text-xs font-semibold text-white shadow-lg">
             {product.category.name}
           </span>
         </div>
@@ -135,7 +135,7 @@ export function ProductItem({
           </div>
 
           {/* Bottom gradient line */}
-          <div className="h-1 w-full rounded-full bg-gradient-to-r from-green-500 to-green-800 opacity-20 transition-opacity duration-300 group-hover:opacity-100" />
+          <div className="h-1 w-full rounded-full bg-gradient-to-r from-green-500 to-primary opacity-20 transition-opacity duration-300 group-hover:opacity-100" />
         </CardContent>
       </Card>
     </div>

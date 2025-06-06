@@ -59,7 +59,10 @@ export default function ProductsPage() {
             Gerencie seus produtos e resíduos
           </p>
         </div>
-        <Button asChild>
+        <Button
+          asChild
+          className="mt-4 rounded-full bg-gradient-to-r from-green-500 to-primary"
+        >
           <a href="/create-product">
             <Plus className="mr-2 size-4" />
             Novo Produto
@@ -133,7 +136,10 @@ export default function ProductsPage() {
           <p className="text-muted-foreground">
             Você ainda não tem produtos cadastrados
           </p>
-          <Button asChild className="mt-4">
+          <Button
+            asChild
+            className="mt-4 rounded-full bg-gradient-to-r from-green-500 to-primary"
+          >
             <a href="/create-product">
               <Plus className="mr-2 size-4" />
               Novo Produto
