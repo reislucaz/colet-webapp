@@ -1,5 +1,6 @@
 'use client'
 
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -8,15 +9,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { ChatSkeleton } from '@/components/ui/chat-skeleton'
 import { Input } from '@/components/ui/input'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Search, Send } from 'lucide-react'
-import { useCallback, useEffect, useState } from 'react'
-import { useSession } from 'next-auth/react'
 import { useToast } from '@/components/ui/use-toast'
 import { coletApi } from '@/services/axios'
-import { ChatSkeleton } from '@/components/ui/chat-skeleton'
 import { timeAgo } from '@/utils/time-ago'
+import { Search, Send } from 'lucide-react'
+import { useSession } from 'next-auth/react'
+import { useCallback, useEffect, useState } from 'react'
 
 interface Message {
   id: string
@@ -158,9 +158,8 @@ export default function MessagesPage() {
               filteredChats.map((chat) => (
                 <div
                   key={chat.id}
-                  className={`flex cursor-pointer items-center gap-4 rounded-lg p-2 transition-colors hover:bg-muted ${
-                    selectedChat === chat.id ? 'bg-muted' : ''
-                  }`}
+                  className={`flex cursor-pointer items-center gap-4 rounded-lg p-2 transition-colors hover:bg-muted ${selectedChat === chat.id ? 'bg-muted' : ''
+                    }`}
                   onClick={() => setSelectedChat(chat.id)}
                 >
                   <Avatar>
@@ -218,11 +217,10 @@ export default function MessagesPage() {
                 {messages.map((message) => (
                   <div
                     key={message.id}
-                    className={`flex gap-4 ${
-                      message.sender.id === session?.user?.id
+                    className={`flex gap-4 ${message.sender.id === session?.user?.id
                         ? 'justify-end'
                         : 'justify-start'
-                    }`}
+                      }`}
                   >
                     {message.sender.id !== session?.user?.id && (
                       <Avatar>
@@ -232,19 +230,17 @@ export default function MessagesPage() {
                       </Avatar>
                     )}
                     <div
-                      className={`max-w-[70%] rounded-lg p-4 ${
-                        message.sender.id === session?.user?.id
+                      className={`max-w-[70%] rounded-lg p-4 ${message.sender.id === session?.user?.id
                           ? 'bg-primary text-primary-foreground'
                           : 'bg-muted'
-                      }`}
+                        }`}
                     >
                       <p className="text-sm">{message.content}</p>
                       <p
-                        className={`mt-1 text-xs ${
-                          message.sender.id === session?.user?.id
+                        className={`mt-1 text-xs ${message.sender.id === session?.user?.id
                             ? 'text-primary-foreground/70'
                             : 'text-muted-foreground'
-                        }`}
+                          }`}
                       >
                         {timeAgo(new Date(message.createdAt))}
                       </p>

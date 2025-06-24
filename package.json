@@ -58,6 +58,7 @@
     "react-dom": "^18",
     "react-hook-form": "^7.51.0",
     "react-use-draggable-scroll": "^0.4.7",
+    "socket.io-client": "^4.8.1",
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",

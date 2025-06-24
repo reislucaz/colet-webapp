@@ -7,12 +7,12 @@ import { Card, CardContent } from '@/components/ui/card'
 import { ChatSkeleton } from '@/components/ui/chat-skeleton'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
-import { coletApi } from '@/services/axios'
 import { ChatService } from '@/services/chat-service'
 import { timeAgo } from '@/utils/time-ago'
 import { useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
-import { useCallback, useEffect, useState } from 'react'
+import { useState } from 'react'
+import { useChatContext } from '../../../hooks/use-chat-context'
 
 interface Message {
   id: string
@@ -27,8 +27,8 @@ interface Message {
 export function ChatInterface() {
   const { data: session } = useSession()
   const { toast } = useToast()
+  const { chatId, setChatId, socketRef } = useChatContext()
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null)
-  const [messages, setMessages] = useState<Message[]>([])
   const [newMessage, setNewMessage] = useState('')
   const { data: chats, isLoading } = useQuery({
     queryKey: ['chat-list'],
@@ -38,25 +38,25 @@ export function ChatInterface() {
     (participant) => participant.id !== session?.user.id,
   )
 
+  function handleSendMessage() {
+    if (!newMessage.trim() || !selectedChat) return
+
+    console.log(newMessage)
+  }
+
   // Send a new message
   const sendMessage = async () => {
     if (!newMessage.trim() || !selectedChat) return
-
-    try {
-      const response = await coletApi.post('/messages', {
-        chatId: selectedChat,
-        content: newMessage,
-      })
-
-      setMessages((prev) => [...prev, response.data])
-      setNewMessage('')
-    } catch (error) {
-      toast({
-        variant: 'destructive',
-        title: 'Erro',
-        description: 'Não foi possível enviar a mensagem.',
-      })
-    }
+    console.log('Sending message:', newMessage)
+    console.log('Socket:', socketRef?.current?.active)
+    socketRef?.current?.emit('message', {
+      chatId: selectedChat.id,
+      text: newMessage,
+      fromUser: {
+        id: session?.user.id,
+        name: session?.user.name || 'Usuário',
+      },
+    })
   }
 
   if (isLoading) {
@@ -78,10 +78,12 @@ export function ChatInterface() {
             return (
               <div
                 key={chat.id}
-                className={`cursor-pointer border-b p-4 transition-colors hover:bg-muted ${
-                  selectedChat?.id === chat.id ? 'bg-muted' : ''
-                }`}
-                onClick={() => setSelectedChat(chat)}
+                className={`cursor-pointer border-b p-4 transition-colors hover:bg-muted ${selectedChat?.id === chat.id ? 'bg-muted' : ''
+                  }`}
+                onClick={() => {
+                  setSelectedChat(chat)
+                  setChatId(chat.id)
+                }}
               >
                 <div className="flex items-center gap-3">
                   <Avatar>
@@ -124,11 +126,10 @@ export function ChatInterface() {
               {selectedChat?.messages.map((message) => (
                 <div
                   key={message?.id}
-                  className={`flex ${
-                    message.fromUser?.id === session?.user?.id
-                      ? 'justify-end'
-                      : 'justify-start'
-                  }`}
+                  className={`flex ${message.fromUser?.id === session?.user?.id
+                    ? 'justify-end'
+                    : 'justify-start'
+                    }`}
                 >
                   {message.fromUser?.id !== session?.user?.id && (
                     <Avatar>
@@ -138,19 +139,17 @@ export function ChatInterface() {
                     </Avatar>
                   )}
                   <div
-                    className={`max-w-[70%] rounded-lg p-4 ${
-                      message.fromUser?.id === session?.user?.id
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted'
-                    }`}
+                    className={`max-w-[70%] rounded-lg p-4 ${message.fromUser?.id === session?.user?.id
+                      ? 'bg-primary text-primary-foreground'
+                      : 'bg-muted'
+                      }`}
                   >
                     <p className="text-sm">{message.text}</p>
                     <p
-                      className={`mt-1 text-xs ${
-                        message.fromUser?.id === session?.user?.id
-                          ? 'text-primary-foreground/70'
-                          : 'text-muted-foreground'
-                      }`}
+                      className={`mt-1 text-xs ${message.fromUser?.id === session?.user?.id
+                        ? 'text-primary-foreground/70'
+                        : 'text-muted-foreground'
+                        }`}
                     >
                       {timeAgo(new Date(message.createdAt))}
                     </p>
