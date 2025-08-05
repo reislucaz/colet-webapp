@@ -1,6 +1,7 @@
 import { authOptions } from '@/lib/auth/auth-options'
 import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
+import { Toaster } from 'sonner'
 
 export default async function PrivateLayout({
   children,
@@ -23,6 +24,7 @@ export default async function PrivateLayout({
             reservados.
           </p>
         </div>
+        <Toaster />
       </div>
     </footer>
   </div>

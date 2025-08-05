@@ -3,14 +3,17 @@ import { useMutation } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { Product } from '../../../@types/product'
 import { useOfferConstant } from '../../../hooks/use-offer-constant'
 import { ChatService } from '../../../services/chat-service'
 import { OfferService } from '../../../services/offer-service'
+import { queryClient } from '../../../utils/query-client'
 import {
   createOfferSchema,
   CreateOfferType,
 } from '../../../validations/create-offer-schema'
+import Loading from '../../loading'
 import { FormRender } from '../../shared/form/form-field-dynamic/FormRender'
 import { Button } from '../../ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '../../ui/dialog'
@@ -32,6 +35,11 @@ export function OfferModal(product: Product) {
     mutationFn: async (data: { amount: number; chatId: string }) => {
       await OfferService.create(data.chatId, data)
     },
+    onSuccess: async () => {
+      toast.success('Oferta criada com sucesso')
+      setIsOpen(false)
+      await queryClient.invalidateQueries({ queryKey: ['offers', product.id] })
+    },
   })
 
   async function createChatAndOffer(data: { amount: number }) {
@@ -40,24 +48,13 @@ export function OfferModal(product: Product) {
       productId: product.id,
       sellerId: product.authorId,
     }).then(async (chat: any) => {
-      console.log('chat', chat)
       await createOffer({ ...data, chatId: chat.data.id })
     })
   }
 
-  if (isCreatingChat) {
+  if (isCreatingOffer || isCreatingChat) {
     return (
-      <div className="flex size-full items-center justify-center">
-        <span className="w-full">Criando chat...</span>
-      </div>
-    )
-  }
-
-  if (isCreatingOffer) {
-    return (
-      <div className="flex size-full items-center justify-center">
-        <span className="w-full">Criando oferta...</span>
-      </div>
+      <Loading />
     )
   }
 

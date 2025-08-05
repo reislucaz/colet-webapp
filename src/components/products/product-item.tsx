@@ -1,9 +1,10 @@
 'use client'
 import { Product } from '@/@types/product'
 import { coletApi } from '@/services/axios'
-import { Edit, Eye, Trash2, MapPin, Clock } from 'lucide-react'
-import { toast } from '../ui/use-toast'
+import { timeAgo } from '@/utils/time-ago'
+import { Clock, Edit, Eye, MapPin, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { Button } from '../ui/button'
 import {
   Card,
   CardContent,
@@ -11,8 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from '../ui/card'
-import { Button } from '../ui/button'
-import { timeAgo } from '@/utils/time-ago'
+import { toast } from '../ui/use-toast'
 
 export function ProductItem({
   product,
@@ -64,7 +64,7 @@ export function ProductItem({
             className="size-8 bg-white/90 shadow-lg backdrop-blur-sm hover:bg-white"
             onClick={(e) => {
               e.stopPropagation()
-              navigate.push(`/product/${product.id}`)
+              navigate.push(`/products/${product.id}/details`)
             }}
           >
             <Eye className="size-4" />
