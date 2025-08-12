@@ -218,8 +218,8 @@ export default function MessagesPage() {
                   <div
                     key={message.id}
                     className={`flex gap-4 ${message.sender.id === session?.user?.id
-                        ? 'justify-end'
-                        : 'justify-start'
+                      ? 'justify-end'
+                      : 'justify-start'
                       }`}
                   >
                     {message.sender.id !== session?.user?.id && (
@@ -231,15 +231,15 @@ export default function MessagesPage() {
                     )}
                     <div
                       className={`max-w-[70%] rounded-lg p-4 ${message.sender.id === session?.user?.id
-                          ? 'bg-primary text-primary-foreground'
-                          : 'bg-muted'
+                        ? 'bg-primary text-primary-foreground'
+                        : 'bg-muted'
                         }`}
                     >
                       <p className="text-sm">{message.content}</p>
                       <p
                         className={`mt-1 text-xs ${message.sender.id === session?.user?.id
-                            ? 'text-primary-foreground/70'
-                            : 'text-muted-foreground'
+                          ? 'text-primary-foreground/70'
+                          : 'text-muted-foreground'
                           }`}
                       >
                         {timeAgo(new Date(message.createdAt))}

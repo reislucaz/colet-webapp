@@ -34,9 +34,7 @@ export function ChatInterface() {
     queryKey: ['chat-list'],
     queryFn: ChatService.findMany,
   })
-  const chatFromUser = selectedChat?.participants.find(
-    (participant) => participant.id !== session?.user.id,
-  )
+
 
   function handleSendMessage() {
     if (!newMessage.trim() || !selectedChat) return
@@ -75,6 +73,9 @@ export function ChatInterface() {
         ) : (
           chats?.map((chat) => {
             const lastMessage = chat.messages?.[chat.messages.length - 1]
+            const chatFromUser = chat.participants.find(
+              (participant) => participant.id !== session?.user.id,
+            )
             return (
               <div
                 key={chat.id}
@@ -93,7 +94,7 @@ export function ChatInterface() {
                   </Avatar>
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-medium">{chatFromUser?.name}</p>
-                    {chat.messages && (
+                    {lastMessage && (
                       <div className="flex flex-col">
                         <p className="truncate text-sm text-muted-foreground">
                           {lastMessage.text}
@@ -120,7 +121,8 @@ export function ChatInterface() {
         ) : (
           <>
             <div className="border-b p-4 font-medium">
-              {chatFromUser?.name || 'Conversa'}
+              {selectedChat?.participants.find(
+                (participant) => participant.id !== session?.user.id)?.name || 'Conversa'}
             </div>
             <CardContent className="flex-1 space-y-4 overflow-y-auto p-4">
               {selectedChat?.messages.map((message) => (
@@ -134,7 +136,8 @@ export function ChatInterface() {
                   {message.fromUser?.id !== session?.user?.id && (
                     <Avatar>
                       <AvatarFallback>
-                        {chatFromUser?.name.charAt(0) || 'U'}
+                        {selectedChat?.participants.find(
+                          (participant) => participant.id !== session?.user.id)?.name.charAt(0) || 'U'}
                       </AvatarFallback>
                     </Avatar>
                   )}
