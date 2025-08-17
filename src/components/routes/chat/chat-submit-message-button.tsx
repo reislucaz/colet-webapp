@@ -4,6 +4,7 @@ import { Chat } from "../../../@types/chat"
 import { useChatContext } from "../../../hooks/use-chat-context"
 import { Button } from "../../ui/button"
 import { Input } from "../../ui/input"
+import { queryClient } from "@/utils/query-client"
 
 export function ChatSubmitMessageButton({ selectedChat }: { selectedChat: Chat }) {
   const { data: session } = useSession()
@@ -14,11 +15,11 @@ export function ChatSubmitMessageButton({ selectedChat }: { selectedChat: Chat }
     console.log('Socket:', socketRef?.current?.active)
     socketRef?.current?.emit('message', {
       chatId: selectedChat.id,
+      user: session?.user.id,
       text: newMessage,
-      fromUser: {
-        id: session?.user.id,
-        name: session?.user.name || 'Usuário',
-      },
+    })
+    queryClient.invalidateQueries({
+      queryKey: ['chat-list']
     })
   }
 

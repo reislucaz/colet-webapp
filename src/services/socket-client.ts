@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client'
 
 export function getSocketClient(userId: string, chatId: string) {
-  const socket = io(process.env.NEXT_PUBLIC_API_URL + '/socket', {
+  const socket = io(process.env.NEXT_PUBLIC_SOCKET_API_URL, {
     query: {
       chatId: chatId,
       from: userId,

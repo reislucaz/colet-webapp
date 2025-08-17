@@ -27,7 +27,6 @@ export function ChatContextProvider({ children }: { children: ReactNode }) {
     const socket = getSocketClient(user.id, chatId)
     socketRef.current = socket
     socket.on('message', handleMessage)
-    console.log('Socket connected:', socket.connected)
     return () => {
       socket?.disconnect()
     }
