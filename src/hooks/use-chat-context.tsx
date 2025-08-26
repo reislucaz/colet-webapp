@@ -2,6 +2,7 @@
 import { useSession } from "next-auth/react";
 import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useRef, useState } from "react";
 import { Socket } from "socket.io-client";
+import { Chat } from "../@types/chat";
 import { Message } from "../@types/message";
 import { getSocketClient } from "../services/socket-client";
 
@@ -11,12 +12,15 @@ interface ChatContextProps {
   chatId: string | undefined
   setChatId: Dispatch<SetStateAction<string | undefined>>
   socketRef: React.MutableRefObject<Socket | null>
+  selectedChat: Chat | null
+  setSelectedChat: Dispatch<SetStateAction<Chat | null>>
 }
 
 export const ChatContext = createContext<ChatContextProps>({} as ChatContextProps)
 
 export function ChatContextProvider({ children }: { children: ReactNode }) {
-  const [messages, setMessages] = useState<Message[]>([])
+  const [selectedChat, setSelectedChat] = useState<Chat | null>(null)
+  const [messages, setMessages] = useState<Message[]>(selectedChat?.messages || [])
   const socketRef = useRef<Socket | null>(null)
   const [chatId, setChatId] = useState<string | undefined>()
   const { data: session } = useSession()
@@ -32,6 +36,12 @@ export function ChatContextProvider({ children }: { children: ReactNode }) {
     }
   }, [user?.id, chatId])
 
+  useEffect(() => {
+    if (selectedChat) {
+      setMessages(selectedChat.messages)
+    }
+  }, [selectedChat])
+
   function handleMessage(message: Message) {
     setMessages((prev) => {
       return [...prev, message]
@@ -43,7 +53,9 @@ export function ChatContextProvider({ children }: { children: ReactNode }) {
     chatId,
     messages,
     setMessages,
-    socketRef
+    socketRef,
+    selectedChat,
+    setSelectedChat
   }}>{children}</ChatContext.Provider>
 }
 

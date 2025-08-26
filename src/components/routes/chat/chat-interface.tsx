@@ -1,11 +1,9 @@
 'use client'
 
-import { Chat } from '@/@types/chat'
 import { ChatSkeleton } from '@/components/ui/chat-skeleton'
 import { ChatService } from '@/services/chat-service'
 import { useQuery } from '@tanstack/react-query'
 import { useSession } from 'next-auth/react'
-import { useState } from 'react'
 import { useChatContext } from '../../../hooks/use-chat-context'
 import { Card, CardContent } from '../../ui/card'
 import { ChatMessages } from './chat-messages'
@@ -24,8 +22,7 @@ interface Message {
 
 export function ChatInterface() {
   const { data: session } = useSession()
-  const { setChatId } = useChatContext()
-  const [selectedChat, setSelectedChat] = useState<Chat | null>(null)
+  const { setChatId, messages, selectedChat, setSelectedChat } = useChatContext()
   const { data: chats, isLoading } = useQuery({
     queryKey: ['chat-list'],
     queryFn: ChatService.findMany,
@@ -67,7 +64,7 @@ export function ChatInterface() {
                 (participant) => participant.id !== session?.user.id)?.name || 'Conversa'}
             </div>
             <CardContent className="flex-1 space-y-4 overflow-y-auto p-4">
-              {selectedChat?.messages.map((message) => (
+              {messages.map((message) => (
                 <ChatMessages key={message.id} message={message} selectedChat={selectedChat} />
               ))}
             </CardContent>
