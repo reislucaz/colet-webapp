@@ -8,7 +8,6 @@ export function ChatMessages({ message, selectedChat }: { message: Message, sele
   const { data: session } = useSession()
   const fromUser = message.fromUserId || message.user
   const isActiveUser = fromUser === session?.user?.id
-  console.log(message)
   return <div
     key={message?.id}
     className={`flex items-start ${isActiveUser
