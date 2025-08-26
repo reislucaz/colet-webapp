@@ -1,11 +1,11 @@
 import { Chat } from './chat'
-import { User } from './users'
 
 export interface Message {
   id?: string
   text: string
-  fromUser: User
-  toUser: User
+  fromUserId?: string
+  toUserId?: string
+  user?: string
   chat: Chat
   createdAt: Date
 }
