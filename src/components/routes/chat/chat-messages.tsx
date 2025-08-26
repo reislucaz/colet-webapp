@@ -6,43 +6,39 @@ import { Avatar, AvatarFallback } from "../../ui/avatar"
 
 export function ChatMessages({ message, selectedChat }: { message: Message, selectedChat: Chat }) {
   const { data: session } = useSession()
+  const fromUser = message.fromUserId || message.user
+  const isActiveUser = fromUser === session?.user?.id
+  console.log(message)
   return <div
     key={message?.id}
-    className={`flex ${message.fromUser?.id === session?.user?.id
+    className={`flex items-start ${isActiveUser
       ? 'justify-end'
       : 'justify-start'
       }`}
   >
-    {message.fromUser?.id !== session?.user?.id && (
-      <Avatar>
-        <AvatarFallback>
-          {selectedChat?.participants.find(
-            (participant) => participant.id !== session?.user.id)?.name.charAt(0) || 'U'}
-        </AvatarFallback>
-      </Avatar>
-    )}
     <div
-      className={`max-w-[70%] rounded-lg p-4 ${message.fromUser?.id === session?.user?.id
+      className={`max-w-[70%] rounded-b-xl flex items-center gap-2 rounded-tl-xl rounded-tr-xl p-4 ${isActiveUser
         ? 'bg-primary text-primary-foreground'
-        : 'bg-muted'
+        : 'bg-gray-300'
         }`}
     >
-      <p className="text-sm">{message.text}</p>
-      <p
-        className={`mt-1 text-xs ${message.fromUser?.id === session?.user?.id
-          ? 'text-primary-foreground/70'
-          : 'text-muted-foreground'
-          }`}
-      >
-        {timeAgo(new Date(message.createdAt))}
-      </p>
-    </div>
-    {message.fromUser?.id === session?.user?.id && (
       <Avatar>
-        <AvatarFallback>
-          {message.fromUser?.name.charAt(0)}
+        <AvatarFallback className="border-primary text-primary border">
+          {selectedChat?.participants.find(
+            (participant) => participant.id)?.name.charAt(0)}
         </AvatarFallback>
       </Avatar>
-    )}
+      <div className="flex flex-col">
+        <p className="text-sm">{message.text}</p>
+        <p
+          className={`mt-1 text-xs ${isActiveUser
+            ? 'text-primary-foreground/70'
+            : 'text-muted-foreground'
+            }`}
+        >
+          {timeAgo(new Date(message?.createdAt || new Date()))}
+        </p>
+      </div>
+    </div>
   </div>
 }
