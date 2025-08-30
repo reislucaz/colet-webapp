@@ -2,6 +2,7 @@ import { Offer } from "../../../@types/offer";
 import { Card, CardContent } from "../../ui/card";
 
 export function OfferCard({ offer }: { offer: Offer }) {
+  console.log(offer)
   return (
     <Card className="shadow-lg">
       <CardContent className="p-2">

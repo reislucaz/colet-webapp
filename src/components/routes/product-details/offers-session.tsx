@@ -1,19 +1,14 @@
 'use client'
 import { Card, CardContent } from '@/components/ui/card'
-import { useQuery } from '@tanstack/react-query'
-import { Product } from '../../../@types/product'
-import { OfferService } from '../../../services/offer-service'
-import { OfferModal } from './offer-modal'
-import { OfferCard } from './offer-sender-session'
 import { motion } from 'framer-motion'
 import { useSession } from 'next-auth/react'
+import { Product } from '../../../@types/product'
+import { OfferModal } from './offer-modal'
+import { OfferCard } from './offer-sender-session'
 
 export function OffersSession({ product }: { product: Product }) {
-  const { data: offers } = useQuery({
-    queryKey: ['offers', product.id],
-    queryFn: OfferService.getManyByUserId,
-  })
   const { data } = useSession()
+  const offers = product.offers
   const isProductAuthor = product.authorId === data?.user.id
   return (
     <motion.div

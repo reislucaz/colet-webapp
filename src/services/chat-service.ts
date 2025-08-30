@@ -1,6 +1,5 @@
 import { Chat } from '@/@types/chat'
 import { coletApi } from './axios'
-import { Pagination } from '@/@types/pagination'
 
 export class ChatService {
   public static baseUrl = '/chats'

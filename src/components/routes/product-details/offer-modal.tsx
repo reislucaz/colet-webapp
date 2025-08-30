@@ -32,8 +32,8 @@ export function OfferModal(product: Product) {
   })
 
   const { mutateAsync: createOffer, isPending: isCreatingOffer } = useMutation({
-    mutationFn: async (data: { amount: number; chatId: string }) => {
-      await OfferService.create(data.chatId, data)
+    mutationFn: async (data: { amount: number; chatId: string; productId: string }) => {
+      await OfferService.create(data.chatId, data, data.productId)
     },
     onSuccess: async () => {
       toast.success('Oferta criada com sucesso')
@@ -48,7 +48,7 @@ export function OfferModal(product: Product) {
       productId: product.id,
       sellerId: product.authorId,
     }).then(async (chat: any) => {
-      await createOffer({ ...data, chatId: chat.data.id })
+      await createOffer({ ...data, chatId: chat.data.id, productId: product.id })
     })
   }
 

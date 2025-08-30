@@ -1,5 +1,6 @@
 import { Category } from './category'
 import { Image } from './image'
+import { Offer } from './offer'
 
 export interface Product {
   id: string
@@ -14,4 +15,5 @@ export interface Product {
   state: string
   images: Image[]
   createdAt: Date
+  offers: Offer[]
 }
