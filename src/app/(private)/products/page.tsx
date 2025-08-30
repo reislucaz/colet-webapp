@@ -20,7 +20,7 @@ import { coletApi } from '@/services/axios'
 import { useQuery } from '@tanstack/react-query'
 import { Plus, Search } from 'lucide-react'
 import { useState } from 'react'
-import { motion } from 'framer-motion'
+import { useDebounce } from 'use-debounce'
 
 interface PaginatedResponse<T> {
   data: T[]
@@ -31,12 +31,13 @@ interface PaginatedResponse<T> {
 
 export default function ProductsPage() {
   const [search, setSearch] = useState('')
+  const [debouncedSearch] = useDebounce(search, 500)
   const [status, setStatus] = useState<StatusProduct | 'ALL'>('ALL')
   const [page, setPage] = useState(1)
-  const limit = 9
 
+  const limit = 9
   const { data: products, isLoading } = useQuery<PaginatedResponse<Product>>({
-    queryKey: ['products', search, status, page],
+    queryKey: ['products', debouncedSearch, status, page],
     queryFn: async () => {
       const response = await coletApi.get('/products', {
         params: {
@@ -77,6 +78,7 @@ export default function ProductsPage() {
             placeholder="Buscar produtos..."
             className="pl-8"
             value={search}
+            disabled={isLoading}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
