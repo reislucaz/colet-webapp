@@ -1,11 +1,11 @@
 import { AuthorDetailsSession } from '@/components/routes/product-details/author-details-session'
 import { OffersSession } from '@/components/routes/product-details/offers-session'
 import * as motion from 'motion/react-client'
+import { getServerSession } from 'next-auth'
 import { Product } from '../../../../../@types/product'
 import { BackButton } from '../../../../../components/routes/edit/back-button'
 import { ProductDetailsSession } from '../../../../../components/routes/product-details/product-details-session'
 import { coletApi } from '../../../../../services/axios'
-import { getServerSession } from 'next-auth'
 
 export default async function ProductDetails({
   params,
