@@ -2,6 +2,7 @@ import { Clock, MapPin } from 'lucide-react'
 import Image from 'next/image'
 import { Product } from '../../../@types/product'
 import { formattedDateFNS } from '../../../utils/format-date'
+import { StripeProvider } from '../../stripe-provider'
 import { Card, CardContent } from '../../ui/card'
 import { PaymentSession } from './payment-session'
 
@@ -45,8 +46,10 @@ export function ProductDetailsSession({ product }: { product: Product }) {
             <h2 className="text-4xl font-bold text-green-600">
               {currencyFormatter.format(product.price)}
             </h2>
-            <PaymentSession product={product} />
 
+            <StripeProvider productId={product.id}>
+              <PaymentSession product={product} />
+            </StripeProvider>
 
             <span className="mt-4 border border-gray-200"></span>
             <div className="flex flex-col gap-2">
