@@ -22,8 +22,6 @@ export function PaymentSession({ product }: { product: Product }) {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setLoading(true)
-    console.log('stripe', stripe)
-    console.log('elements', elements)
     if (!stripe || !elements) {
       return
     }
@@ -41,7 +39,7 @@ export function PaymentSession({ product }: { product: Product }) {
       clientSecret,
       confirmParams: {
         return_url: `http://localhost:3004/payment-result?amount=${product.price}&product=${product.name}`,
-      }
+      },
     })
 
     if (error) {
@@ -65,7 +63,8 @@ export function PaymentSession({ product }: { product: Product }) {
       <DialogContent>
         <form onSubmit={handleSubmit}>
           {clientSecret && <PaymentElement />}
-          <Button>Pagar</Button>
+          {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+          <Button isLoading={loading}>Pagar</Button>
         </form>
       </DialogContent>
     </Dialog>
