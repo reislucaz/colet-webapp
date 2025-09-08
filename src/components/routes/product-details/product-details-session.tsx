@@ -1,13 +1,12 @@
 'use client'
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 import { Clock, MapPin } from 'lucide-react'
 import Image from 'next/image'
 import { Product } from '../../../@types/product'
 import { formattedDateFNS } from '../../../utils/format-date'
-import { StripeProvider } from '../../stripe-provider'
 import { Card, CardContent } from '../../ui/card'
 import { PaymentSession } from './payment-session'
-import { Elements } from '@stripe/react-stripe-js'
-import { loadStripe } from '@stripe/stripe-js'
 
 export function ProductDetailsSession({ product }: { product: Product }) {
   const stripe = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!)

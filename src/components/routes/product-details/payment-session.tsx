@@ -2,9 +2,7 @@
 import Loading from "@/components/loading"
 import { coletApi } from "@/services/axios"
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js"
-import { useMutation } from "@tanstack/react-query"
 import React, { useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
 import { Product } from "../../../@types/product"
 import { Button } from "../../ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "../../ui/dialog"
@@ -42,7 +40,7 @@ export function PaymentSession({ product }: { product: Product }) {
       elements,
       clientSecret,
       confirmParams: {
-        return_url: `http://www.localhost:3004/payment-success?amount=${product.price}`
+        return_url: `http://localhost:3004/payment-result?amount=${product.price}&product=${product.name}`,
       }
     })
 
