@@ -1,3 +1,4 @@
+'use client'
 import { Clock, MapPin } from 'lucide-react'
 import Image from 'next/image'
 import { Product } from '../../../@types/product'
@@ -5,8 +6,11 @@ import { formattedDateFNS } from '../../../utils/format-date'
 import { StripeProvider } from '../../stripe-provider'
 import { Card, CardContent } from '../../ui/card'
 import { PaymentSession } from './payment-session'
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 
 export function ProductDetailsSession({ product }: { product: Product }) {
+  const stripe = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!)
   const currencyFormatter = Intl.NumberFormat('pt-BR', {
     currency: 'BRL',
     style: 'currency',
@@ -47,9 +51,9 @@ export function ProductDetailsSession({ product }: { product: Product }) {
               {currencyFormatter.format(product.price)}
             </h2>
 
-            <StripeProvider productId={product.id}>
+            <Elements stripe={stripe} options={{ mode: "payment", currency: "brl", amount: (product.price ?? 1) * 100 }}>
               <PaymentSession product={product} />
-            </StripeProvider>
+            </Elements>
 
             <span className="mt-4 border border-gray-200"></span>
             <div className="flex flex-col gap-2">
