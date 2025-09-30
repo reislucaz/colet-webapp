@@ -1,8 +1,7 @@
+import CurrencyInput from 'react-currency-input-field'
 import { type ControllerRenderProps } from 'react-hook-form'
-import CurrencyInput, { formatValue } from 'react-currency-input-field'
 
 import { IFormFieldCurrencySlot, type FormFields } from '@/@types/form-field'
-import { useState } from 'react'
 
 interface FormFieldCurrencyProps {
   field: ControllerRenderProps<any>

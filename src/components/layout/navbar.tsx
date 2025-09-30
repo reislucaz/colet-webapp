@@ -20,6 +20,7 @@ import {
   Menu,
   MessageSquare,
   Package,
+  ShoppingBag,
   User
 } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
@@ -33,6 +34,7 @@ const navigation = [
   { name: 'Início', href: PrivateRoutes.HOME, icon: Home },
   { name: 'Produtos', href: PrivateRoutes.PRODUCTS, icon: Package },
   { name: 'Mensagens', href: PrivateRoutes.CHAT, icon: MessageSquare },
+  { name: 'Pedidos', href: PrivateRoutes.ORDERS, icon: ShoppingBag },
 ]
 
 function Logo() {
