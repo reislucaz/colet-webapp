@@ -98,6 +98,15 @@ export type IFormFieldSwitchSlot = {
   disabled?: boolean
 }
 
+export type IFormFieldCurrencySlot = {
+  label: string
+  currency?: string
+  className?: string
+  type?: 'currency'
+  placeholder?: string
+  disabled?: boolean
+}
+
 export type FormFields<T> = {
   name: keyof T
   disabled?: boolean
@@ -114,6 +123,7 @@ export type FormFields<T> = {
   | IFormFieldDateRangeSlot
   | IFormFieldDateSingleSlot
   | IFormFieldSwitchSlot
+  | IFormFieldCurrencySlot
   | {
       type: 'hidden'
     }

@@ -15,6 +15,7 @@ import { FormFieldPassword } from './components/form-field-password'
 import { FormFieldCombobox } from './components/form-field-combobox'
 import { FormFieldSingleDatePicker } from './components/form-field-single-date-picker'
 import { FormFieldRangeDatePicker } from './components/form-field-range-date-picker'
+import { FormFieldCurrency } from './components/form-field-currency'
 
 interface Props<T> {
   field: ControllerRenderProps<T | any>
@@ -57,7 +58,8 @@ export function FormFieldDynamic<T>({ field, slot }: Props<T>) {
       return <Input {...field} type="hidden" />
     case 'combobox':
       return <FormFieldCombobox field={field} slot={slot} />
-
+    case 'currency':
+      return <FormFieldCurrency field={field} slot={slot} />
     case 'date-range':
       return (
         <FormFieldRangeDatePicker
