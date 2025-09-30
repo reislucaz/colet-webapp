@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react'
 import { useChatContext } from '../../../hooks/use-chat-context'
 import { Card, CardContent } from '../../ui/card'
 import { ChatMessages } from './chat-messages'
+import { ChatOffer } from './chat-offer'
 import { ChatSidebarItem } from './chat-sidebar-item'
 import { ChatSubmitMessageButton } from './chat-submit-message-button'
 
@@ -58,11 +59,12 @@ export function ChatInterface() {
             Selecione uma conversa para começar
           </div>
         ) : (
-          <div className="flex flex-col h-full">
+          <div className="flex flex-col h-full relative">
             <div className="border-b p-4 font-medium">
               {selectedChat?.participants.find(
                 (participant) => participant.id !== session?.user.id)?.name || 'Conversa'}
             </div>
+            {selectedChat && <ChatOffer chatId={selectedChat.id} />}
             <CardContent className="flex-1 space-y-4 overflow-y-auto p-4">
               {messages.map((message) => (
                 <ChatMessages key={message.id} message={message} selectedChat={selectedChat} />
