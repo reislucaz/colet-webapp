@@ -7,7 +7,9 @@ export const createProductSchema = z.object({
   description: z.string({
     required_error: 'Campo obrigatório',
   }),
-  price: z.coerce.number().optional(),
+  price: z.preprocess((val) => {
+    return val ? Number((val as string).replace('.', '').replace(',', '.')) : 0
+  }, z.coerce.number()),
   recurring: z.boolean().default(false),
   neighborhood: z.string({
     required_error: 'Campo obrigatório',

@@ -55,7 +55,7 @@ export function useProductFormField() {
       label: 'Preço',
       className: 'col-span-6',
       placeholder: 'Ex: 29.99',
-      type: 'number',
+      type: 'currency',
     },
     {
       name: 'recurring',
@@ -107,7 +107,7 @@ export function useProductFormField() {
     }
 
     fetchCategories()
-  }, []) // Array vazio significa que só executa uma vez na montagem do componente
+  }, [])
 
   return {
     form,

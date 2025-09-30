@@ -50,7 +50,14 @@ export function ProductDetailsSession({ product }: { product: Product }) {
               {currencyFormatter.format(product.price)}
             </h2>
 
-            <Elements stripe={stripe} options={{ mode: "payment", currency: "brl", amount: (product.price ?? 1) * 100 }}>
+            <Elements
+              stripe={stripe}
+              options={{
+                mode: 'payment',
+                currency: 'brl',
+                amount: (product.price ?? 1) * 100,
+              }}
+            >
               <PaymentSession product={product} />
             </Elements>
 
