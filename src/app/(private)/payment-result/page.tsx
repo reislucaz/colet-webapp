@@ -177,7 +177,7 @@ function PaymentResultContent() {
                 opacity: 0.8
               }}
               animate={{
-                y: window.innerHeight + 10,
+                y: window?.innerHeight + 10,
                 rotate: 360,
                 opacity: 0
               }}

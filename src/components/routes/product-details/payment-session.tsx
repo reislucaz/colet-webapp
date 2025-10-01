@@ -6,6 +6,7 @@ import { useElements, useStripe } from "@stripe/react-stripe-js"
 import { AnimatePresence } from "framer-motion"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
+import { Order } from "../../../@types/order"
 import { Product } from "../../../@types/product"
 import { Button } from "../../ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "../../ui/dialog"
@@ -19,7 +20,7 @@ import {
   type PaymentStep
 } from "./order-steps"
 
-export function PaymentSession({ product }: { product: Product }) {
+export function PaymentSession({ product, order }: { product: Product, order?: Order }) {
   const [clientSecret, setClientSecret] = useState("")
   const [currentStep, setCurrentStep] = useState<PaymentStep>('order-creation')
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>(null)
@@ -27,6 +28,19 @@ export function PaymentSession({ product }: { product: Product }) {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | undefined>()
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (order) {
+      setCurrentStep('payment-info')
+      setOrderData({
+        amount: order.amount,
+        productId: order.product.id,
+        purchaserId: order.purchaser.id ?? '',
+        sellerId: order.seller.id ?? '',
+        id: order.id
+      })
+    }
+  }, [order])
 
   const stripe = useStripe()
   const elements = useElements()
@@ -73,6 +87,16 @@ export function PaymentSession({ product }: { product: Product }) {
     }
   }
 
+  const handleOrderUpdate = async () => {
+    if (!orderData?.id) return
+
+    try {
+      await coletApi.patch(`/orders/${orderData.id}`, { status: 'FINISHED' })
+    } catch (error) {
+      console.log('Erro ao atualizar pedido:', error)
+    }
+  }
+
   const handleBackToOrder = () => {
     setCurrentStep('order-creation')
   }
@@ -108,6 +132,7 @@ export function PaymentSession({ product }: { product: Product }) {
         await deleteOrder()
       } else {
         setPaymentStatus('success')
+        await handleOrderUpdate()
       }
     } catch (error) {
       setPaymentStatus('error')
