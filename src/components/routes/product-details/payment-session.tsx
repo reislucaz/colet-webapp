@@ -20,7 +20,15 @@ import {
   type PaymentStep
 } from "./order-steps"
 
-export function PaymentSession({ product, order }: { product: Product, order?: Order }) {
+export function PaymentSession({
+  product,
+  order,
+  onPaymentSuccess
+}: {
+  product: Product,
+  order?: Order,
+  onPaymentSuccess?: () => void
+}) {
   const [clientSecret, setClientSecret] = useState("")
   const [currentStep, setCurrentStep] = useState<PaymentStep>('order-creation')
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>(null)
@@ -92,6 +100,10 @@ export function PaymentSession({ product, order }: { product: Product, order?: O
 
     try {
       await coletApi.patch(`/orders/${orderData.id}`, { status: 'FINISHED' })
+      // Chama o callback de sucesso se fornecido
+      if (onPaymentSuccess) {
+        onPaymentSuccess()
+      }
     } catch (error) {
       console.log('Erro ao atualizar pedido:', error)
     }
@@ -183,7 +195,9 @@ export function PaymentSession({ product, order }: { product: Product, order?: O
     return (
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger className="self-start">
-          <Button variant='outline'>Realizar pagamento</Button>
+          <Button variant='outline' className="w-full">
+            {order ? 'Pagar Pedido' : 'Realizar Pagamento'}
+          </Button>
         </DialogTrigger>
       </Dialog>
     )
@@ -197,7 +211,9 @@ export function PaymentSession({ product, order }: { product: Product, order?: O
   return (
     <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>
       <DialogTrigger className="self-start">
-        <Button variant='outline'>Realizar pagamento</Button>
+        <Button variant='outline' className="w-full">
+          {order ? 'Pagar Pedido' : 'Realizar Pagamento'}
+        </Button>
       </DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <StepIndicator currentStep={currentStep} />

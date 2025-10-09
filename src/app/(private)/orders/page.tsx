@@ -1,90 +1,51 @@
 'use client'
-import { Elements } from "@stripe/react-stripe-js"
 import { loadStripe } from "@stripe/stripe-js"
 import { useQuery } from "@tanstack/react-query"
 import { useSession } from "next-auth/react"
-import { PaymentSession } from "../../../components/routes/product-details/payment-session"
-import { Button } from "../../../components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../../components/ui/card"
-import { Input } from "../../../components/ui/input"
+import { useState } from "react"
+import { OrdersHeader, OrdersTabs, type OrderStatus } from "../../../components/routes/orders"
 import { OrderService } from "../../../services/order-service"
 
 export default function OrdersPage() {
   const { data: session } = useSession()
   const stripe = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!)
-  const { data: orders } = useQuery({
-    queryKey: ['Orders'],
-    queryFn: () => OrderService.getManyByUserId(session?.user?.id || ''),
+  const [searchTerm, setSearchTerm] = useState('')
+  const [activeTab, setActiveTab] = useState<OrderStatus>('all')
+
+  // Garantir que temos um ID de usuário válido
+  const userId = (session?.user as any)?.id || session?.user?.email || ''
+
+  // Buscar todos os pedidos do usuário
+  const { data: orders, refetch } = useQuery({
+    queryKey: ['Orders', userId],
+    queryFn: () => {
+      if (!userId) return []
+      return OrderService.getManyByUserId(userId)
+    },
+    enabled: !!userId,
   })
-  const formattedDate = (date: string) => {
-    return new Date(date).toLocaleDateString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    })
+
+  const handleSearchChange = (value: string) => {
+    setSearchTerm(value)
   }
-  const formattedAmount = (amount: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-    }).format(amount)
+
+  const handleTabChange = (tab: OrderStatus) => {
+    setActiveTab(tab)
   }
-  const defineStatusColor = (status: string) => {
-    if (status === 'pending') return { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-800' }
-    if (status === 'accepted') return { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-800' }
-    if (status === 'rejected') return { bg: 'bg-red-100', text: 'text-red-800', border: 'border-red-800' }
-    return { bg: 'bg-blue-100', text: 'text-blue-800', border: 'border-blue-800' }
-  }
+
   return (
     <div className="container py-8">
-      <div className="flex flex-col gap-4 m-4">
-        <div>
-          <h1 className="text-3xl font-bold">Pedidos</h1>
-          <p className="mt-2 text-muted-foreground">
-            Gerencie seus pedidos e compras
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Input placeholder="Buscar pedido" />
-          <Button>Buscar</Button>
-        </div>
-        <div className="gap-4 grid grid-cols-4">
-          {orders?.map((order) => {
-            const { bg, text, border } = defineStatusColor(order.status.toLowerCase())
-            return (
-              <Card className={`p-2 border-l-2 ${border} transition-colors cursor-pointer w-full min-w-[300px] bg-background`} key={order.id}>
-                <CardHeader>
-                  <CardTitle className={`${text}`}>{formattedAmount(order.amount)}</CardTitle>
-                  <CardDescription className={`${text}`}>{order.status}</CardDescription>
-                  <Elements
-                    stripe={stripe}
-                    options={{
-                      mode: 'payment',
-                      currency: 'brl',
-                      amount: (order.product.price ?? 1) * 100,
-                    }}
-                  >
-                    <PaymentSession product={order.product} order={order} />
-                  </Elements>
-                </CardHeader>
-                <CardContent className="flex flex-col gap-2">
-                  <div className="flex items-center gap-2">
-                    <p className={`${text} text-sm font-bold`}>Produto</p>
-                    <p className={`${text} text-sm`}>{order.product.name}</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <p className={`${text} text-sm font-bold`}>Vendedor</p>
-                    <p className={`${text} text-sm`}>{order.seller.name}</p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <p className={`${text} text-sm font-bold`}>Criado em</p>
-                    <p className={`${text} text-sm`}>{formattedDate(new Date(order.createdAt).toISOString())}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            )
-          })}
-        </div>
+      <div className="flex flex-col gap-6 m-4">
+        <OrdersHeader
+        />
+        <OrdersTabs
+          orders={orders || []}
+          stripe={stripe}
+          searchTerm={searchTerm}
+          onSearchChange={handleSearchChange}
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+        />
       </div>
     </div>
   )
