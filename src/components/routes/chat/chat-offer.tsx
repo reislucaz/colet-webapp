@@ -1,83 +1,107 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { CircleCheck, CircleX } from "lucide-react"
+import { useSession } from "next-auth/react"
+import { toast } from "sonner"
 import Loading from "../../../app/(private)/loading"
 import { OfferService } from "../../../services/offer-service"
 import { queryClient } from "../../../utils/query-client"
-import { Badge } from "../../ui/badge"
-import { Button } from "../../ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card"
+import { OfferCard } from "./offer-card"
 
 export function ChatOffer({ chatId }: { chatId?: string }) {
-  const { data: offer, isLoading } = useQuery({
+  const { data: session } = useSession()
+  const userId = (session?.user as any)?.id || session?.user?.email || ''
+
+  const { data: offer, isLoading, error } = useQuery({
     queryKey: ['chat-offer', chatId],
     queryFn: () => {
       if (chatId) {
         return OfferService.getByChatId(chatId)
       }
       return null
-    }
+    },
+    enabled: !!chatId,
+    retry: 1,
   })
+
   const { mutate: declineOffer, isPending: isDeclining } = useMutation({
     mutationFn: () => {
-      if (offer?.id) {
-        return OfferService.decline(offer.id)
+      if (!offer?.id) {
+        throw new Error('ID da oferta não encontrado')
       }
-      return Promise.resolve(null)
+      return OfferService.decline(offer.id)
     },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['chat-offer', chatId] })
+    onSuccess: () => {
+      toast.success('Oferta recusada com sucesso')
+      queryClient.invalidateQueries({ queryKey: ['chat-offer', chatId] })
+      queryClient.invalidateQueries({ queryKey: ['chat-list'] })
+    },
+    onError: (error) => {
+      toast.error('Erro ao recusar oferta: ' + error.message)
     }
   })
 
   const { mutate: acceptOffer, isPending: isAccepting } = useMutation({
     mutationFn: () => {
-      if (offer?.id) {
-        return OfferService.accept(offer.id)
+      if (!offer?.id) {
+        throw new Error('ID da oferta não encontrado')
       }
-      return Promise.resolve(null)
+      return OfferService.accept(offer.id)
     },
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['chat-offer', chatId] })
+    onSuccess: () => {
+      toast.success('Oferta aceita com sucesso! Um pedido foi criado.')
+      queryClient.invalidateQueries({ queryKey: ['chat-offer', chatId] })
+      queryClient.invalidateQueries({ queryKey: ['chat-list'] })
+      queryClient.invalidateQueries({ queryKey: ['Orders'] })
+    },
+    onError: (error) => {
+      toast.error('Erro ao aceitar oferta: ' + error.message)
     }
   })
 
-  const formattedAmount = Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  }).format(offer?.amount || 0)
-
   const handleRejectOffer = () => {
-    declineOffer()
+    if (!offer) return
+
+    // Confirmar ação
+    if (window.confirm('Tem certeza que deseja recusar esta oferta? Esta ação não pode ser desfeita.')) {
+      declineOffer()
+    }
   }
 
   const handleAcceptOffer = () => {
-    acceptOffer()
-  }
-  if (isLoading) return <Loading />
+    if (!offer) return
 
-  return <Card className="shadow-none border-green-800 border bg-green-100">
-    <CardHeader>
-      <CardTitle className="text-green-800">Proposta de compra</CardTitle>
-      <Badge className="bg-green-800 text-white text-xs w-fit">
-        {offer?.status}
-      </Badge>
-    </CardHeader>
-    <CardContent >
-      <p className="text-xl text-green-800 font-bold">
-        {formattedAmount}
-      </p>
-      {offer?.status === 'pending' && (
-        <div className="flex gap-2 w-full justify-end items-center">
-          <Button isLoading={isDeclining} onClick={handleRejectOffer} variant="outline" className="flex items-center gap-2">
-            <CircleX />
-            Rejeitar
-          </Button>
-          <Button isLoading={isAccepting} onClick={handleAcceptOffer} variant="default" className="flex items-center gap-2">
-            <CircleCheck />
-            Aceitar
-          </Button>
-        </div>
-      )}
-    </CardContent>
-  </Card>
+    // Confirmar ação
+    if (window.confirm('Tem certeza que deseja aceitar esta oferta? Um pedido será criado automaticamente.')) {
+      acceptOffer()
+    }
+  }
+
+  // Verificar se o usuário atual é o vendedor (recipient da oferta)
+  const isRecipient = offer?.recipientId === userId
+  const isSender = offer?.senderId === userId
+
+  if (isLoading) {
+    return (
+      <div className="p-4">
+        <Loading />
+      </div>
+    )
+  }
+
+  if (error || !offer) {
+    return null // Não mostrar nada se não houver oferta
+  }
+
+  return (
+    <div className="p-4 border-b bg-gray-50">
+      <OfferCard
+        offer={offer}
+        isRecipient={isRecipient}
+        isSender={isSender}
+        onAccept={handleAcceptOffer}
+        onReject={handleRejectOffer}
+        isAccepting={isAccepting}
+        isDeclining={isDeclining}
+      />
+    </div>
+  )
 }

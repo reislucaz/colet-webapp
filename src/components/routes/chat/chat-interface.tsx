@@ -64,8 +64,8 @@ export function ChatInterface() {
               {selectedChat?.participants.find(
                 (participant) => participant.id !== session?.user.id)?.name || 'Conversa'}
             </div>
-            {selectedChat && <ChatOffer chatId={selectedChat.id} />}
             <CardContent className="flex-1 space-y-4 overflow-y-auto p-4">
+              {selectedChat && <ChatOffer chatId={selectedChat.id} />}
               {messages.map((message) => (
                 <ChatMessages key={message.id} message={message} selectedChat={selectedChat} />
               ))}
