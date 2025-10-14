@@ -14,7 +14,7 @@ export class OrderService {
   }
 
   static async updateStatus(orderId: string, status: string): Promise<Order> {
-    return (await coletApi.patch(`${OrderService.baseUrl}/${orderId}`, { status })).data
+    return (await coletApi.put(`${OrderService.baseUrl}/${orderId}`, { status })).data
   }
 
   static async getByStatus(userId: string, status: string): Promise<Order[]> {
