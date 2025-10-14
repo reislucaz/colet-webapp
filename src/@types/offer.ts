@@ -6,7 +6,8 @@ export interface Offer {
   amount: number
   status: string
   sender: User
-  recipient: User
+  recipientId: string
+  senderId: string
   chat: Chat
   createdAt: Date
 }
