@@ -1,12 +1,16 @@
-import { useSession } from "next-auth/react"
-import { useState } from "react"
-import { Chat } from "../../../@types/chat"
-import { useChatContext } from "../../../hooks/use-chat-context"
-import { Button } from "../../ui/button"
-import { Input } from "../../ui/input"
-import { queryClient } from "@/utils/query-client"
+import { useSession } from 'next-auth/react'
+import { useState } from 'react'
+import { Chat } from '../../../@types/chat'
+import { useChatContext } from '../../../hooks/use-chat-context'
+import { Button } from '../../ui/button'
+import { Input } from '../../ui/input'
+import { queryClient } from '@/utils/query-client'
 
-export function ChatSubmitMessageButton({ selectedChat }: { selectedChat: Chat }) {
+export function ChatSubmitMessageButton({
+  selectedChat,
+}: {
+  selectedChat: Chat
+}) {
   const { data: session } = useSession()
   const { socketRef } = useChatContext()
   const sendMessage = async () => {
@@ -19,25 +23,27 @@ export function ChatSubmitMessageButton({ selectedChat }: { selectedChat: Chat }
       text: newMessage,
     })
     queryClient.invalidateQueries({
-      queryKey: ['chat-list']
+      queryKey: ['chat-list'],
     })
   }
 
   const [newMessage, setNewMessage] = useState('')
-  return <div className="border-t p-4">
-    <form
-      className="flex gap-2"
-      onSubmit={(e) => {
-        e.preventDefault()
-        sendMessage()
-      }}
-    >
-      <Input
-        placeholder="Digite sua mensagem..."
-        value={newMessage}
-        onChange={(e) => setNewMessage(e.target.value)}
-      />
-      <Button type="submit">Enviar</Button>
-    </form>
-  </div>
+  return (
+    <div className="border-t p-4">
+      <form
+        className="flex gap-2"
+        onSubmit={(e) => {
+          e.preventDefault()
+          sendMessage()
+        }}
+      >
+        <Input
+          placeholder="Digite sua mensagem..."
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+        />
+        <Button type="submit">Enviar</Button>
+      </form>
+    </div>
+  )
 }

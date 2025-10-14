@@ -22,7 +22,7 @@ import {
   Package,
   ShoppingBag,
   User,
-  Wallet
+  Wallet,
 } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'

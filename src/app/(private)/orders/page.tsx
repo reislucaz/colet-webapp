@@ -1,10 +1,14 @@
 'use client'
-import { loadStripe } from "@stripe/stripe-js"
-import { useQuery } from "@tanstack/react-query"
-import { useSession } from "next-auth/react"
-import { useState } from "react"
-import { OrdersHeader, OrdersTabs, type OrderStatus } from "../../../components/routes/orders"
-import { OrderService } from "../../../services/order-service"
+import { loadStripe } from '@stripe/stripe-js'
+import { useQuery } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
+import { useState } from 'react'
+import {
+  OrdersHeader,
+  OrdersTabs,
+  type OrderStatus,
+} from '../../../components/routes/orders'
+import { OrderService } from '../../../services/order-service'
 
 export default function OrdersPage() {
   const { data: session } = useSession()
@@ -35,9 +39,8 @@ export default function OrdersPage() {
 
   return (
     <div className="container py-8">
-      <div className="flex flex-col gap-6 m-4">
-        <OrdersHeader
-        />
+      <div className="m-4 flex flex-col gap-6">
+        <OrdersHeader />
         <OrdersTabs
           orders={orders || []}
           stripe={stripe}

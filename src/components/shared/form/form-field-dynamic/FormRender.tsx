@@ -1,5 +1,5 @@
-import { FormProvider } from 'react-hook-form'
 import { IFormRenderProps } from '@/@types/form-field'
+import { FormProvider } from 'react-hook-form'
 import { RenderField } from './RenderField'
 
 export function FormRender<T>({
@@ -8,7 +8,7 @@ export function FormRender<T>({
   onSubmit,
   children,
   className,
-}: IFormRenderProps<T>) {
+}: IFormRenderProps<T | any>) {
   return (
     <FormProvider {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className={className}>

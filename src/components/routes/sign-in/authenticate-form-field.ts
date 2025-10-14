@@ -1,8 +1,5 @@
-import { FormFieldsConstant } from '@/@types/form-field'
-import { AuthenticateType } from '@/validations/authenticate-schema'
-
 export function useAuthenticateFormField() {
-  const AUTHENTICATE_FORM_FIELD: FormFieldsConstant<AuthenticateType> = [
+  const AUTHENTICATE_FORM_FIELD = [
     [
       {
         name: 'email',

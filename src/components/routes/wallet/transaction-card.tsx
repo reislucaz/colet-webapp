@@ -1,7 +1,7 @@
-import { CheckCircleIcon, ClockIcon, FileTextIcon } from "lucide-react"
-import { BalanceTransaction } from "../../../services/wallet-service"
-import { Badge } from "../../ui/badge"
-import { Card, CardContent } from "../../ui/card"
+import { CheckCircleIcon, ClockIcon, FileTextIcon } from 'lucide-react'
+import { BalanceTransaction } from '../../../services/wallet-service'
+import { Badge } from '../../ui/badge'
+import { Card, CardContent } from '../../ui/card'
 
 interface TransactionCardProps {
   transaction: BalanceTransaction
@@ -33,7 +33,7 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
           border: 'border-l-green-500',
           badge: 'bg-green-100 text-green-800',
           label: 'Disponível',
-          icon: <CheckCircleIcon className="text-green-600" />
+          icon: <CheckCircleIcon className="text-green-600" />,
         }
       case 'pending':
         return {
@@ -41,7 +41,7 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
           border: 'border-l-yellow-500',
           badge: 'bg-yellow-100 text-yellow-800',
           label: 'Pendente',
-          icon: <ClockIcon className="text-yellow-600" />
+          icon: <ClockIcon className="text-yellow-600" />,
         }
       default:
         return {
@@ -49,7 +49,7 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
           border: 'border-l-gray-500',
           badge: 'bg-gray-100 text-gray-800',
           label: status,
-          icon: <FileTextIcon className="text-gray-600" />
+          icon: <FileTextIcon className="text-gray-600" />,
         }
     }
   }
@@ -72,7 +72,9 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
   const statusConfig = getStatusConfig(transaction.status)
 
   return (
-    <Card className={`bg-background ${statusConfig.border} border-l-4 transition-all duration-200 hover:shadow-md`}>
+    <Card
+      className={`bg-background ${statusConfig.border} border-l-4 transition-all duration-200 hover:shadow-md`}
+    >
       <CardContent className="p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -102,17 +104,18 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
                 = {formatCurrency(transaction.net)}
               </p>
             </div>
-            <Badge className={statusConfig.badge}>
-              {statusConfig.label}
-            </Badge>
+            <Badge className={statusConfig.badge}>{statusConfig.label}</Badge>
           </div>
         </div>
 
         {transaction.fee_details.length > 0 && (
-          <div className="mt-3 pt-3 border-t border-gray-200">
-            <p className="text-xs text-gray-500 mb-1">Detalhes das taxas:</p>
+          <div className="mt-3 border-t border-gray-200 pt-3">
+            <p className="mb-1 text-xs text-gray-500">Detalhes das taxas:</p>
             {transaction.fee_details.map((fee, index) => (
-              <div key={index} className="flex justify-between text-xs text-gray-600">
+              <div
+                key={index}
+                className="flex justify-between text-xs text-gray-600"
+              >
                 <span>{fee.description}</span>
                 <span>{formatCurrency(fee.amount)}</span>
               </div>

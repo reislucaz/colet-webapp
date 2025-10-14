@@ -77,4 +77,3 @@ export class WalletService {
     return (await coletApi.get(`${WalletService.baseUrl}`)).data
   }
 }
-

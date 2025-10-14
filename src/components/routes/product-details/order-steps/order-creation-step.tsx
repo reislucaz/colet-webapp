@@ -1,12 +1,19 @@
 'use client'
 
-import { motion } from "framer-motion"
-import { AlertCircle, ArrowRight, DollarSign, FileText, Package, User } from "lucide-react"
-import { useSession } from "next-auth/react"
-import { Product } from "../../../../@types/product"
-import { Button } from "../../../ui/button"
-import { Separator } from "../../../ui/separator"
-import { OrderData } from "./types"
+import { motion } from 'framer-motion'
+import {
+  AlertCircle,
+  ArrowRight,
+  DollarSign,
+  FileText,
+  Package,
+  User,
+} from 'lucide-react'
+import { useSession } from 'next-auth/react'
+import { Product } from '../../../../@types/product'
+import { Button } from '../../../ui/button'
+import { Separator } from '../../../ui/separator'
+import { OrderData } from './types'
 
 interface OrderCreationStepProps {
   product: Product
@@ -21,7 +28,7 @@ interface OrderCreationStepProps {
 const stepperVariants = {
   hidden: { opacity: 0, x: 50 },
   visible: { opacity: 1, x: 0 },
-  exit: { opacity: 0, x: -50 }
+  exit: { opacity: 0, x: -50 },
 }
 
 export function OrderCreationStep({
@@ -31,7 +38,7 @@ export function OrderCreationStep({
   errorMessage,
   onCreateOrder,
   onNext,
-  onCancel
+  onCancel,
 }: OrderCreationStepProps) {
   const { data: session } = useSession()
 
@@ -43,15 +50,15 @@ export function OrderCreationStep({
       exit="exit"
       className="space-y-6"
     >
-      <div className="flex items-center gap-3 mb-6">
-        <FileText className="w-5 h-5 text-primary" />
+      <div className="mb-6 flex items-center gap-3">
+        <FileText className="size-5 text-primary" />
         <h3 className="text-lg font-semibold">Criar Pedido</h3>
       </div>
 
       {!orderData ? (
         <div className="space-y-4">
-          <div className="p-6 bg-card rounded-lg border">
-            <h4 className="font-semibold mb-4">Resumo do Pedido</h4>
+          <div className="rounded-lg border bg-card p-6">
+            <h4 className="mb-4 font-semibold">Resumo do Pedido</h4>
             <div className="space-y-3">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Produto:</span>
@@ -59,7 +66,9 @@ export function OrderCreationStep({
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Localização:</span>
-                <span className="text-sm">{product.city}, {product.state}</span>
+                <span className="text-sm">
+                  {product.city}, {product.state}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Valor:</span>
@@ -71,8 +80,8 @@ export function OrderCreationStep({
           </div>
 
           {errorMessage && (
-            <div className="flex items-center gap-2 p-3 bg-destructive/10 border border-destructive/20 rounded-md">
-              <AlertCircle className="w-4 h-4 text-destructive" />
+            <div className="flex items-center gap-2 rounded-md border border-destructive/20 bg-destructive/10 p-3">
+              <AlertCircle className="size-4 text-destructive" />
               <p className="text-sm text-destructive">{errorMessage}</p>
             </div>
           )}
@@ -87,9 +96,9 @@ export function OrderCreationStep({
               className="flex items-center gap-2"
             >
               {loading ? (
-                <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                <div className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
               ) : (
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="size-4" />
               )}
               Criar Pedido
             </Button>
@@ -97,40 +106,48 @@ export function OrderCreationStep({
         </div>
       ) : (
         <div className="space-y-6">
-          <div className="p-4 bg-green-50 dark:bg-green-900/10 rounded-lg border border-green-200 dark:border-green-800">
-            <p className="text-sm font-medium text-green-600 dark:text-green-400 mb-2">
+          <div className="rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/10">
+            <p className="mb-2 text-sm font-medium text-green-600 dark:text-green-400">
               ✓ Pedido criado com sucesso!
             </p>
             <p className="text-xs text-muted-foreground">ID: {orderData.id}</p>
           </div>
 
           <div className="space-y-4">
-            <div className="flex items-center gap-3 p-4 bg-card rounded-lg border">
-              <User className="w-5 h-5 text-primary" />
+            <div className="flex items-center gap-3 rounded-lg border bg-card p-4">
+              <User className="size-5 text-primary" />
               <div>
                 <p className="font-medium">Comprador</p>
-                <p className="text-sm text-muted-foreground">{session?.user?.name}</p>
-                <p className="text-sm text-muted-foreground">{session?.user?.email}</p>
+                <p className="text-sm text-muted-foreground">
+                  {session?.user?.name}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {session?.user?.email}
+                </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-4 bg-card rounded-lg border">
-              <Package className="w-5 h-5 text-primary" />
+            <div className="flex items-center gap-3 rounded-lg border bg-card p-4">
+              <Package className="size-5 text-primary" />
               <div className="flex-1">
                 <p className="font-medium">Produto</p>
                 <p className="text-sm text-muted-foreground">{product.name}</p>
-                <p className="text-xs text-muted-foreground">{product.city}, {product.state}</p>
+                <p className="text-xs text-muted-foreground">
+                  {product.city}, {product.state}
+                </p>
               </div>
             </div>
 
-            <div className="flex items-center gap-3 p-4 bg-card rounded-lg border">
-              <DollarSign className="w-5 h-5 text-primary" />
+            <div className="flex items-center gap-3 rounded-lg border bg-card p-4">
+              <DollarSign className="size-5 text-primary" />
               <div>
                 <p className="font-medium">Valor Total</p>
                 <p className="text-lg font-bold text-primary">
                   R$ {product.price.toFixed(2).replace('.', ',')}
                 </p>
-                <p className="text-sm text-muted-foreground">A ser pago via cartão</p>
+                <p className="text-sm text-muted-foreground">
+                  A ser pago via cartão
+                </p>
               </div>
             </div>
           </div>
@@ -141,11 +158,8 @@ export function OrderCreationStep({
             <Button variant="outline" onClick={onCancel}>
               Cancelar Pedido
             </Button>
-            <Button
-              onClick={onNext}
-              className="flex items-center gap-2"
-            >
-              <ArrowRight className="w-4 h-4" />
+            <Button onClick={onNext} className="flex items-center gap-2">
+              <ArrowRight className="size-4" />
               Prosseguir para Pagamento
             </Button>
           </div>

@@ -1,13 +1,19 @@
-import { Elements } from "@stripe/react-stripe-js"
-import { StripeElementsOptions } from "@stripe/stripe-js"
-import { useSession } from "next-auth/react"
-import { toast } from "sonner"
-import { Order } from "../../../@types/order"
-import { OrderService } from "../../../services/order-service"
-import { Badge } from "../../ui/badge"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../ui/card"
-import { PaymentSession } from "../product-details/payment-session"
-import { OrderStatus } from "./orders-tabs"
+import { Elements } from '@stripe/react-stripe-js'
+import { StripeElementsOptions } from '@stripe/stripe-js'
+import { useSession } from 'next-auth/react'
+import { toast } from 'sonner'
+import { Order } from '../../../@types/order'
+import { OrderService } from '../../../services/order-service'
+import { Badge } from '../../ui/badge'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '../../ui/card'
+import { PaymentSession } from '../product-details/payment-session'
+import { OrderStatus } from './orders-tabs'
 
 interface OrderCardProps {
   order: Order
@@ -20,7 +26,6 @@ async function handlePaymentSuccess(order: Order) {
 }
 
 export function OrderCard({ order, stripe }: OrderCardProps) {
-
   const formattedDate = (date: string) => {
     return new Date(date).toLocaleDateString('pt-BR', {
       day: '2-digit',
@@ -47,7 +52,7 @@ export function OrderCard({ order, stripe }: OrderCardProps) {
           text: 'text-yellow-700',
           border: 'border-l-yellow-500',
           badge: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200',
-          label: 'Pendente'
+          label: 'Pendente',
         }
       case 'paid':
         return {
@@ -55,7 +60,7 @@ export function OrderCard({ order, stripe }: OrderCardProps) {
           text: 'text-green-700',
           border: 'border-l-green-500',
           badge: 'bg-green-100 text-green-800 hover:bg-green-200',
-          label: 'Pago'
+          label: 'Pago',
         }
       case 'cancelled':
         return {
@@ -63,7 +68,7 @@ export function OrderCard({ order, stripe }: OrderCardProps) {
           text: 'text-red-700',
           border: 'border-l-red-500',
           badge: 'bg-red-100 text-red-800 hover:bg-red-200',
-          label: 'Cancelado'
+          label: 'Cancelado',
         }
       default:
         return {
@@ -71,12 +76,14 @@ export function OrderCard({ order, stripe }: OrderCardProps) {
           text: 'text-blue-700',
           border: 'border-l-blue-500',
           badge: 'bg-blue-100 text-blue-800 hover:bg-blue-200',
-          label: status
+          label: status,
         }
     }
   }
 
-  const statusConfig = getStatusConfig(order.status.toLowerCase() as OrderStatus)
+  const statusConfig = getStatusConfig(
+    order.status.toLowerCase() as OrderStatus,
+  )
   const { data: session } = useSession()
   const isOwner = order.product.authorId === session?.user?.id
 
@@ -85,13 +92,11 @@ export function OrderCard({ order, stripe }: OrderCardProps) {
       className={`bg-background ${statusConfig.border} border-l-4 transition-all duration-200 hover:shadow-md`}
     >
       <CardHeader className="pb-3">
-        <div className="flex justify-between items-start">
+        <div className="flex items-start justify-between">
           <CardTitle className={`${statusConfig.text} text-xl`}>
             {formattedAmount(order.amount)}
           </CardTitle>
-          <Badge className={statusConfig.badge}>
-            {statusConfig.label}
-          </Badge>
+          <Badge className={statusConfig.badge}>{statusConfig.label}</Badge>
         </div>
         <CardDescription className="text-xs text-muted-foreground">
           Pedido #{order.id.slice(-8)}
@@ -108,9 +113,7 @@ export function OrderCard({ order, stripe }: OrderCardProps) {
           </div>
           <div className="flex justify-between text-sm">
             <span className="font-medium text-gray-600">Vendedor:</span>
-            <span className={statusConfig.text}>
-              {order.seller.name}
-            </span>
+            <span className={statusConfig.text}>{order.seller.name}</span>
           </div>
           <div className="flex justify-between text-sm">
             <span className="font-medium text-gray-600">Criado em:</span>
@@ -121,16 +124,18 @@ export function OrderCard({ order, stripe }: OrderCardProps) {
         </div>
 
         {order.status.toLowerCase() === 'pending' && (
-          <div className="pt-3 border-t">
+          <div className="border-t pt-3">
             <Elements
               stripe={stripe}
-              options={{
-                mode: 'payment',
-                currency: 'brl',
-                amount: (order.product.price ?? order.amount) * 100,
-              } as StripeElementsOptions}
+              options={
+                {
+                  mode: 'payment',
+                  currency: 'brl',
+                  amount: (order.product.price ?? order.amount) * 100,
+                } as StripeElementsOptions
+              }
             >
-              {!isOwner &&
+              {!isOwner && (
                 <PaymentSession
                   product={order.product}
                   order={order}
@@ -138,7 +143,7 @@ export function OrderCard({ order, stripe }: OrderCardProps) {
                     handlePaymentSuccess(order)
                   }}
                 />
-              }
+              )}
             </Elements>
           </div>
         )}

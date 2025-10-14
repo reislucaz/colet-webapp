@@ -1,6 +1,6 @@
-import { BalanceTransaction } from "../../../services/wallet-service"
-import { Card } from "../../ui/card"
-import { TransactionCard } from "./transaction-card"
+import { BalanceTransaction } from '../../../services/wallet-service'
+import { Card } from '../../ui/card'
+import { TransactionCard } from './transaction-card'
 
 interface TransactionsListProps {
   transactions: BalanceTransaction[]
@@ -11,7 +11,7 @@ interface TransactionsListProps {
 export function TransactionsList({
   transactions,
   searchTerm,
-  emptyMessage = "Nenhuma transação encontrada."
+  emptyMessage = 'Nenhuma transação encontrada.',
 }: TransactionsListProps) {
   if (transactions.length === 0) {
     return (
@@ -19,8 +19,7 @@ export function TransactionsList({
         <div className="text-muted-foreground">
           {searchTerm
             ? 'Nenhuma transação encontrada com os filtros aplicados.'
-            : emptyMessage
-          }
+            : emptyMessage}
         </div>
       </Card>
     )
@@ -29,10 +28,7 @@ export function TransactionsList({
   return (
     <div className="space-y-4">
       {transactions.map((transaction) => (
-        <TransactionCard
-          key={transaction.id}
-          transaction={transaction}
-        />
+        <TransactionCard key={transaction.id} transaction={transaction} />
       ))}
     </div>
   )

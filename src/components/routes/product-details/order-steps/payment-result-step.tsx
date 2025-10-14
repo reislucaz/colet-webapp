@@ -1,10 +1,10 @@
 'use client'
 
-import { AnimatePresence, motion } from "framer-motion"
-import { CheckCircle, X, XCircle } from "lucide-react"
-import { Product } from "../../../../@types/product"
-import { Button } from "../../../ui/button"
-import { OrderData, PaymentStatus } from "./types"
+import { AnimatePresence, motion } from 'framer-motion'
+import { CheckCircle, X, XCircle } from 'lucide-react'
+import { Product } from '../../../../@types/product'
+import { Button } from '../../../ui/button'
+import { OrderData, PaymentStatus } from './types'
 
 interface PaymentResultStepProps {
   product: Product
@@ -17,7 +17,7 @@ interface PaymentResultStepProps {
 const stepperVariants = {
   hidden: { opacity: 0, x: 50 },
   visible: { opacity: 1, x: 0 },
-  exit: { opacity: 0, x: -50 }
+  exit: { opacity: 0, x: -50 },
 }
 
 const iconVariants = {
@@ -25,8 +25,8 @@ const iconVariants = {
   visible: {
     scale: 1,
     rotate: 0,
-    transition: { type: "spring", stiffness: 200, damping: 15 }
-  }
+    transition: { type: 'spring', stiffness: 200, damping: 15 },
+  },
 }
 
 export function PaymentResultStep({
@@ -34,7 +34,7 @@ export function PaymentResultStep({
   orderData,
   paymentStatus,
   errorMessage,
-  onClose
+  onClose,
 }: PaymentResultStepProps) {
   return (
     <motion.div
@@ -42,7 +42,7 @@ export function PaymentResultStep({
       initial="hidden"
       animate="visible"
       exit="exit"
-      className="text-center space-y-6"
+      className="space-y-6 text-center"
     >
       <AnimatePresence mode="wait">
         {paymentStatus === 'processing' && (
@@ -55,11 +55,13 @@ export function PaymentResultStep({
           >
             <motion.div
               animate={{ rotate: 360 }}
-              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              className="w-16 h-16 mx-auto border-4 border-primary border-t-transparent rounded-full"
+              transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
+              className="mx-auto size-16 rounded-full border-4 border-primary border-t-transparent"
             />
             <h3 className="text-lg font-semibold">Processando Pagamento...</h3>
-            <p className="text-muted-foreground">Aguarde enquanto confirmamos seu pagamento</p>
+            <p className="text-muted-foreground">
+              Aguarde enquanto confirmamos seu pagamento
+            </p>
           </motion.div>
         )}
 
@@ -75,9 +77,9 @@ export function PaymentResultStep({
               variants={iconVariants}
               initial="hidden"
               animate="visible"
-              className="w-16 h-16 mx-auto bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center"
+              className="mx-auto flex size-16 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/20"
             >
-              <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
+              <CheckCircle className="size-8 text-green-600 dark:text-green-400" />
             </motion.div>
             <h3 className="text-lg font-semibold text-green-600 dark:text-green-400">
               Pagamento Realizado com Sucesso!
@@ -85,10 +87,16 @@ export function PaymentResultStep({
             <p className="text-muted-foreground">
               Seu pagamento foi processado e o vendedor foi notificado
             </p>
-            <div className="p-4 bg-green-50 dark:bg-green-900/10 rounded-lg border border-green-200 dark:border-green-800">
-              <p className="text-sm font-medium">Valor pago: R$ {product.price.toFixed(2).replace('.', ',')}</p>
-              <p className="text-sm text-muted-foreground">Produto: {product.name}</p>
-              <p className="text-xs text-muted-foreground">Pedido: #{orderData.id}</p>
+            <div className="rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-900/10">
+              <p className="text-sm font-medium">
+                Valor pago: R$ {product.price.toFixed(2).replace('.', ',')}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Produto: {product.name}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                Pedido: #{orderData.id}
+              </p>
             </div>
           </motion.div>
         )}
@@ -105,9 +113,9 @@ export function PaymentResultStep({
               variants={iconVariants}
               initial="hidden"
               animate="visible"
-              className="w-16 h-16 mx-auto bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center"
+              className="mx-auto flex size-16 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/20"
             >
-              <XCircle className="w-8 h-8 text-red-600 dark:text-red-400" />
+              <XCircle className="size-8 text-red-600 dark:text-red-400" />
             </motion.div>
             <h3 className="text-lg font-semibold text-red-600 dark:text-red-400">
               Pagamento Não Realizado
@@ -115,12 +123,13 @@ export function PaymentResultStep({
             <p className="text-muted-foreground">
               {errorMessage || 'Houve um problema ao processar seu pagamento'}
             </p>
-            <div className="p-4 bg-red-50 dark:bg-red-900/10 rounded-lg border border-red-200 dark:border-red-800">
+            <div className="rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-900/10">
               <p className="text-sm text-red-600 dark:text-red-400">
-                O pedido foi cancelado. Tente novamente ou entre em contato com o suporte
+                O pedido foi cancelado. Tente novamente ou entre em contato com
+                o suporte
               </p>
               {orderData.id && (
-                <p className="text-xs text-muted-foreground mt-1">
+                <p className="mt-1 text-xs text-muted-foreground">
                   Pedido cancelado: #{orderData.id}
                 </p>
               )}
@@ -136,7 +145,7 @@ export function PaymentResultStep({
           transition={{ delay: 0.5 }}
         >
           <Button onClick={onClose} className="flex items-center gap-2">
-            <X className="w-4 h-4" />
+            <X className="size-4" />
             Fechar
           </Button>
         </motion.div>

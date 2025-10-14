@@ -158,8 +158,9 @@ export default function MessagesPage() {
               filteredChats.map((chat) => (
                 <div
                   key={chat.id}
-                  className={`flex cursor-pointer items-center gap-4 rounded-lg p-2 transition-colors hover:bg-muted ${selectedChat === chat.id ? 'bg-muted' : ''
-                    }`}
+                  className={`flex cursor-pointer items-center gap-4 rounded-lg p-2 transition-colors hover:bg-muted ${
+                    selectedChat === chat.id ? 'bg-muted' : ''
+                  }`}
                   onClick={() => setSelectedChat(chat.id)}
                 >
                   <Avatar>
@@ -217,10 +218,11 @@ export default function MessagesPage() {
                 {messages.map((message) => (
                   <div
                     key={message.id}
-                    className={`flex gap-4 ${message.sender.id === session?.user?.id
-                      ? 'justify-end'
-                      : 'justify-start'
-                      }`}
+                    className={`flex gap-4 ${
+                      message.sender.id === session?.user?.id
+                        ? 'justify-end'
+                        : 'justify-start'
+                    }`}
                   >
                     {message.sender.id !== session?.user?.id && (
                       <Avatar>
@@ -230,17 +232,19 @@ export default function MessagesPage() {
                       </Avatar>
                     )}
                     <div
-                      className={`max-w-[70%] rounded-lg p-4 ${message.sender.id === session?.user?.id
-                        ? 'bg-primary text-primary-foreground'
-                        : 'bg-muted'
-                        }`}
+                      className={`max-w-[70%] rounded-lg p-4 ${
+                        message.sender.id === session?.user?.id
+                          ? 'bg-primary text-primary-foreground'
+                          : 'bg-muted'
+                      }`}
                     >
                       <p className="text-sm">{message.content}</p>
                       <p
-                        className={`mt-1 text-xs ${message.sender.id === session?.user?.id
-                          ? 'text-primary-foreground/70'
-                          : 'text-muted-foreground'
-                          }`}
+                        className={`mt-1 text-xs ${
+                          message.sender.id === session?.user?.id
+                            ? 'text-primary-foreground/70'
+                            : 'text-muted-foreground'
+                        }`}
                       >
                         {timeAgo(new Date(message.createdAt))}
                       </p>

@@ -1,7 +1,7 @@
-import { BalanceTransaction } from "../../../services/wallet-service"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui/tabs"
-import { TransactionsList } from "./transactions-list"
-import { WalletSearch } from "./wallet-search"
+import { BalanceTransaction } from '../../../services/wallet-service'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs'
+import { TransactionsList } from './transactions-list'
+import { WalletSearch } from './wallet-search'
 
 export type TransactionStatus = 'all' | 'available' | 'pending'
 
@@ -18,42 +18,46 @@ export function WalletTabs({
   searchTerm,
   onSearchChange,
   activeTab,
-  onTabChange
+  onTabChange,
 }: WalletTabsProps) {
+  const filteredTransactions =
+    transactions?.filter((transaction) => {
+      const matchesSearch =
+        transaction.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        transaction.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        transaction.source.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        transaction.amount.toString().includes(searchTerm)
 
-  const filteredTransactions = transactions?.filter(transaction => {
-    const matchesSearch =
-      transaction.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      transaction.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      transaction.source.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      transaction.amount.toString().includes(searchTerm)
-
-    return matchesSearch
-  }) || []
+      return matchesSearch
+    }) || []
 
   const allTransactions = filteredTransactions
-  const availableTransactions = filteredTransactions.filter(t => t.status === 'available')
-  const pendingTransactions = filteredTransactions.filter(t => t.status === 'pending')
+  const availableTransactions = filteredTransactions.filter(
+    (t) => t.status === 'available',
+  )
+  const pendingTransactions = filteredTransactions.filter(
+    (t) => t.status === 'pending',
+  )
 
   const getTabLabel = (status: TransactionStatus, count: number) => {
     const labels = {
       all: 'Todas',
       available: 'Disponíveis',
-      pending: 'Pendentes'
+      pending: 'Pendentes',
     }
     return `${labels[status]} (${count})`
   }
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <WalletSearch
-          searchTerm={searchTerm}
-          onSearchChange={onSearchChange}
-        />
+      <div className="flex items-center justify-between">
+        <WalletSearch searchTerm={searchTerm} onSearchChange={onSearchChange} />
       </div>
 
-      <Tabs value={activeTab} onValueChange={(value) => onTabChange(value as TransactionStatus)}>
+      <Tabs
+        value={activeTab}
+        onValueChange={(value) => onTabChange(value as TransactionStatus)}
+      >
         <TabsList className="grid grid-cols-3">
           <TabsTrigger value="all">
             {getTabLabel('all', allTransactions.length)}

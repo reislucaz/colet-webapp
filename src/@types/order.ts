@@ -1,6 +1,6 @@
-import { Offer } from "./offer"
-import { Product } from "./product"
-import { User } from "./users"
+import { Offer } from './offer'
+import { Product } from './product'
+import { User } from './users'
 
 export interface Order {
   id: string

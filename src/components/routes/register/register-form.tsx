@@ -44,7 +44,7 @@ export function RegisterForm() {
       constant={REGISTER_FORM_FIELD}
       form={form}
       onSubmit={mutateAsync}
-      className='w-full'
+      className="w-full"
     >
       <div className="flex w-full flex-col space-y-4">
         <Button className="w-full" type="submit" isLoading={isPending}>

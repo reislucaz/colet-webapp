@@ -1,11 +1,11 @@
 'use client'
 
-import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js"
-import { motion } from "framer-motion"
-import { AlertCircle, ArrowLeft, CreditCard } from "lucide-react"
-import { Product } from "../../../../@types/product"
-import { Button } from "../../../ui/button"
-import { OrderData } from "./types"
+import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
+import { motion } from 'framer-motion'
+import { AlertCircle, ArrowLeft, CreditCard } from 'lucide-react'
+import { Product } from '../../../../@types/product'
+import { Button } from '../../../ui/button'
+import { OrderData } from './types'
 
 interface PaymentInfoStepProps {
   product: Product
@@ -21,7 +21,7 @@ interface PaymentInfoStepProps {
 const stepperVariants = {
   hidden: { opacity: 0, x: 50 },
   visible: { opacity: 1, x: 0 },
-  exit: { opacity: 0, x: -50 }
+  exit: { opacity: 0, x: -50 },
 }
 
 export function PaymentInfoStep({
@@ -32,7 +32,7 @@ export function PaymentInfoStep({
   errorMessage,
   onBack,
   onSubmitPayment,
-  onCancel
+  onCancel,
 }: PaymentInfoStepProps) {
   const stripe = useStripe()
   const elements = useElements()
@@ -47,16 +47,18 @@ export function PaymentInfoStep({
       exit="exit"
       className="space-y-6"
     >
-      <div className="flex items-center gap-3 mb-6">
-        <CreditCard className="w-5 h-5 text-primary" />
+      <div className="mb-6 flex items-center gap-3">
+        <CreditCard className="size-5 text-primary" />
         <h3 className="text-lg font-semibold">Informações de Pagamento</h3>
       </div>
 
-      <div className="p-4 bg-muted/50 rounded-lg border">
-        <div className="flex justify-between items-center">
+      <div className="rounded-lg border bg-muted/50 p-4">
+        <div className="flex items-center justify-between">
           <div>
             <p className="font-medium">{product.name}</p>
-            <p className="text-sm text-muted-foreground">Pedido #{orderData.id}</p>
+            <p className="text-sm text-muted-foreground">
+              Pedido #{orderData.id}
+            </p>
           </div>
           <div className="text-right">
             <p className="text-lg font-bold text-primary">
@@ -69,8 +71,8 @@ export function PaymentInfoStep({
       {clientSecret && <PaymentElement />}
 
       {errorMessage && (
-        <div className="flex items-center gap-2 p-3 bg-destructive/10 border border-destructive/20 rounded-md">
-          <AlertCircle className="w-4 h-4 text-destructive" />
+        <div className="flex items-center gap-2 rounded-md border border-destructive/20 bg-destructive/10 p-3">
+          <AlertCircle className="size-4 text-destructive" />
           <p className="text-sm text-destructive">{errorMessage}</p>
         </div>
       )}
@@ -81,7 +83,7 @@ export function PaymentInfoStep({
           onClick={onBack}
           className="flex items-center gap-2"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="size-4" />
           Voltar
         </Button>
         <div className="flex gap-3">
@@ -94,7 +96,7 @@ export function PaymentInfoStep({
             className="flex items-center gap-2"
           >
             {loading ? (
-              <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+              <div className="size-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
             ) : null}
             Confirmar Pagamento
           </Button>

@@ -1,16 +1,20 @@
-import { useMutation, useQuery } from "@tanstack/react-query"
-import { useSession } from "next-auth/react"
-import { toast } from "sonner"
-import Loading from "../../../app/(private)/loading"
-import { OfferService } from "../../../services/offer-service"
-import { queryClient } from "../../../utils/query-client"
-import { OfferCard } from "./offer-card"
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
+import { toast } from 'sonner'
+import Loading from '../../../app/(private)/loading'
+import { OfferService } from '../../../services/offer-service'
+import { queryClient } from '../../../utils/query-client'
+import { OfferCard } from './offer-card'
 
 export function ChatOffer({ chatId }: { chatId?: string }) {
   const { data: session } = useSession()
   const userId = (session?.user as any)?.id || session?.user?.email || ''
 
-  const { data: offer, isLoading, error } = useQuery({
+  const {
+    data: offer,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['chat-offer', chatId],
     queryFn: () => {
       if (chatId) {
@@ -36,7 +40,7 @@ export function ChatOffer({ chatId }: { chatId?: string }) {
     },
     onError: (error) => {
       toast.error('Erro ao recusar oferta: ' + error.message)
-    }
+    },
   })
 
   const { mutate: acceptOffer, isPending: isAccepting } = useMutation({
@@ -54,14 +58,18 @@ export function ChatOffer({ chatId }: { chatId?: string }) {
     },
     onError: (error) => {
       toast.error('Erro ao aceitar oferta: ' + error.message)
-    }
+    },
   })
 
   const handleRejectOffer = () => {
     if (!offer) return
 
     // Confirmar ação
-    if (window.confirm('Tem certeza que deseja recusar esta oferta? Esta ação não pode ser desfeita.')) {
+    if (
+      window.confirm(
+        'Tem certeza que deseja recusar esta oferta? Esta ação não pode ser desfeita.',
+      )
+    ) {
       declineOffer()
     }
   }
@@ -70,7 +78,11 @@ export function ChatOffer({ chatId }: { chatId?: string }) {
     if (!offer) return
 
     // Confirmar ação
-    if (window.confirm('Tem certeza que deseja aceitar esta oferta? Um pedido será criado automaticamente.')) {
+    if (
+      window.confirm(
+        'Tem certeza que deseja aceitar esta oferta? Um pedido será criado automaticamente.',
+      )
+    ) {
       acceptOffer()
     }
   }
@@ -92,7 +104,7 @@ export function ChatOffer({ chatId }: { chatId?: string }) {
   }
 
   return (
-    <div className="p-4 border-b bg-gray-50">
+    <div className="border-b bg-gray-50 p-4">
       <OfferCard
         offer={offer}
         isRecipient={isRecipient}

@@ -1,18 +1,18 @@
 'use client'
 
-import Loading from "@/components/loading"
-import { coletApi } from "@/services/axios"
-import { useElements, useStripe } from "@stripe/react-stripe-js"
-import { useMutation } from "@tanstack/react-query"
-import { AnimatePresence } from "framer-motion"
-import { useSession } from "next-auth/react"
-import { useEffect, useState } from "react"
-import { Order } from "../../../@types/order"
-import { Product } from "../../../@types/product"
-import { OrderService } from "../../../services/order-service"
-import { queryClient } from "../../../utils/query-client"
-import { Button } from "../../ui/button"
-import { Dialog, DialogContent, DialogTrigger } from "../../ui/dialog"
+import Loading from '@/components/loading'
+import { coletApi } from '@/services/axios'
+import { useElements, useStripe } from '@stripe/react-stripe-js'
+import { useMutation } from '@tanstack/react-query'
+import { AnimatePresence } from 'framer-motion'
+import { useSession } from 'next-auth/react'
+import { useEffect, useState } from 'react'
+import { Order } from '../../../@types/order'
+import { Product } from '../../../@types/product'
+import { OrderService } from '../../../services/order-service'
+import { queryClient } from '../../../utils/query-client'
+import { Button } from '../../ui/button'
+import { Dialog, DialogContent, DialogTrigger } from '../../ui/dialog'
 import {
   OrderCreationStep,
   PaymentInfoStep,
@@ -20,19 +20,19 @@ import {
   StepIndicator,
   type OrderData,
   type PaymentStatus,
-  type PaymentStep
-} from "./order-steps"
+  type PaymentStep,
+} from './order-steps'
 
 export function PaymentSession({
   product,
   order,
-  onPaymentSuccess
+  onPaymentSuccess,
 }: {
-  product: Product,
-  order?: Order,
+  product: Product
+  order?: Order
   onPaymentSuccess?: () => void
 }) {
-  const [clientSecret, setClientSecret] = useState("")
+  const [clientSecret, setClientSecret] = useState('')
   const [currentStep, setCurrentStep] = useState<PaymentStep>('order-creation')
   const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>(null)
   const [orderData, setOrderData] = useState<OrderData | null>(null)
@@ -46,7 +46,7 @@ export function PaymentSession({
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['orders'] })
-    }
+    },
   })
 
   useEffect(() => {
@@ -57,7 +57,7 @@ export function PaymentSession({
         productId: order.product.id,
         purchaserId: order.purchaser.id ?? '',
         sellerId: order.seller.id ?? '',
-        id: order.id
+        id: order.id,
       })
     }
   }, [order])
@@ -69,7 +69,8 @@ export function PaymentSession({
   // Inicializar Stripe quando o pedido for criado
   useEffect(() => {
     if (orderData && !clientSecret) {
-      coletApi.post('/stripe/create-payment-session', { productId: product.id })
+      coletApi
+        .post('/stripe/create-payment-session', { productId: product.id })
         .then(({ data }) => setClientSecret(data))
         .catch(() => setErrorMessage('Erro ao inicializar pagamento'))
     }
@@ -142,8 +143,8 @@ export function PaymentSession({
         elements,
         clientSecret,
         confirmParams: {
-          return_url: `${window.location.origin}/payment-result?amount=${product.price}&product=${product.name}&orderId=${orderData.id}`
-        }
+          return_url: `${window.location.origin}/payment-result?amount=${product.price}&product=${product.name}&orderId=${orderData.id}`,
+        },
       })
 
       if (error) {
@@ -203,7 +204,7 @@ export function PaymentSession({
     return (
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger className="self-start">
-          <Button variant='outline' className="w-full">
+          <Button variant="outline" className="w-full">
             {order ? 'Pagar Pedido' : 'Realizar Pagamento'}
           </Button>
         </DialogTrigger>
@@ -219,11 +220,11 @@ export function PaymentSession({
   return (
     <Dialog open={isDialogOpen} onOpenChange={handleCloseDialog}>
       <DialogTrigger className="self-start">
-        <Button variant='outline' className="w-full">
+        <Button variant="outline" className="w-full">
           {order ? 'Pagar Pedido' : 'Realizar Pagamento'}
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
         <StepIndicator currentStep={currentStep} />
 
         <AnimatePresence mode="wait">

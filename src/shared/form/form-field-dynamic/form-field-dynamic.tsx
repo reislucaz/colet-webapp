@@ -4,31 +4,31 @@ import { type ControllerRenderProps } from 'react-hook-form'
 
 import { type FormFields } from '@/@types/form-field'
 
+import { FormFieldCombobox } from './components/form-field-combobox'
+import { FormFieldCurrency } from './components/form-field-currency'
 import { FormFieldInputDefault } from './components/form-field-input-default'
 import { FormFieldMaskedInput } from './components/form-field-masked-input'
 import { FormFieldNumber } from './components/form-field-number'
+import { FormFieldPassword } from './components/form-field-password'
 import { FormFieldRadio } from './components/form-field-radio'
+import { FormFieldRangeDatePicker } from './components/form-field-range-date-picker'
 import { FormFieldSelect } from './components/form-field-select'
+import { FormFieldSingleDatePicker } from './components/form-field-single-date-picker'
 import { FormFieldSwitch } from './components/form-field-switch'
 import { FormFieldTextarea } from './components/form-field-textarea'
-import { FormFieldPassword } from './components/form-field-password'
-import { FormFieldCombobox } from './components/form-field-combobox'
-import { FormFieldSingleDatePicker } from './components/form-field-single-date-picker'
-import { FormFieldRangeDatePicker } from './components/form-field-range-date-picker'
-import { FormFieldCurrency } from './components/form-field-currency'
 
 interface Props<T> {
   field: ControllerRenderProps<T | any>
   slot: FormFields<any>
 }
 
-export function FormFieldDynamic<T>({ field, slot }: Props<T>) {
+export function FormFieldDynamic<T>({ field, slot }: Props<T | any>) {
   switch (slot.type) {
     case 'masked':
       return (
         <FormFieldMaskedInput
           {...field}
-          {...slot}
+          {...slot as any}
           onChange={(e) => {
             slot.onChange?.(e)
             field.onChange(e)

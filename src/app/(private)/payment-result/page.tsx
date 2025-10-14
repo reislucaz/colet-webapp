@@ -19,10 +19,10 @@ function PaymentResultContent() {
       y: 0,
       transition: {
         duration: 0.6,
-        ease: "easeOut",
-        staggerChildren: 0.2
-      }
-    }
+        ease: 'easeOut',
+        staggerChildren: 0.2,
+      },
+    },
   }
 
   const itemVariants = {
@@ -30,8 +30,8 @@ function PaymentResultContent() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.5, ease: "easeOut" }
-    }
+      transition: { duration: 0.5, ease: 'easeOut' },
+    },
   }
 
   const iconVariants = {
@@ -40,12 +40,12 @@ function PaymentResultContent() {
       scale: 1,
       rotate: 0,
       transition: {
-        type: "spring",
+        type: 'spring',
         stiffness: 200,
         damping: 15,
-        delay: 0.3
-      }
-    }
+        delay: 0.3,
+      },
+    },
   }
 
   const pulseVariants = {
@@ -54,23 +54,23 @@ function PaymentResultContent() {
       opacity: [0.5, 0.8, 0.5],
       transition: {
         duration: 2,
-        ease: "easeInOut",
+        ease: 'easeInOut',
         repeat: Infinity,
-        repeatDelay: 1
-      }
-    }
+        repeatDelay: 1,
+      },
+    },
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="max-w-md w-full"
+        className="w-full max-w-md"
       >
         {/* Ícone de sucesso com animação */}
-        <motion.div className="relative flex justify-center mb-8">
+        <motion.div className="relative mb-8 flex justify-center">
           <motion.div
             variants={pulseVariants}
             animate="animate"
@@ -84,17 +84,14 @@ function PaymentResultContent() {
           />
           <motion.div
             variants={iconVariants}
-            className="relative z-10 size-16 rounded-full bg-primary flex items-center justify-center"
+            className="relative z-10 flex size-16 items-center justify-center rounded-full bg-primary"
           >
             <CheckCircle className="size-10 text-primary-foreground" />
           </motion.div>
         </motion.div>
 
         {/* Conteúdo principal */}
-        <motion.div
-          variants={itemVariants}
-          className="text-center space-y-4"
-        >
+        <motion.div variants={itemVariants} className="space-y-4 text-center">
           <motion.h1
             variants={itemVariants}
             className="text-3xl font-bold text-foreground"
@@ -104,7 +101,7 @@ function PaymentResultContent() {
 
           <motion.p
             variants={itemVariants}
-            className="text-muted-foreground text-lg"
+            className="text-lg text-muted-foreground"
           >
             Seu pagamento foi processado com sucesso
           </motion.p>
@@ -114,18 +111,22 @@ function PaymentResultContent() {
         {(amount || productName) && (
           <motion.div
             variants={itemVariants}
-            className="mt-8 p-6 rounded-lg bg-card border border-border"
+            className="mt-8 rounded-lg border border-border bg-card p-6"
           >
-            <div className="flex items-center gap-3 mb-4">
+            <div className="mb-4 flex items-center gap-3">
               <Package className="size-5 text-primary" />
-              <h3 className="font-semibold text-card-foreground">Detalhes da Compra</h3>
+              <h3 className="font-semibold text-card-foreground">
+                Detalhes da Compra
+              </h3>
             </div>
 
             <div className="space-y-2 text-sm">
               {productName && (
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Produto:</span>
-                  <span className="font-medium text-card-foreground">{productName}</span>
+                  <span className="font-medium text-card-foreground">
+                    {productName}
+                  </span>
                 </div>
               )}
               {amount && (
@@ -141,10 +142,7 @@ function PaymentResultContent() {
         )}
 
         {/* Botões de ação */}
-        <motion.div
-          variants={itemVariants}
-          className="mt-8 space-y-3"
-        >
+        <motion.div variants={itemVariants} className="mt-8 space-y-3">
           <Link href="/products" className="block">
             <Button className="w-full" size="lg">
               Continuar Comprando
@@ -153,7 +151,7 @@ function PaymentResultContent() {
 
           <Link href="/dashboard" className="block">
             <Button variant="outline" className="w-full" size="lg">
-              <ArrowLeft className="size-4 mr-2" />
+              <ArrowLeft className="mr-2 size-4" />
               Voltar ao Dashboard
             </Button>
           </Link>
@@ -164,30 +162,30 @@ function PaymentResultContent() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1, duration: 0.5 }}
-          className="absolute inset-0 pointer-events-none overflow-hidden"
+          className="pointer-events-none absolute inset-0 overflow-hidden"
         >
           {[...Array(20)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute size-2 bg-primary rounded-full"
+              className="absolute size-2 rounded-full bg-primary"
               initial={{
                 x: Math.random() * window?.innerWidth,
                 y: -10,
                 rotate: 0,
-                opacity: 0.8
+                opacity: 0.8,
               }}
               animate={{
                 y: window?.innerHeight + 10,
                 rotate: 360,
-                opacity: 0
+                opacity: 0,
               }}
               transition={{
                 duration: 3 + Math.random() * 2,
                 delay: Math.random() * 2,
-                ease: "easeOut"
+                ease: 'easeOut',
               }}
               style={{
-                left: `${Math.random() * 100}%`
+                left: `${Math.random() * 100}%`,
               }}
             />
           ))}
@@ -199,11 +197,13 @@ function PaymentResultContent() {
 
 export default function PaymentResultPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-background">
+          <div className="size-8 animate-spin rounded-full border-b-2 border-primary"></div>
+        </div>
+      }
+    >
       <PaymentResultContent />
     </Suspense>
   )

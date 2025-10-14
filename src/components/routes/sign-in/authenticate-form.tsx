@@ -1,13 +1,14 @@
 'use client'
 
-import { FormRender } from '@/shared/form/form-field-dynamic/FormRender'
-import { useAuthenticateFormField } from './authenticate-form-field'
-import { AuthenticateType } from '@/validations/authenticate-schema'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import { PublicRoutes } from '@/constants/routes/public-routes'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
+import { PublicRoutes } from '@/constants/routes/public-routes'
+import { FormRender } from '@/shared/form/form-field-dynamic/FormRender'
+import { AuthenticateType } from '@/validations/authenticate-schema'
 import { AlertCircle } from 'lucide-react'
+import Link from 'next/link'
+import { FormFieldsConstant } from '../../../@types/form-field'
+import { useAuthenticateFormField } from './authenticate-form-field'
 import { useAuthenticate } from './use-authenticate'
 
 export function AuthenticateForm() {
@@ -17,7 +18,9 @@ export function AuthenticateForm() {
 
   return (
     <FormRender<AuthenticateType>
-      constant={AUTHENTICATE_FORM_FIELD}
+      constant={
+        AUTHENTICATE_FORM_FIELD as unknown as FormFieldsConstant<AuthenticateType>
+      }
       form={form}
       onSubmit={onSubmit}
     >

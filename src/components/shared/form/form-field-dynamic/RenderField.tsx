@@ -1,3 +1,4 @@
+import { IFormFieldSlot } from '@/@types/form-field'
 import {
   FormControl,
   FormField,
@@ -6,11 +7,10 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { IFormFieldSlot } from '@/@types/form-field'
 
 interface RenderFieldProps<T> {
   form: any
-  slot: IFormFieldSlot<T>
+  slot: IFormFieldSlot<T | any>
 }
 
 export function RenderField<T>({ form, slot }: RenderFieldProps<T>) {

@@ -1,8 +1,24 @@
-import { useState } from "react"
-import { Bar, BarChart, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
-import { WalletStats } from "../../../services/wallet-service"
-import { Button } from "../../ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../ui/card"
+import { useState } from 'react'
+import {
+  Bar,
+  BarChart,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts'
+import { WalletStats } from '../../../services/wallet-service'
+import { Button } from '../../ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '../../ui/card'
 
 interface WalletChartProps {
   walletStats: WalletStats
@@ -25,7 +41,7 @@ export function WalletChart({ walletStats }: WalletChartProps) {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-3 border rounded-lg shadow-lg">
+        <div className="rounded-lg border bg-white p-3 shadow-lg">
           <p className="font-medium">{`Mês: ${label}`}</p>
           {payload.map((entry: any, index: number) => (
             <p key={index} style={{ color: entry.color }}>

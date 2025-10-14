@@ -1,5 +1,5 @@
-import { FormFieldsConstant } from "../@types/form-field";
-import { CreateOfferType } from "../validations/create-offer-schema";
+import { FormFieldsConstant } from '../@types/form-field'
+import { CreateOfferType } from '../validations/create-offer-schema'
 
 export function useOfferConstant() {
   const OFFER_CONSTANT: FormFieldsConstant<CreateOfferType> = [
@@ -13,6 +13,6 @@ export function useOfferConstant() {
   ]
 
   return {
-    OFFER_CONSTANT
+    OFFER_CONSTANT,
   }
 }

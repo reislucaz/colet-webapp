@@ -1,15 +1,18 @@
 'use client'
-import { useQuery } from "@tanstack/react-query"
-import { useSession } from "next-auth/react"
-import { useMemo, useState } from "react"
+import { useQuery } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
+import { useMemo, useState } from 'react'
 import {
   WalletChart,
   WalletHeader,
   WalletStats,
   WalletTabs,
-  type TransactionStatus
-} from "../../../components/routes/wallet"
-import { WalletService, type WalletStats as WalletStatsType } from "../../../services/wallet-service"
+  type TransactionStatus,
+} from '../../../components/routes/wallet'
+import {
+  WalletService,
+  type WalletStats as WalletStatsType,
+} from '../../../services/wallet-service'
 
 export default function WalletPage() {
   const { data: session } = useSession()
@@ -44,13 +47,19 @@ export default function WalletPage() {
         totalPurchases: 0,
         pendingAmount: 0,
         availableAmount: 0,
-        totalFees: 0
+        totalFees: 0,
       }
     }
 
     // Calcular valores do saldo
-    const availableAmount = balance.available.reduce((sum, item) => sum + item.amount, 0)
-    const pendingAmount = balance.pending.reduce((sum, item) => sum + item.amount, 0)
+    const availableAmount = balance.available.reduce(
+      (sum, item) => sum + item.amount,
+      0,
+    )
+    const pendingAmount = balance.pending.reduce(
+      (sum, item) => sum + item.amount,
+      0,
+    )
     const totalBalance = availableAmount + pendingAmount
 
     // Calcular estatísticas das transações
@@ -63,7 +72,7 @@ export default function WalletPage() {
       totalPurchases: 0, // Não aplicável para transações do Stripe
       pendingAmount,
       availableAmount,
-      totalFees
+      totalFees,
     }
   }, [transactions, balance])
 
@@ -71,20 +80,39 @@ export default function WalletPage() {
   const monthlyData = useMemo(() => {
     if (!transactions?.length) return []
 
-    const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+    const months = [
+      'Jan',
+      'Fev',
+      'Mar',
+      'Abr',
+      'Mai',
+      'Jun',
+      'Jul',
+      'Ago',
+      'Set',
+      'Out',
+      'Nov',
+      'Dez',
+    ]
     const currentDate = new Date()
     const last6Months = []
 
     for (let i = 5; i >= 0; i--) {
-      const date = new Date(currentDate.getFullYear(), currentDate.getMonth() - i, 1)
+      const date = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() - i,
+        1,
+      )
       const monthName = months[date.getMonth()]
       const year = date.getFullYear()
 
       // Filtrar transações do mês
-      const monthTransactions = transactions.filter(t => {
+      const monthTransactions = transactions.filter((t) => {
         const transactionDate = new Date(t.created * 1000)
-        return transactionDate.getFullYear() === year &&
+        return (
+          transactionDate.getFullYear() === year &&
           transactionDate.getMonth() === date.getMonth()
+        )
       })
 
       const sales = monthTransactions.reduce((sum, t) => sum + t.amount, 0)
@@ -95,7 +123,7 @@ export default function WalletPage() {
         month: monthName,
         sales,
         fees,
-        net
+        net,
       })
     }
 
@@ -105,7 +133,7 @@ export default function WalletPage() {
   const processedWalletStats: WalletStatsType = {
     wallet: processedWalletData,
     transactions: transactions || [],
-    monthlyData
+    monthlyData,
   }
 
   const handleSearchChange = (value: string) => {
@@ -119,8 +147,10 @@ export default function WalletPage() {
   if (isLoading) {
     return (
       <div className="container py-8">
-        <div className="flex items-center justify-center h-64">
-          <div className="text-muted-foreground">Carregando dados da carteira...</div>
+        <div className="flex h-64 items-center justify-center">
+          <div className="text-muted-foreground">
+            Carregando dados da carteira...
+          </div>
         </div>
       </div>
     )
@@ -128,7 +158,7 @@ export default function WalletPage() {
 
   return (
     <div className="container py-8">
-      <div className="flex flex-col gap-6 m-4">
+      <div className="m-4 flex flex-col gap-6">
         {/* Header */}
         <WalletHeader />
 

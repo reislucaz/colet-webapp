@@ -1,10 +1,19 @@
 'use client'
-import { useSession } from "next-auth/react";
-import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useEffect, useRef, useState } from "react";
-import { Socket } from "socket.io-client";
-import { Chat } from "../@types/chat";
-import { Message } from "../@types/message";
-import { getSocketClient } from "../services/socket-client";
+import { useSession } from 'next-auth/react'
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
+import { Socket } from 'socket.io-client'
+import { Chat } from '../@types/chat'
+import { Message } from '../@types/message'
+import { getSocketClient } from '../services/socket-client'
 
 interface ChatContextProps {
   messages: Message[]
@@ -16,11 +25,15 @@ interface ChatContextProps {
   setSelectedChat: Dispatch<SetStateAction<Chat | null>>
 }
 
-export const ChatContext = createContext<ChatContextProps>({} as ChatContextProps)
+export const ChatContext = createContext<ChatContextProps>(
+  {} as ChatContextProps,
+)
 
 export function ChatContextProvider({ children }: { children: ReactNode }) {
   const [selectedChat, setSelectedChat] = useState<Chat | null>(null)
-  const [messages, setMessages] = useState<Message[]>(selectedChat?.messages || [])
+  const [messages, setMessages] = useState<Message[]>(
+    selectedChat?.messages || [],
+  )
   const socketRef = useRef<Socket | null>(null)
   const [chatId, setChatId] = useState<string | undefined>()
   const { data: session } = useSession()
@@ -48,15 +61,21 @@ export function ChatContextProvider({ children }: { children: ReactNode }) {
     })
   }
 
-  return <ChatContext.Provider value={{
-    setChatId,
-    chatId,
-    messages,
-    setMessages,
-    socketRef,
-    selectedChat,
-    setSelectedChat
-  }}>{children}</ChatContext.Provider>
+  return (
+    <ChatContext.Provider
+      value={{
+        setChatId,
+        chatId,
+        messages,
+        setMessages,
+        socketRef,
+        selectedChat,
+        setSelectedChat,
+      }}
+    >
+      {children}
+    </ChatContext.Provider>
+  )
 }
 
 export function useChatContext() {

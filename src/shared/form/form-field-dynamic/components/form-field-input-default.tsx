@@ -15,7 +15,7 @@ export function FormFieldInputDefault({
   field,
   slot,
 }: FormFieldInputDefaultProps) {
-  const { autoComplete } = slot as IFormFieldInputDefaultSlot
+  const { autoComplete } = slot as IFormFieldInputDefaultSlot as any
 
   return (
     <Input

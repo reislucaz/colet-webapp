@@ -1,9 +1,9 @@
-import { CheckCircle, Clock, User, XCircle } from "lucide-react"
-import { Offer } from "../../../@types/offer"
-import { Badge } from "../../ui/badge"
-import { Button } from "../../ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card"
-import { Separator } from "../../ui/separator"
+import { CheckCircle, Clock, User, XCircle } from 'lucide-react'
+import { Offer } from '../../../@types/offer'
+import { Badge } from '../../ui/badge'
+import { Button } from '../../ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card'
+import { Separator } from '../../ui/separator'
 
 interface OfferCardProps {
   offer: Offer
@@ -22,7 +22,7 @@ export function OfferCard({
   onAccept,
   onReject,
   isAccepting,
-  isDeclining
+  isDeclining,
 }: OfferCardProps) {
   const formattedAmount = new Intl.NumberFormat('pt-BR', {
     style: 'currency',
@@ -45,8 +45,8 @@ export function OfferCard({
           headerBg: 'bg-background',
           textColor: 'text-yellow-800',
           badgeColor: 'bg-yellow-100 text-yellow-800',
-          icon: <Clock className="h-4 w-4" />,
-          label: 'Aguardando Resposta'
+          icon: <Clock className="size-4" />,
+          label: 'Aguardando Resposta',
         }
       case 'accepted':
         return {
@@ -54,8 +54,8 @@ export function OfferCard({
           headerBg: 'bg-green-100',
           textColor: 'text-green-800',
           badgeColor: 'bg-green-100 text-green-800',
-          icon: <CheckCircle className="h-4 w-4" />,
-          label: 'Aceita'
+          icon: <CheckCircle className="size-4" />,
+          label: 'Aceita',
         }
       case 'declined':
         return {
@@ -63,8 +63,8 @@ export function OfferCard({
           headerBg: 'bg-red-100',
           textColor: 'text-red-800',
           badgeColor: 'bg-red-100 text-red-800',
-          icon: <XCircle className="h-4 w-4" />,
-          label: 'Recusada'
+          icon: <XCircle className="size-4" />,
+          label: 'Recusada',
         }
       default:
         return {
@@ -72,8 +72,8 @@ export function OfferCard({
           headerBg: 'bg-gray-100',
           textColor: 'text-gray-800',
           badgeColor: 'bg-gray-100 text-gray-800',
-          icon: <Clock className="h-4 w-4" />,
-          label: status
+          icon: <Clock className="size-4" />,
+          label: status,
         }
     }
   }
@@ -85,7 +85,9 @@ export function OfferCard({
     <Card className={`${statusConfig.bg} shadow-sm`}>
       <CardHeader className={`${statusConfig.headerBg} rounded-t-lg`}>
         <div className="flex items-center justify-between">
-          <CardTitle className={`${statusConfig.textColor} text-lg flex items-center gap-2`}>
+          <CardTitle
+            className={`${statusConfig.textColor} flex items-center gap-2 text-lg`}
+          >
             {statusConfig.icon}
             {isRecipient ? 'Oferta Recebida' : 'Sua Oferta'}
           </CardTitle>
@@ -98,7 +100,9 @@ export function OfferCard({
       <CardContent className="pt-4">
         <div className="space-y-4">
           <div className="text-center">
-            <p className={`text-sm ${statusConfig.textColor} mb-1`}>Valor Oferecido</p>
+            <p className={`text-sm ${statusConfig.textColor} mb-1`}>
+              Valor Oferecido
+            </p>
             <p className={`text-3xl font-bold ${statusConfig.textColor}`}>
               {formattedAmount}
             </p>
@@ -108,14 +112,18 @@ export function OfferCard({
 
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-sm">
-              <span className={`${statusConfig.textColor} flex items-center gap-1`}>
-                <User className="h-3 w-3" />
+              <span
+                className={`${statusConfig.textColor} flex items-center gap-1`}
+              >
+                <User className="size-3" />
                 {isRecipient ? 'Comprador:' : 'Vendedor:'}
               </span>
             </div>
             <div className="flex items-center gap-2 text-sm">
               <span className={`${statusConfig.textColor}`}>Data:</span>
-              <span className={`font-medium ${statusConfig.textColor}`}>{formattedDate}</span>
+              <span className={`font-medium ${statusConfig.textColor}`}>
+                {formattedDate}
+              </span>
             </div>
           </div>
 
@@ -131,12 +139,12 @@ export function OfferCard({
                   >
                     {isDeclining ? (
                       <>
-                        <XCircle className="mr-2 h-4 w-4 animate-spin" />
+                        <XCircle className="mr-2 size-4 animate-spin" />
                         Recusando...
                       </>
                     ) : (
                       <>
-                        <XCircle className="mr-2 h-4 w-4" />
+                        <XCircle className="mr-2 size-4" />
                         Recusar
                       </>
                     )}
@@ -148,12 +156,12 @@ export function OfferCard({
                   >
                     {isAccepting ? (
                       <>
-                        <CheckCircle className="mr-2 h-4 w-4 animate-spin" />
+                        <CheckCircle className="mr-2 size-4 animate-spin" />
                         Aceitando...
                       </>
                     ) : (
                       <>
-                        <CheckCircle className="mr-2 h-4 w-4" />
+                        <CheckCircle className="mr-2 size-4" />
                         Aceitar
                       </>
                     )}
@@ -172,8 +180,7 @@ export function OfferCard({
                     ? 'Aguardando resposta do vendedor...'
                     : offer.status.toLowerCase() === 'accepted'
                       ? 'Sua oferta foi aceita! Verifique seus pedidos.'
-                      : 'Sua oferta foi recusada.'
-                  }
+                      : 'Sua oferta foi recusada.'}
                 </p>
               </div>
             </>
@@ -186,8 +193,7 @@ export function OfferCard({
                 <p className={`text-sm font-medium ${statusConfig.textColor}`}>
                   {offer.status.toLowerCase() === 'accepted'
                     ? '✅ Negociação concluída com sucesso!'
-                    : '❌ Oferta não foi aceita'
-                  }
+                    : '❌ Oferta não foi aceita'}
                 </p>
               </div>
             </>
@@ -197,4 +203,3 @@ export function OfferCard({
     </Card>
   )
 }
-

@@ -1,7 +1,7 @@
-import { Order } from "../../../@types/order"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui/tabs"
-import { OrdersList } from "./orders-list"
-import { OrdersSearch } from "./orders-search"
+import { Order } from '../../../@types/order'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../ui/tabs'
+import { OrdersList } from './orders-list'
+import { OrdersSearch } from './orders-search'
 
 export type OrderStatus = 'all' | 'pending' | 'paid' | 'cancelled'
 
@@ -20,43 +20,49 @@ export function OrdersTabs({
   searchTerm,
   onSearchChange,
   activeTab,
-  onTabChange
+  onTabChange,
 }: OrdersTabsProps) {
+  const filteredOrders =
+    orders?.filter((order) => {
+      const matchesSearch =
+        order.product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.seller.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        order.id.toLowerCase().includes(searchTerm.toLowerCase())
 
-  const filteredOrders = orders?.filter(order => {
-    const matchesSearch =
-      order.product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.seller.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      order.id.toLowerCase().includes(searchTerm.toLowerCase())
-
-    return matchesSearch
-  }) || []
+      return matchesSearch
+    }) || []
 
   const allOrders = filteredOrders
-  const pendingOrders = filteredOrders.filter(order => order.status.toLowerCase() === 'pending')
-  const paidOrders = filteredOrders.filter(order => order.status.toLowerCase() === 'paid')
-  const cancelledOrders = filteredOrders.filter(order => order.status.toLowerCase() === 'cancelled')
+  const pendingOrders = filteredOrders.filter(
+    (order) => order.status.toLowerCase() === 'pending',
+  )
+  const paidOrders = filteredOrders.filter(
+    (order) => order.status.toLowerCase() === 'paid',
+  )
+  const cancelledOrders = filteredOrders.filter(
+    (order) => order.status.toLowerCase() === 'cancelled',
+  )
 
   const getTabLabel = (status: OrderStatus, count: number) => {
     const labels = {
       all: 'Todos',
       pending: 'Pendentes',
       paid: 'Pagos',
-      cancelled: 'Cancelados'
+      cancelled: 'Cancelados',
     }
     return `${labels[status]} (${count})`
   }
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <OrdersSearch
-          searchTerm={searchTerm}
-          onSearchChange={onSearchChange}
-        />
+      <div className="flex items-center justify-between">
+        <OrdersSearch searchTerm={searchTerm} onSearchChange={onSearchChange} />
       </div>
 
-      <Tabs value={activeTab} onValueChange={(value) => onTabChange(value as OrderStatus)}>
+      <Tabs
+        value={activeTab}
+        onValueChange={(value) => onTabChange(value as OrderStatus)}
+      >
         <TabsList className="grid grid-cols-4">
           <TabsTrigger value="all">
             {getTabLabel('all', allOrders.length)}

@@ -1,15 +1,18 @@
-import { Search } from "lucide-react"
-import { Input } from "../../ui/input"
+import { Search } from 'lucide-react'
+import { Input } from '../../ui/input'
 
 interface OrdersSearchProps {
   searchTerm: string
   onSearchChange: (value: string) => void
 }
 
-export function OrdersSearch({ searchTerm, onSearchChange }: OrdersSearchProps) {
+export function OrdersSearch({
+  searchTerm,
+  onSearchChange,
+}: OrdersSearchProps) {
   return (
     <div className="relative flex-1">
-      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+      <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
       <Input
         placeholder="Buscar por produto, vendedor ou ID do pedido..."
         value={searchTerm}
