@@ -3,11 +3,14 @@
 import Loading from "@/components/loading"
 import { coletApi } from "@/services/axios"
 import { useElements, useStripe } from "@stripe/react-stripe-js"
+import { useMutation } from "@tanstack/react-query"
 import { AnimatePresence } from "framer-motion"
 import { useSession } from "next-auth/react"
 import { useEffect, useState } from "react"
 import { Order } from "../../../@types/order"
 import { Product } from "../../../@types/product"
+import { OrderService } from "../../../services/order-service"
+import { queryClient } from "../../../utils/query-client"
 import { Button } from "../../ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "../../ui/dialog"
 import {
@@ -36,6 +39,15 @@ export function PaymentSession({
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | undefined>()
   const [loading, setLoading] = useState(false)
+  const { mutateAsync: updateOrderStatus } = useMutation({
+    mutationFn: async () => {
+      if (!orderData?.id) return
+      await OrderService.updateStatus(orderData.id, 'PAID')
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['orders'] })
+    }
+  })
 
   useEffect(() => {
     if (order) {
@@ -99,11 +111,7 @@ export function PaymentSession({
     if (!orderData?.id) return
 
     try {
-      await coletApi.patch(`/orders/${orderData.id}`, { status: 'FINISHED' })
-      // Chama o callback de sucesso se fornecido
-      if (onPaymentSuccess) {
-        onPaymentSuccess()
-      }
+      await updateOrderStatus()
     } catch (error) {
       console.log('Erro ao atualizar pedido:', error)
     }
@@ -134,7 +142,7 @@ export function PaymentSession({
         elements,
         clientSecret,
         confirmParams: {
-          return_url: `${window.location.origin}/payment-result?amount=${product.price}&product=${product.name}`
+          return_url: `${window.location.origin}/payment-result?amount=${product.price}&product=${product.name}&orderId=${orderData.id}`
         }
       })
 
