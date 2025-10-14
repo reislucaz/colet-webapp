@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../ui/tabs"
 import { OrdersList } from "./orders-list"
 import { OrdersSearch } from "./orders-search"
 
-export type OrderStatus = 'all' | 'pending' | 'finished' | 'cancelled'
+export type OrderStatus = 'all' | 'pending' | 'paid' | 'cancelled'
 
 interface OrdersTabsProps {
   orders: Order[]
@@ -34,14 +34,14 @@ export function OrdersTabs({
 
   const allOrders = filteredOrders
   const pendingOrders = filteredOrders.filter(order => order.status.toLowerCase() === 'pending')
-  const finishedOrders = filteredOrders.filter(order => order.status.toLowerCase() === 'finished')
+  const paidOrders = filteredOrders.filter(order => order.status.toLowerCase() === 'paid')
   const cancelledOrders = filteredOrders.filter(order => order.status.toLowerCase() === 'cancelled')
 
   const getTabLabel = (status: OrderStatus, count: number) => {
     const labels = {
       all: 'Todos',
       pending: 'Pendentes',
-      finished: 'Finalizados',
+      paid: 'Pagos',
       cancelled: 'Cancelados'
     }
     return `${labels[status]} (${count})`
@@ -64,8 +64,8 @@ export function OrdersTabs({
           <TabsTrigger value="pending">
             {getTabLabel('pending', pendingOrders.length)}
           </TabsTrigger>
-          <TabsTrigger value="finished">
-            {getTabLabel('finished', finishedOrders.length)}
+          <TabsTrigger value="paid">
+            {getTabLabel('paid', paidOrders.length)}
           </TabsTrigger>
           <TabsTrigger value="cancelled">
             {getTabLabel('cancelled', cancelledOrders.length)}
@@ -90,12 +90,12 @@ export function OrdersTabs({
           />
         </TabsContent>
 
-        <TabsContent value="finished" className="mt-6">
+        <TabsContent value="paid" className="mt-6">
           <OrdersList
-            orders={finishedOrders}
+            orders={paidOrders}
             stripe={stripe}
             searchTerm={searchTerm}
-            emptyMessage="Nenhum pedido finalizado encontrado."
+            emptyMessage="Nenhum pedido pago encontrado."
           />
         </TabsContent>
 

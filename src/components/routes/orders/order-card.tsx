@@ -7,6 +7,7 @@ import { OrderService } from "../../../services/order-service"
 import { Badge } from "../../ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../ui/card"
 import { PaymentSession } from "../product-details/payment-session"
+import { OrderStatus } from "./orders-tabs"
 
 interface OrderCardProps {
   order: Order
@@ -37,8 +38,8 @@ export function OrderCard({ order, stripe }: OrderCardProps) {
     }).format(amount)
   }
 
-  const getStatusConfig = (status: string) => {
-    const statusLower = status.toLowerCase()
+  const getStatusConfig = (status: OrderStatus) => {
+    const statusLower = status
     switch (statusLower) {
       case 'pending':
         return {
@@ -48,13 +49,13 @@ export function OrderCard({ order, stripe }: OrderCardProps) {
           badge: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200',
           label: 'Pendente'
         }
-      case 'finished':
+      case 'paid':
         return {
           bg: 'bg-green-50',
           text: 'text-green-700',
           border: 'border-l-green-500',
           badge: 'bg-green-100 text-green-800 hover:bg-green-200',
-          label: 'Finalizado'
+          label: 'Pago'
         }
       case 'cancelled':
         return {
@@ -75,13 +76,13 @@ export function OrderCard({ order, stripe }: OrderCardProps) {
     }
   }
 
-  const statusConfig = getStatusConfig(order.status)
+  const statusConfig = getStatusConfig(order.status.toLowerCase() as OrderStatus)
   const { data: session } = useSession()
   const isOwner = order.product.authorId === session?.user?.id
 
   return (
     <Card
-      className={`${statusConfig.bg} ${statusConfig.border} border-l-4 transition-all duration-200 hover:shadow-md`}
+      className={`bg-background ${statusConfig.border} border-l-4 transition-all duration-200 hover:shadow-md`}
     >
       <CardHeader className="pb-3">
         <div className="flex justify-between items-start">
