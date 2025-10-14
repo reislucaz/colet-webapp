@@ -3,5 +3,6 @@ export enum PrivateRoutes {
   PRODUCTS = '/products',
   CHAT = '/chat',
   ORDERS = '/orders',
+  WALLET = '/wallet',
   PROFILE = '/me',
 }
