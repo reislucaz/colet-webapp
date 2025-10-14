@@ -32,6 +32,9 @@ cd colet-web
 npm install
 ```
 
+### 🔧 Variáveis de Ambiente
+Crie um arquivo `.env` na raiz do projeto e defina as variáveis de ambiente seguindo o exemplo do `.env.example`
+
 ### 🚦 Execução
 Antes de rodar o front-end, é necessário iniciar a API do projeto, que deve estar disponível separadamente. Certifique-se de que a API esteja em execução e acessível localmente (por exemplo, em http://localhost:3333).
 Para acessar e rodar a API do projeto acesse o link e siga os passos do Readme: https://github.com/reislucaz/colet-service.
@@ -43,12 +46,6 @@ npm run dev
 ```
 
 A aplicação estará disponível em: http://localhost:3000
-
-### 🔧 Variáveis de Ambiente
-Crie um arquivo .env.local na raiz do projeto e defina a URL da API:
-```bash
-NEXT_PUBLIC_API_URL=http://localhost:3333
-```
 
 ### 📁 Estrutura de Pastas
 ```bash
