@@ -21,7 +21,8 @@ import {
   MessageSquare,
   Package,
   ShoppingBag,
-  User
+  User,
+  Wallet
 } from 'lucide-react'
 import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -134,6 +135,12 @@ export function Navbar() {
                 <Link href={PrivateRoutes.PROFILE} className="cursor-pointer">
                   <User className="mr-2 size-4" />
                   <span>Perfil</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href={PrivateRoutes.WALLET} className="cursor-pointer">
+                  <Wallet className="mr-2 size-4" />
+                  <span>Carteira</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem
