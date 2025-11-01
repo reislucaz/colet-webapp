@@ -1,6 +1,7 @@
 'use client'
 import { Product } from '@/@types/product'
 import { coletApi } from '@/services/axios'
+import { currencyFormatter } from '@/utils/format-currency'
 import { timeAgo } from '@/utils/time-ago'
 import { Clock, Edit, Eye, MapPin, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -36,11 +37,6 @@ export function ProductItem({
   }
 
   const navigate = useRouter()
-
-  const currencyFormatter = new Intl.NumberFormat('pt-BR', {
-    currency: 'BRL',
-    style: 'currency',
-  })
 
   return (
     <div className="group">

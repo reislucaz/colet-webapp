@@ -28,7 +28,7 @@ export function FormFieldDynamic<T>({ field, slot }: Props<T | any>) {
       return (
         <FormFieldMaskedInput
           {...field}
-          {...slot as any}
+          {...(slot as any)}
           onChange={(e) => {
             slot.onChange?.(e)
             field.onChange(e)
