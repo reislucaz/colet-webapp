@@ -5,6 +5,7 @@ import {
   CoinsIcon,
 } from 'lucide-react'
 import { WalletData } from '../../../services/wallet-service'
+import { formatCurrency } from '../../../utils/format-currency'
 import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card'
 
 interface WalletStatsProps {
@@ -12,56 +13,98 @@ interface WalletStatsProps {
 }
 
 export function WalletStats({ walletData }: WalletStatsProps) {
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL',
-    }).format(amount / 100) // Convertendo centavos para reais
-  }
-
-  const statusConfig = [
+  const statsConfig = [
     {
       label: 'Saldo Total',
-      icon: <CoinsIcon className="text-green-600" />,
-      color: 'text-green-600',
+      value: walletData.balance,
+      icon: CoinsIcon,
+      color: 'text-green-600 dark:text-green-400',
+      bgGradient: 'from-green-500/10 to-emerald-500/10',
+      iconBg: 'bg-green-100 dark:bg-green-900/30',
     },
     {
       label: 'Disponível',
-      icon: <CheckCircleIcon className="text-blue-600" />,
-      color: 'text-blue-600',
+      value: walletData.availableAmount,
+      icon: CheckCircleIcon,
+      color: 'text-blue-600 dark:text-blue-400',
+      bgGradient: 'from-blue-500/10 to-cyan-500/10',
+      iconBg: 'bg-blue-100 dark:bg-blue-900/30',
     },
     {
       label: 'Pendente',
-      icon: <ClockIcon className="text-yellow-600" />,
-      color: 'text-yellow-600',
+      value: walletData.pendingAmount,
+      icon: ClockIcon,
+      color: 'text-yellow-600 dark:text-yellow-400',
+      bgGradient: 'from-yellow-500/10 to-orange-500/10',
+      iconBg: 'bg-yellow-100 dark:bg-yellow-900/30',
     },
     {
       label: 'Total em Taxas',
-      icon: <BarChartIcon className="text-red-600" />,
-      color: 'text-red-600',
+      value: walletData.totalFees,
+      icon: BarChartIcon,
+      color: 'text-red-600 dark:text-red-400',
+      bgGradient: 'from-red-500/10 to-pink-500/10',
+      iconBg: 'bg-red-100 dark:bg-red-900/30',
     },
   ]
 
   return (
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-      {statusConfig.map((status) => (
-        <Card key={status.label} className="bg-background">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              {status.label}
-            </CardTitle>
-            <span className="text-2xl">{status.icon}</span>
-          </CardHeader>
-          <CardContent>
-            <div className={`text-2xl font-bold ${status.color}`}>
-              {formatCurrency(walletData.balance)}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Saldo atual da conta
-            </p>
-          </CardContent>
-        </Card>
+      {statsConfig.map((stat, index) => (
+        <div
+          key={stat.label}
+          className="group"
+          style={{
+            animation: `fadeInUp 0.5s ease-out ${index * 0.1}s both`,
+          }}
+        >
+          <Card className="relative overflow-hidden border-0 bg-gradient-to-br from-white to-gray-50/50 shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/10 dark:from-gray-900 dark:to-gray-800/50">
+            <div
+              className={`absolute inset-0 bg-gradient-to-br ${stat.bgGradient} opacity-0 transition-opacity duration-500 group-hover:opacity-100`}
+            />
+
+            <CardHeader className="relative flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-gray-600 dark:text-gray-400">
+                {stat.label}
+              </CardTitle>
+              <div
+                className={`${stat.iconBg} rounded-full p-2 transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110`}
+              >
+                <stat.icon className={`size-5 ${stat.color}`} />
+              </div>
+            </CardHeader>
+
+            <CardContent className="relative">
+              <div
+                className={`text-2xl font-bold transition-colors ${stat.color}`}
+              >
+                {formatCurrency(stat.value)}
+              </div>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {stat.label === 'Saldo Total' && 'Valor total acumulado'}
+                {stat.label === 'Disponível' && 'Pronto para saque'}
+                {stat.label === 'Pendente' && 'Aguardando liberação'}
+                {stat.label === 'Total em Taxas' && 'Taxas processadas'}
+              </p>
+
+              <div className="mt-3 h-1 w-full rounded-full bg-gradient-to-r from-green-500 to-primary opacity-20 transition-opacity duration-300 group-hover:opacity-100" />
+            </CardContent>
+          </Card>
+        </div>
       ))}
+
+      <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
     </div>
   )
 }
