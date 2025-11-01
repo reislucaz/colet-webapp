@@ -2,7 +2,6 @@
 
 import { Product } from '@/@types/product'
 import { ProductItem } from '@/components/products/product-item'
-import { ProductsHeader } from '@/components/routes/products/products-header'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { ProductSkeleton } from '@/components/ui/product-skeleton'
@@ -19,12 +18,9 @@ import {
 } from '@/constants/product/product-status-enum'
 import { coletApi } from '@/services/axios'
 import { useQuery } from '@tanstack/react-query'
-import { Plus, Search } from 'lucide-react'
-import { useSession } from 'next-auth/react'
-import Link from 'next/link'
+import { Search, ShoppingBag } from 'lucide-react'
 import { useState } from 'react'
 import { useDebounce } from 'use-debounce'
-import Loading from '../loading'
 
 interface PaginatedResponse<T> {
   data: T[]
@@ -33,14 +29,7 @@ interface PaginatedResponse<T> {
   limit: number
 }
 
-const getUserId = (session: any) => {
-  return session?.user?.id || session?.user?.email || ''
-}
-
-export default function MyProductsPage() {
-  const { data: session } = useSession()
-  const userId = getUserId(session)
-
+export default function MarketplacePage() {
   const [search, setSearch] = useState('')
   const [debouncedSearch] = useDebounce(search, 500)
   const [status, setStatus] = useState<StatusProduct | 'ALL'>('ALL')
@@ -49,50 +38,59 @@ export default function MyProductsPage() {
   const limit = 9
 
   const { data: products, isLoading } = useQuery<PaginatedResponse<Product>>({
-    queryKey: ['myProducts', userId, debouncedSearch, status, page],
+    queryKey: ['marketplace', debouncedSearch, status, page],
     queryFn: async () => {
       const response = await coletApi.get('/products', {
         params: {
           search: debouncedSearch,
           status: status !== 'ALL' ? status : undefined,
-          authorId: userId,
           page,
           limit,
         },
       })
       return response.data
     },
-    enabled: !!userId,
   })
-
-  if (!userId) {
-    return <Loading />
-  }
 
   return (
     <div className="container py-8">
       <div className="m-4 flex flex-col gap-6">
-        <ProductsHeader />
+        <div className="space-y-4">
+          <div className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-purple-500 to-primary p-6 shadow-lg transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/20">
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-green-500/10 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+
+            <div className="relative flex items-center gap-4">
+              <div className="rounded-full bg-white/20 p-3 backdrop-blur-sm transition-transform duration-300 group-hover:scale-110">
+                <ShoppingBag className="size-8 text-white" />
+              </div>
+
+              <div>
+                <h1 className="text-3xl font-bold text-white transition-transform duration-300 group-hover:translate-x-1">
+                  Marketplace
+                </h1>
+                <p className="mt-1 text-sm text-white/90">
+                  Explore e compre produtos recicláveis disponíveis
+                </p>
+              </div>
+            </div>
+
+            <div className="absolute bottom-0 right-0 size-32 rounded-full bg-white/10 blur-3xl" />
+          </div>
+        </div>
 
         <div className="flex items-center justify-between">
           <div className="flex-1">
             <p className="text-sm text-muted-foreground">
-              {products?.total || 0} produto(s) encontrado(s)
+              {products?.total || 0} produto(s) disponível(is)
             </p>
           </div>
-          <Link href="/create-product">
-            <Button className="group rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 shadow-lg transition-all duration-300 hover:scale-105 hover:from-green-600 hover:to-emerald-700 hover:shadow-2xl">
-              <Plus className="mr-2 size-4 transition-transform group-hover:rotate-90" />
-              Novo Produto
-            </Button>
-          </Link>
         </div>
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-3 size-4 text-muted-foreground" />
             <Input
-              placeholder="Buscar meus produtos..."
+              placeholder="Buscar produtos disponíveis..."
               className="pl-10"
               value={search}
               disabled={isLoading}
@@ -158,24 +156,16 @@ export default function MyProductsPage() {
         ) : (
           <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 py-16 dark:border-gray-700">
             <div className="rounded-full bg-gray-100 p-6 dark:bg-gray-800">
-              <Plus className="size-12 text-gray-400 dark:text-gray-600" />
+              <ShoppingBag className="size-12 text-gray-400 dark:text-gray-600" />
             </div>
             <h3 className="mt-4 text-lg font-semibold text-gray-900 dark:text-white">
-              Nenhum produto encontrado
+              Nenhum produto disponível
             </h3>
             <p className="mt-2 text-sm text-muted-foreground">
               {search
                 ? 'Tente ajustar seus filtros de busca.'
-                : 'Comece criando seu primeiro produto.'}
+                : 'Não há produtos disponíveis no momento.'}
             </p>
-            {!search && (
-              <Link href="/create-product">
-                <Button className="mt-6 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 shadow-lg transition-all duration-300 hover:scale-105 hover:from-green-600 hover:to-emerald-700 hover:shadow-2xl">
-                  <Plus className="mr-2 size-4" />
-                  Criar Primeiro Produto
-                </Button>
-              </Link>
-            )}
           </div>
         )}
       </div>

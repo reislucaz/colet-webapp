@@ -1,5 +1,7 @@
 export enum PrivateRoutes {
   HOME = '/',
+  DASHBOARD = '/dashboard',
+  MARKETPLACE = '/marketplace',
   PRODUCTS = '/products',
   CHAT = '/chat',
   ORDERS = '/orders',

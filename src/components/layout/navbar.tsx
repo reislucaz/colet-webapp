@@ -33,9 +33,9 @@ import { ModeToggle } from './header/mode-toggle'
 
 const navigation = [
   { name: 'Início', href: PrivateRoutes.HOME, icon: Home },
-  { name: 'Produtos', href: PrivateRoutes.PRODUCTS, icon: Package },
+  { name: 'Marketplace', href: PrivateRoutes.MARKETPLACE, icon: ShoppingBag },
+  { name: 'Meus Produtos', href: PrivateRoutes.PRODUCTS, icon: Package },
   { name: 'Mensagens', href: PrivateRoutes.CHAT, icon: MessageSquare },
-  { name: 'Pedidos', href: PrivateRoutes.ORDERS, icon: ShoppingBag },
 ]
 
 function Logo() {
