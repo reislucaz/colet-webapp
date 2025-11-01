@@ -13,6 +13,7 @@ import {
   WalletService,
   type WalletStats as WalletStatsType,
 } from '../../../services/wallet-service'
+import Loading from '../loading'
 
 export default function WalletPage() {
   const { data: session } = useSession()
@@ -145,15 +146,7 @@ export default function WalletPage() {
   }
 
   if (isLoading) {
-    return (
-      <div className="container py-8">
-        <div className="flex h-64 items-center justify-center">
-          <div className="text-muted-foreground">
-            Carregando dados da carteira...
-          </div>
-        </div>
-      </div>
-    )
+    return <Loading />
   }
 
   return (
