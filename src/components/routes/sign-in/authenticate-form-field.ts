@@ -1,5 +1,5 @@
 export function useAuthenticateFormField() {
-  const AUTHENTICATE_FORM_FIELD = [
+  const authenticateFormField = [
     [
       {
         name: 'email',
@@ -21,6 +21,6 @@ export function useAuthenticateFormField() {
   ]
 
   return {
-    AUTHENTICATE_FORM_FIELD,
+    authenticateFormField,
   }
 }

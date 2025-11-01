@@ -30,71 +30,84 @@ interface OrderCardProps {
   stripe: any
 }
 
-async function handlePaymentSuccess(order: Order) {
+interface StatusConfig {
+  bg: string
+  text: string
+  border: string
+  badge: string
+  label: string
+  icon: typeof Clock
+  iconColor: string
+  iconBg: string
+}
+
+const statusConfigs: Record<OrderStatus, StatusConfig> = {
+  pending: {
+    bg: 'bg-gradient-to-br from-white to-yellow-50/50 dark:from-gray-900 dark:to-yellow-900/10',
+    text: 'text-yellow-700 dark:text-yellow-400',
+    border: 'border-l-yellow-500',
+    badge:
+      'bg-yellow-100 text-yellow-800 hover:bg-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400',
+    label: 'Pendente',
+    icon: Clock,
+    iconColor: 'text-yellow-600 dark:text-yellow-400',
+    iconBg: 'bg-yellow-100 dark:bg-yellow-900/30',
+  },
+  paid: {
+    bg: 'bg-gradient-to-br from-white to-green-50/50 dark:from-gray-900 dark:to-green-900/10',
+    text: 'text-green-700 dark:text-green-400',
+    border: 'border-l-green-500',
+    badge:
+      'bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400',
+    label: 'Pago',
+    icon: CheckCircle,
+    iconColor: 'text-green-600 dark:text-green-400',
+    iconBg: 'bg-green-100 dark:bg-green-900/30',
+  },
+  cancelled: {
+    bg: 'bg-gradient-to-br from-white to-red-50/50 dark:from-gray-900 dark:to-red-900/10',
+    text: 'text-red-700 dark:text-red-400',
+    border: 'border-l-red-500',
+    badge:
+      'bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400',
+    label: 'Cancelado',
+    icon: XCircle,
+    iconColor: 'text-red-600 dark:text-red-400',
+    iconBg: 'bg-red-100 dark:bg-red-900/30',
+  },
+  all: {
+    bg: 'bg-gradient-to-br from-white to-blue-50/50 dark:from-gray-900 dark:to-blue-900/10',
+    text: 'text-blue-700 dark:text-blue-400',
+    border: 'border-l-blue-500',
+    badge:
+      'bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400',
+    label: 'Todos',
+    icon: ShoppingBag,
+    iconColor: 'text-blue-600 dark:text-blue-400',
+    iconBg: 'bg-blue-100 dark:bg-blue-900/30',
+  },
+}
+
+const getStatusConfig = (status: OrderStatus): StatusConfig => {
+  return statusConfigs[status] || statusConfigs.all
+}
+
+const handlePaymentSuccess = async (order: Order) => {
   await OrderService.updateStatus(order.id, 'PAID')
   toast.success('Pagamento realizado com sucesso')
 }
 
-export function OrderCard({ order, stripe }: OrderCardProps) {
-  const getStatusConfig = (status: OrderStatus) => {
-    const statusLower = status
-    switch (statusLower) {
-      case 'pending':
-        return {
-          bg: 'bg-gradient-to-br from-white to-yellow-50/50 dark:from-gray-900 dark:to-yellow-900/10',
-          text: 'text-yellow-700 dark:text-yellow-400',
-          border: 'border-l-yellow-500',
-          badge:
-            'bg-yellow-100 text-yellow-800 hover:bg-yellow-200 dark:bg-yellow-900/30 dark:text-yellow-400',
-          label: 'Pendente',
-          icon: Clock,
-          iconColor: 'text-yellow-600 dark:text-yellow-400',
-          iconBg: 'bg-yellow-100 dark:bg-yellow-900/30',
-        }
-      case 'paid':
-        return {
-          bg: 'bg-gradient-to-br from-white to-green-50/50 dark:from-gray-900 dark:to-green-900/10',
-          text: 'text-green-700 dark:text-green-400',
-          border: 'border-l-green-500',
-          badge:
-            'bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400',
-          label: 'Pago',
-          icon: CheckCircle,
-          iconColor: 'text-green-600 dark:text-green-400',
-          iconBg: 'bg-green-100 dark:bg-green-900/30',
-        }
-      case 'cancelled':
-        return {
-          bg: 'bg-gradient-to-br from-white to-red-50/50 dark:from-gray-900 dark:to-red-900/10',
-          text: 'text-red-700 dark:text-red-400',
-          border: 'border-l-red-500',
-          badge:
-            'bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400',
-          label: 'Cancelado',
-          icon: XCircle,
-          iconColor: 'text-red-600 dark:text-red-400',
-          iconBg: 'bg-red-100 dark:bg-red-900/30',
-        }
-      default:
-        return {
-          bg: 'bg-gradient-to-br from-white to-blue-50/50 dark:from-gray-900 dark:to-blue-900/10',
-          text: 'text-blue-700 dark:text-blue-400',
-          border: 'border-l-blue-500',
-          badge:
-            'bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900/30 dark:text-blue-400',
-          label: status,
-          icon: ShoppingBag,
-          iconColor: 'text-blue-600 dark:text-blue-400',
-          iconBg: 'bg-blue-100 dark:bg-blue-900/30',
-        }
-    }
-  }
+const getUserId = (session: any): string => {
+  return (session?.user as any)?.id || ''
+}
 
+export function OrderCard({ order, stripe }: OrderCardProps) {
   const statusConfig = getStatusConfig(
     order.status.toLowerCase() as OrderStatus,
   )
   const { data: session } = useSession()
-  const isOwner = order.product.authorId === (session?.user as any)?.id
+  const isOwner = order.product.authorId === getUserId(session)
+  const StatusIcon = statusConfig.icon
 
   return (
     <Card
@@ -108,9 +121,7 @@ export function OrderCard({ order, stripe }: OrderCardProps) {
             <div
               className={`${statusConfig.iconBg} rounded-full p-2 transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110`}
             >
-              <statusConfig.icon
-                className={`size-5 ${statusConfig.iconColor}`}
-              />
+              <StatusIcon className={`size-5 ${statusConfig.iconColor}`} />
             </div>
             <div>
               <CardTitle

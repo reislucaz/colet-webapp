@@ -15,61 +15,66 @@ interface TransactionCardProps {
   transaction: BalanceTransaction
 }
 
+interface StatusConfig {
+  bg: string
+  border: string
+  badge: string
+  label: string
+  icon: typeof CheckCircleIcon
+  iconColor: string
+  iconBg: string
+}
+
+const statusConfigs: Record<string, StatusConfig> = {
+  available: {
+    bg: 'bg-gradient-to-br from-white to-green-50/50 dark:from-gray-900 dark:to-green-900/10',
+    border: 'border-l-green-500',
+    badge:
+      'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
+    label: 'Disponível',
+    icon: CheckCircleIcon,
+    iconColor: 'text-green-600 dark:text-green-400',
+    iconBg: 'bg-green-100 dark:bg-green-900/30',
+  },
+  pending: {
+    bg: 'bg-gradient-to-br from-white to-yellow-50/50 dark:from-gray-900 dark:to-yellow-900/10',
+    border: 'border-l-yellow-500',
+    badge:
+      'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
+    label: 'Pendente',
+    icon: ClockIcon,
+    iconColor: 'text-yellow-600 dark:text-yellow-400',
+    iconBg: 'bg-yellow-100 dark:bg-yellow-900/30',
+  },
+  default: {
+    bg: 'bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50',
+    border: 'border-l-gray-500',
+    badge: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400',
+    label: '',
+    icon: FileTextIcon,
+    iconColor: 'text-gray-600 dark:text-gray-400',
+    iconBg: 'bg-gray-100 dark:bg-gray-900/30',
+  },
+}
+
+const transactionTypeLabels: Record<string, string> = {
+  charge: 'Pagamento Recebido',
+  refund: 'Reembolso',
+  adjustment: 'Ajuste',
+  payout: 'Saque',
+}
+
+const getStatusConfig = (status: string): StatusConfig => {
+  return statusConfigs[status] || { ...statusConfigs.default, label: status }
+}
+
+const getTypeLabel = (type: string): string => {
+  return transactionTypeLabels[type] || type
+}
+
 export function TransactionCard({ transaction }: TransactionCardProps) {
-  const getStatusConfig = (status: string) => {
-    switch (status) {
-      case 'available':
-        return {
-          bg: 'bg-gradient-to-br from-white to-green-50/50 dark:from-gray-900 dark:to-green-900/10',
-          border: 'border-l-green-500',
-          badge:
-            'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-          label: 'Disponível',
-          icon: CheckCircleIcon,
-          iconColor: 'text-green-600 dark:text-green-400',
-          iconBg: 'bg-green-100 dark:bg-green-900/30',
-        }
-      case 'pending':
-        return {
-          bg: 'bg-gradient-to-br from-white to-yellow-50/50 dark:from-gray-900 dark:to-yellow-900/10',
-          border: 'border-l-yellow-500',
-          badge:
-            'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
-          label: 'Pendente',
-          icon: ClockIcon,
-          iconColor: 'text-yellow-600 dark:text-yellow-400',
-          iconBg: 'bg-yellow-100 dark:bg-yellow-900/30',
-        }
-      default:
-        return {
-          bg: 'bg-gradient-to-br from-white to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50',
-          border: 'border-l-gray-500',
-          badge:
-            'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400',
-          label: status,
-          icon: FileTextIcon,
-          iconColor: 'text-gray-600 dark:text-gray-400',
-          iconBg: 'bg-gray-100 dark:bg-gray-900/30',
-        }
-    }
-  }
-
-  const getTypeLabel = (type: string) => {
-    switch (type) {
-      case 'charge':
-        return 'Pagamento Recebido'
-      case 'refund':
-        return 'Reembolso'
-      case 'adjustment':
-        return 'Ajuste'
-      case 'payout':
-        return 'Saque'
-      default:
-        return type
-    }
-  }
-
   const statusConfig = getStatusConfig(transaction.status)
+  const StatusIcon = statusConfig.icon
 
   return (
     <Card
@@ -83,9 +88,7 @@ export function TransactionCard({ transaction }: TransactionCardProps) {
             <div
               className={`${statusConfig.iconBg} rounded-full p-2 transition-transform duration-300 group-hover:rotate-6 group-hover:scale-110`}
             >
-              <statusConfig.icon
-                className={`size-5 ${statusConfig.iconColor}`}
-              />
+              <StatusIcon className={`size-5 ${statusConfig.iconColor}`} />
             </div>
 
             <div className="flex-1 space-y-1">

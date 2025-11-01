@@ -10,22 +10,26 @@ import {
 } from '../../../components/routes/orders'
 import { OrderService } from '../../../services/order-service'
 
+const getUserId = (session: any) => {
+  return session?.user?.id || session?.user?.email || ''
+}
+
+const fetchUserOrders = async (userId: string) => {
+  if (!userId) return []
+  return OrderService.getManyByUserId(userId)
+}
+
 export default function OrdersPage() {
   const { data: session } = useSession()
   const stripe = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!)
   const [searchTerm, setSearchTerm] = useState('')
   const [activeTab, setActiveTab] = useState<OrderStatus>('all')
 
-  // Garantir que temos um ID de usuário válido
-  const userId = (session?.user as any)?.id || session?.user?.email || ''
+  const userId = getUserId(session)
 
-  // Buscar todos os pedidos do usuário
-  const { data: orders, refetch } = useQuery({
+  const { data: orders } = useQuery({
     queryKey: ['Orders', userId],
-    queryFn: () => {
-      if (!userId) return []
-      return OrderService.getManyByUserId(userId)
-    },
+    queryFn: () => fetchUserOrders(userId),
     enabled: !!userId,
   })
 
