@@ -5,9 +5,13 @@ export interface Offer {
   id?: string
   amount: number
   status: string
-  sender: User
-  recipientId: string
   senderId: string
-  chat: Chat
+  recipientId: string
+  chatId?: string
+  productId?: string
+  stripePaymentIntentId?: string | null
+  sender?: User
+  chat?: Chat
   createdAt: Date
+  updatedAt?: Date
 }
