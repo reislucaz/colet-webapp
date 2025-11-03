@@ -16,6 +16,7 @@ import { PublicRoutes } from '@/constants/routes/public-routes'
 import { cn } from '@/utils/class-name'
 import {
   Home,
+  LayoutDashboard,
   LogOut,
   Menu,
   MessageSquare,
@@ -33,9 +34,10 @@ import { ModeToggle } from './header/mode-toggle'
 
 const navigation = [
   { name: 'Início', href: PrivateRoutes.HOME, icon: Home },
-  { name: 'Produtos', href: PrivateRoutes.PRODUCTS, icon: Package },
+  { name: 'Marketplace', href: PrivateRoutes.MARKETPLACE, icon: ShoppingBag },
+  { name: 'Meus Produtos', href: PrivateRoutes.PRODUCTS, icon: Package },
+  { name: 'Dashboard', href: PrivateRoutes.DASHBOARD, icon: LayoutDashboard },
   { name: 'Mensagens', href: PrivateRoutes.CHAT, icon: MessageSquare },
-  { name: 'Pedidos', href: PrivateRoutes.ORDERS, icon: ShoppingBag },
 ]
 
 function Logo() {

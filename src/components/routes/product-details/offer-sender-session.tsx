@@ -13,9 +13,11 @@ export function OfferCard({ offer }: { offer: Offer }) {
             <p className="text-sm text-gray-500">
               Realizada em: {new Date(offer.createdAt).toLocaleDateString()}
             </p>
-            <p className="text-sm text-gray-500">
-              Negociante: {offer.sender.name}
-            </p>
+            {offer.sender && (
+              <p className="text-sm text-gray-500">
+                Negociante: {offer.sender.name}
+              </p>
+            )}
           </div>
         </div>
       </CardContent>

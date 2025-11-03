@@ -12,14 +12,14 @@ import { useAuthenticateFormField } from './authenticate-form-field'
 import { useAuthenticate } from './use-authenticate'
 
 export function AuthenticateForm() {
-  const { AUTHENTICATE_FORM_FIELD } = useAuthenticateFormField()
+  const { authenticateFormField } = useAuthenticateFormField()
 
   const { alertError, form, onSubmit } = useAuthenticate()
 
   return (
     <FormRender<AuthenticateType>
       constant={
-        AUTHENTICATE_FORM_FIELD as unknown as FormFieldsConstant<AuthenticateType>
+        authenticateFormField as unknown as FormFieldsConstant<AuthenticateType>
       }
       form={form}
       onSubmit={onSubmit}

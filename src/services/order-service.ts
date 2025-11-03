@@ -11,7 +11,7 @@ export class OrderService {
   }
 
   static async getManyByUserId(userId: string): Promise<Order[]> {
-    return (await coletApi.get(`${OrderService.baseUrl}/user/${userId}`)).data
+    return (await coletApi.get(`${OrderService.baseUrl}`)).data
   }
 
   static async updateStatus(orderId: string, status: string): Promise<Order> {
@@ -30,5 +30,9 @@ export class OrderService {
 
   static async getById(orderId: string): Promise<Order> {
     return (await coletApi.get(`${OrderService.baseUrl}/${orderId}`)).data
+  }
+
+  static async deleteOrder(orderId: string): Promise<void> {
+    return (await coletApi.delete(`${OrderService.baseUrl}/${orderId}`)).data
   }
 }

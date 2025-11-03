@@ -1,50 +1,61 @@
 import {
-  BarChartIcon,
-  CheckCircleIcon,
-  ClockIcon,
   CoinsIcon,
+  PackageIcon,
+  ShoppingBagIcon,
+  ClockIcon,
 } from 'lucide-react'
-import { WalletData } from '../../../services/wallet-service'
 import { formatCurrency } from '../../../utils/format-currency'
 import { Card, CardContent, CardHeader, CardTitle } from '../../ui/card'
 
-interface WalletStatsProps {
-  walletData: WalletData
+interface DashboardStatsProps {
+  totalProducts: number
+  totalOrders: number
+  totalSales: number
+  pendingOrders: number
 }
 
-export function WalletStats({ walletData }: WalletStatsProps) {
+export function DashboardStats({
+  totalProducts,
+  totalOrders,
+  totalSales,
+  pendingOrders,
+}: DashboardStatsProps) {
   const statsConfig = [
     {
-      label: 'Saldo Total',
-      value: walletData.balance,
+      label: 'Total de Vendas',
+      value: formatCurrency(totalSales),
       icon: CoinsIcon,
       color: 'text-green-600 dark:text-green-400',
       bgGradient: 'from-green-500/10 to-emerald-500/10',
       iconBg: 'bg-green-100 dark:bg-green-900/30',
+      description: 'Valor total acumulado',
     },
     {
-      label: 'Disponível',
-      value: walletData.availableAmount,
-      icon: CheckCircleIcon,
+      label: 'Total de Pedidos',
+      value: totalOrders.toString(),
+      icon: ShoppingBagIcon,
       color: 'text-blue-600 dark:text-blue-400',
       bgGradient: 'from-blue-500/10 to-cyan-500/10',
       iconBg: 'bg-blue-100 dark:bg-blue-900/30',
+      description: 'Pedidos realizados',
     },
     {
-      label: 'Pendente',
-      value: walletData.pendingAmount,
+      label: 'Produtos Vendidos',
+      value: totalProducts.toString(),
+      icon: PackageIcon,
+      color: 'text-purple-600 dark:text-purple-400',
+      bgGradient: 'from-purple-500/10 to-pink-500/10',
+      iconBg: 'bg-purple-100 dark:bg-purple-900/30',
+      description: 'Produtos diferentes',
+    },
+    {
+      label: 'Pedidos Pendentes',
+      value: pendingOrders.toString(),
       icon: ClockIcon,
       color: 'text-yellow-600 dark:text-yellow-400',
       bgGradient: 'from-yellow-500/10 to-orange-500/10',
       iconBg: 'bg-yellow-100 dark:bg-yellow-900/30',
-    },
-    {
-      label: 'Total em Taxas',
-      value: walletData.totalFees,
-      icon: BarChartIcon,
-      color: 'text-red-600 dark:text-red-400',
-      bgGradient: 'from-red-500/10 to-pink-500/10',
-      iconBg: 'bg-red-100 dark:bg-red-900/30',
+      description: 'Aguardando pagamento',
     },
   ]
 
@@ -78,13 +89,10 @@ export function WalletStats({ walletData }: WalletStatsProps) {
               <div
                 className={`text-2xl font-bold transition-colors ${stat.color}`}
               >
-                {formatCurrency(stat.value)}
+                {stat.value}
               </div>
               <p className="mt-1 text-xs text-muted-foreground">
-                {stat.label === 'Saldo Total' && 'Valor total acumulado'}
-                {stat.label === 'Disponível' && 'Pronto para saque'}
-                {stat.label === 'Pendente' && 'Aguardando liberação'}
-                {stat.label === 'Total em Taxas' && 'Taxas processadas'}
+                {stat.description}
               </p>
 
               <div className="mt-3 h-1 w-full rounded-full bg-gradient-to-r from-green-500 to-primary opacity-20 transition-opacity duration-300 group-hover:opacity-100" />

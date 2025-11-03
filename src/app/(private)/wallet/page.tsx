@@ -11,25 +11,151 @@ import {
 } from '../../../components/routes/wallet'
 import {
   WalletService,
+  type Balance,
+  type BalanceTransaction,
   type WalletStats as WalletStatsType,
 } from '../../../services/wallet-service'
+import Loading from '../loading'
+
+const monthsLabels = [
+  'Jan',
+  'Fev',
+  'Mar',
+  'Abr',
+  'Mai',
+  'Jun',
+  'Jul',
+  'Ago',
+  'Set',
+  'Out',
+  'Nov',
+  'Dez',
+]
+
+const monthsToDisplay = 6
+const initialWalletData = {
+  balance: 0,
+  totalSales: 0,
+  totalPurchases: 0,
+  pendingAmount: 0,
+  availableAmount: 0,
+  totalFees: 0,
+}
+
+const calculateBalanceAmounts = (balance: Balance) => {
+  const availableAmount = balance.available.reduce(
+    (sum, item) => sum + item.amount,
+    0,
+  )
+  const pendingAmount = balance.pending.reduce(
+    (sum, item) => sum + item.amount,
+    0,
+  )
+  const totalBalance = availableAmount + pendingAmount
+
+  return { availableAmount, pendingAmount, totalBalance }
+}
+
+const calculateTransactionTotals = (transactions: BalanceTransaction[]) => {
+  const totalSales = transactions.reduce((sum, t) => sum + t.amount, 0)
+  const totalFees = transactions.reduce((sum, t) => sum + t.fee, 0)
+
+  return { totalSales, totalFees }
+}
+
+const filterTransactionsByMonth = (
+  transactions: BalanceTransaction[],
+  year: number,
+  month: number,
+) => {
+  return transactions.filter((transaction) => {
+    const transactionDate = new Date(transaction.created * 1000)
+    return (
+      transactionDate.getFullYear() === year &&
+      transactionDate.getMonth() === month
+    )
+  })
+}
+
+const calculateMonthlyTotals = (transactions: BalanceTransaction[]) => {
+  const sales = transactions.reduce((sum, t) => sum + t.amount, 0)
+  const fees = transactions.reduce((sum, t) => sum + t.fee, 0)
+  const net = transactions.reduce((sum, t) => sum + t.net, 0)
+
+  return { sales, fees, net }
+}
+
+const generateMonthlyData = (transactions: BalanceTransaction[]) => {
+  if (!transactions?.length) return []
+
+  const currentDate = new Date()
+  const monthlyData = []
+
+  for (let i = monthsToDisplay - 1; i >= 0; i--) {
+    const date = new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() - i,
+      1,
+    )
+    const monthName = monthsLabels[date.getMonth()]
+    const year = date.getFullYear()
+    const month = date.getMonth()
+
+    const monthTransactions = filterTransactionsByMonth(
+      transactions,
+      year,
+      month,
+    )
+    const totals = calculateMonthlyTotals(monthTransactions)
+
+    monthlyData.push({
+      month: monthName,
+      ...totals,
+    })
+  }
+
+  return monthlyData
+}
+
+const processWalletData = (
+  transactions: BalanceTransaction[] | undefined,
+  balance: Balance | undefined,
+) => {
+  if (!transactions?.length || !balance) {
+    return initialWalletData
+  }
+
+  const { availableAmount, pendingAmount, totalBalance } =
+    calculateBalanceAmounts(balance)
+  const { totalSales, totalFees } = calculateTransactionTotals(transactions)
+
+  return {
+    balance: totalBalance,
+    totalSales,
+    totalPurchases: 0,
+    pendingAmount,
+    availableAmount,
+    totalFees,
+  }
+}
+
+const getUserId = (session: any) => {
+  return session?.user?.id || session?.user?.email || ''
+}
 
 export default function WalletPage() {
   const { data: session } = useSession()
   const [searchTerm, setSearchTerm] = useState('')
   const [activeTab, setActiveTab] = useState<TransactionStatus>('all')
 
-  // Garantir que temos um ID de usuário válido
-  const userId = (session?.user as any)?.id || session?.user?.email || ''
+  const userId = getUserId(session)
 
-  // Buscar dados das transações
   const { data: transactions, isLoading: isLoadingTransactions } = useQuery({
     queryKey: ['WalletTransactions', userId],
     queryFn: () => WalletService.getTransactions(),
     enabled: !!userId,
   })
 
-  // Buscar dados do saldo
   const { data: balance, isLoading: isLoadingBalance } = useQuery({
     queryKey: ['WalletBalance', userId],
     queryFn: () => WalletService.getBalance(),
@@ -38,97 +164,15 @@ export default function WalletPage() {
 
   const isLoading = isLoadingTransactions || isLoadingBalance
 
-  // Processar dados para calcular estatísticas
-  const processedWalletData = useMemo(() => {
-    if (!transactions?.length || !balance) {
-      return {
-        balance: 0,
-        totalSales: 0,
-        totalPurchases: 0,
-        pendingAmount: 0,
-        availableAmount: 0,
-        totalFees: 0,
-      }
-    }
+  const processedWalletData = useMemo(
+    () => processWalletData(transactions, balance),
+    [transactions, balance],
+  )
 
-    // Calcular valores do saldo
-    const availableAmount = balance.available.reduce(
-      (sum, item) => sum + item.amount,
-      0,
-    )
-    const pendingAmount = balance.pending.reduce(
-      (sum, item) => sum + item.amount,
-      0,
-    )
-    const totalBalance = availableAmount + pendingAmount
-
-    // Calcular estatísticas das transações
-    const totalSales = transactions.reduce((sum, t) => sum + t.amount, 0)
-    const totalFees = transactions.reduce((sum, t) => sum + t.fee, 0)
-
-    return {
-      balance: totalBalance,
-      totalSales,
-      totalPurchases: 0, // Não aplicável para transações do Stripe
-      pendingAmount,
-      availableAmount,
-      totalFees,
-    }
-  }, [transactions, balance])
-
-  // Processar dados mensais para o gráfico
-  const monthlyData = useMemo(() => {
-    if (!transactions?.length) return []
-
-    const months = [
-      'Jan',
-      'Fev',
-      'Mar',
-      'Abr',
-      'Mai',
-      'Jun',
-      'Jul',
-      'Ago',
-      'Set',
-      'Out',
-      'Nov',
-      'Dez',
-    ]
-    const currentDate = new Date()
-    const last6Months = []
-
-    for (let i = 5; i >= 0; i--) {
-      const date = new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth() - i,
-        1,
-      )
-      const monthName = months[date.getMonth()]
-      const year = date.getFullYear()
-
-      // Filtrar transações do mês
-      const monthTransactions = transactions.filter((t) => {
-        const transactionDate = new Date(t.created * 1000)
-        return (
-          transactionDate.getFullYear() === year &&
-          transactionDate.getMonth() === date.getMonth()
-        )
-      })
-
-      const sales = monthTransactions.reduce((sum, t) => sum + t.amount, 0)
-      const fees = monthTransactions.reduce((sum, t) => sum + t.fee, 0)
-      const net = monthTransactions.reduce((sum, t) => sum + t.net, 0)
-
-      last6Months.push({
-        month: monthName,
-        sales,
-        fees,
-        net,
-      })
-    }
-
-    return last6Months
-  }, [transactions])
+  const monthlyData = useMemo(
+    () => generateMonthlyData(transactions || []),
+    [transactions],
+  )
 
   const processedWalletStats: WalletStatsType = {
     wallet: processedWalletData,
@@ -145,30 +189,15 @@ export default function WalletPage() {
   }
 
   if (isLoading) {
-    return (
-      <div className="container py-8">
-        <div className="flex h-64 items-center justify-center">
-          <div className="text-muted-foreground">
-            Carregando dados da carteira...
-          </div>
-        </div>
-      </div>
-    )
+    return <Loading />
   }
 
   return (
     <div className="container py-8">
       <div className="m-4 flex flex-col gap-6">
-        {/* Header */}
         <WalletHeader />
-
-        {/* Estatísticas */}
         <WalletStats walletData={processedWalletData} />
-
-        {/* Gráfico */}
         <WalletChart walletStats={processedWalletStats} />
-
-        {/* Tabs com Filtros e Lista de Transações */}
         <WalletTabs
           transactions={transactions || []}
           searchTerm={searchTerm}

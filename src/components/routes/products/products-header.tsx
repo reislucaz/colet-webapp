@@ -1,6 +1,6 @@
-import { ShoppingBag } from 'lucide-react'
+import { Package } from 'lucide-react'
 
-export function OrdersHeader() {
+export function ProductsHeader() {
   return (
     <div className="space-y-4">
       <div className="group relative overflow-hidden rounded-lg bg-gradient-to-br from-blue-500 to-primary p-6 shadow-lg transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/20">
@@ -8,15 +8,15 @@ export function OrdersHeader() {
 
         <div className="relative flex items-center gap-4">
           <div className="rounded-full bg-white/20 p-3 backdrop-blur-sm transition-transform duration-300 group-hover:scale-110">
-            <ShoppingBag className="size-8 text-white" />
+            <Package className="size-8 text-white" />
           </div>
 
           <div>
             <h1 className="text-3xl font-bold text-white transition-transform duration-300 group-hover:translate-x-1">
-              Meus Pedidos
+              Meus Produtos
             </h1>
             <p className="mt-1 text-sm text-white/90">
-              Gerencie seus pedidos e acompanhe o status dos pagamentos
+              Gerencie seus produtos e resíduos recicláveis
             </p>
           </div>
         </div>

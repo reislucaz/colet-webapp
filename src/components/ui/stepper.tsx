@@ -183,7 +183,7 @@ function useMediaQuery(query: string) {
   return value
 }
 
-const VARIABLE_SIZES = {
+const variableSizes = {
   sm: '32px',
   md: '36px',
   lg: '40px',
@@ -276,7 +276,7 @@ const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
             {
               '--step-icon-size':
                 variables?.['--step-icon-size'] ||
-                `${VARIABLE_SIZES[size || 'md']}`,
+                `${variableSizes[size || 'md']}`,
               '--step-gap': variables?.['--step-gap'] || '8px',
             } as React.CSSProperties
           }
@@ -372,7 +372,6 @@ interface StepSharedProps extends StepProps {
   isLoading?: boolean
 }
 
-// Props which shouldn't be passed to to the Step component from the user
 interface StepInternalConfig {
   index: number
   isCompletedStep?: boolean
