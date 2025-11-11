@@ -1,7 +1,7 @@
+'use client'
 import { authOptions } from '@/lib/auth/auth-options'
 import { ApplicationError } from '@/utils/application-error'
 import axios, { AxiosError } from 'axios'
-import { NextApiRequest, NextApiResponse } from 'next'
 import { getServerSession } from 'next-auth'
 import { getSession } from 'next-auth/react'
 

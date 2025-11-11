@@ -7,4 +7,8 @@ export class ProductService {
   static async update(id: string, data: Partial<Product>) {
     await coletApi.put(`${ProductService.baseUrl}/${id}`, data)
   }
+
+  static async getList(params?: any) {
+    return await coletApi.get(ProductService.baseUrl, { params })
+  }
 }

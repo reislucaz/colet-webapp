@@ -1,0 +1,108 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.2.6/schema.json",
+  "vcs": {
+    "enabled": false,
+    "clientKind": "git",
+    "useIgnoreFile": false
+  },
+  "files": {
+    "includes": ["src/**/*.tsx", "src/**/*.ts"],
+    "ignoreUnknown": false
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100,
+    "lineEnding": "lf"
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "performance": {
+        "noImgElement": "off"
+      },
+      "style": {
+        "noNonNullAssertion": "off",
+        "noParameterAssign": "warn",
+        "useImportType": "warn"
+      },
+      "complexity": {
+        "useArrowFunction": "error",
+        "noForEach": "off"
+      },
+      "a11y": {
+        "noRedundantRoles": "off",
+        "noSvgWithoutTitle": "off",
+        "useValidAnchor": "off",
+        "useSemanticElements": "off"
+      },
+      "correctness": {
+        "noUnusedImports": {
+          "options": {},
+          "level": "error",
+          "fix": "safe"
+        },
+        "useExhaustiveDependencies": "off",
+        "useHookAtTopLevel": "off",
+        "noChildrenProp": "off",
+        "useUniqueElementIds": "info"
+      },
+      "suspicious": {
+        "noDocumentCookie": "off",
+        "noExplicitAny": "error",
+        "noArrayIndexKey": "off",
+        "noConsole": "error"
+      },
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "arrowParentheses": "always",
+      "bracketSameLine": false,
+      "bracketSpacing": true,
+      "jsxQuoteStyle": "single",
+      "quoteProperties": "asNeeded",
+      "semicolons": "asNeeded",
+      "trailingCommas": "all"
+    }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": {
+          "level": "on",
+          "options": {
+            "groups": [
+              [":BUN:", ":NODE:"],
+              ":BLANK_LINE:",
+              ":PACKAGE:",
+              ":TYPE:PACKAGE:",
+              ":BLANK_LINE:",
+              {
+                "type": false,
+                "source": ["@/**"]
+              },
+              {
+                "type": true,
+                "source": ["@/**"]
+              },
+              ":BLANK_LINE:",
+              ":PATH:",
+              ":TYPE:PATH:",
+              ":BLANK_LINE:",
+              ":SOURCE:",
+              ":TYPE:SOURCE:"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

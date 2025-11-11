@@ -49,7 +49,7 @@ export function ProductItem({
 
         <div className="absolute left-4 top-4 z-10">
           <span className="inline-flex items-center rounded-full bg-gradient-to-r from-green-500 to-primary px-3 py-1 text-xs font-semibold text-white shadow-lg">
-            {product.category.name}
+            {product?.category?.name}
           </span>
         </div>
 

@@ -55,7 +55,7 @@ export default function MyProductsPage() {
         params: {
           search: debouncedSearch,
           status: status !== 'ALL' ? status : undefined,
-          authorId: userId,
+          userId,
           page,
           limit,
         },
