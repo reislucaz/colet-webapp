@@ -50,25 +50,25 @@ export default function MarketplacePage() {
     <div className='container py-8'>
       <div className='m-4 flex flex-col gap-6'>
         <div className='space-y-4'>
-          <div className='group relative overflow-hidden rounded-lg bg-gradient-to-br from-purple-500 to-primary p-6 shadow-lg transition-all duration-500 hover:shadow-2xl hover:shadow-purple-500/20'>
+          <div className='group relative overflow-hidden rounded-lg bg-gradient-to-br from-primary to-primary/80 p-6 shadow-lg transition-all duration-500 hover:shadow-2xl hover:shadow-primary/20'>
             <div className='absolute inset-0 bg-gradient-to-br from-blue-500/10 to-green-500/10 opacity-0 transition-opacity duration-500 group-hover:opacity-100' />
 
             <div className='relative flex items-center gap-4'>
-              <div className='rounded-full bg-white/20 p-3 backdrop-blur-sm transition-transform duration-300 group-hover:scale-110'>
-                <ShoppingBag className='size-8 text-white' />
+              <div className='rounded-full bg-primary-foreground/20 p-3 backdrop-blur-sm transition-transform duration-300 group-hover:scale-110'>
+                <ShoppingBag className='size-8 text-primary-foreground' />
               </div>
 
               <div>
-                <h1 className='text-3xl font-bold text-white transition-transform duration-300 group-hover:translate-x-1'>
+                <h1 className='text-3xl font-bold text-primary-foreground transition-transform duration-300 group-hover:translate-x-1'>
                   Marketplace
                 </h1>
-                <p className='mt-1 text-sm text-white/90'>
+                <p className='mt-1 text-sm text-primary-foreground/90'>
                   Explore e compre produtos recicláveis disponíveis
                 </p>
               </div>
             </div>
 
-            <div className='absolute bottom-0 right-0 size-32 rounded-full bg-white/10 blur-3xl' />
+            <div className='absolute bottom-0 right-0 size-32 rounded-full bg-primary-foreground/10 blur-3xl' />
           </div>
         </div>
 
@@ -148,11 +148,11 @@ export default function MarketplacePage() {
             )}
           </>
         ) : (
-          <div className='flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 py-16 dark:border-gray-700'>
-            <div className='rounded-full bg-gray-100 p-6 dark:bg-gray-800'>
-              <ShoppingBag className='size-12 text-gray-400 dark:text-gray-600' />
+          <div className='flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border py-16'>
+            <div className='rounded-full bg-muted p-6'>
+              <ShoppingBag className='size-12 text-muted-foreground' />
             </div>
-            <h3 className='mt-4 text-lg font-semibold text-gray-900 dark:text-white'>
+            <h3 className='mt-4 text-lg font-semibold text-foreground'>
               Nenhum produto disponível
             </h3>
             <p className='mt-2 text-sm text-muted-foreground'>

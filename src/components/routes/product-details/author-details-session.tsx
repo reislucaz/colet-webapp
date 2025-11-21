@@ -24,7 +24,7 @@ export async function AuthorDetailsSession(params: { id: string }) {
             </Avatar>
             <h3 className="text-3xl font-bold">{author?.name}</h3>
           </div>
-          <span className="mt-4 border border-gray-200"></span>
+          <span className="mt-4 border border-border"></span>
           <div className="flex flex-col gap-2">
             <h3 className="text-xl font-medium">Contatos:</h3>
             <div className="flex items-center gap-2">

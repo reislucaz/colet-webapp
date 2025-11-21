@@ -26,13 +26,13 @@ export function HowItWorks() {
   ]
 
   return (
-    <section className="bg-gradient-to-br from-gray-50 to-blue-50 py-10">
+    <section className="bg-background py-10">
       <div className="container mx-auto px-6">
         <div className="mb-16 text-center">
-          <h2 className="mb-6 text-4xl font-bold text-gray-900 md:text-5xl">
+          <h2 className="mb-6 text-4xl font-bold text-foreground md:text-5xl">
             Como funciona?
           </h2>
-          <p className="mx-auto max-w-2xl text-xl text-gray-600">
+          <p className="mx-auto max-w-2xl text-xl text-muted-foreground">
             Vender nunca foi tão simples. Apenas 3 passos para começar
           </p>
           <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
@@ -41,15 +41,15 @@ export function HowItWorks() {
               return (
                 <div
                   key={item.number}
-                  className="mt-5 flex flex-col items-center justify-center gap-3 rounded-xl bg-background px-5 py-10 shadow-md"
+                  className="mt-5 flex flex-col items-center justify-center gap-3 rounded-xl bg-card px-5 py-10 shadow-md"
                 >
-                  <div className="flex items-center justify-center rounded-full bg-gradient-to-r from-textPrimary to-primary p-5 text-background">
+                  <div className="flex items-center justify-center rounded-full bg-gradient-to-r from-textPrimary to-primary p-5 text-primary-foreground">
                     <Icon />
                   </div>
-                  <h3 className="text-xl font-medium text-gray-900">
+                  <h3 className="text-xl font-medium text-foreground">
                     {item.title}
                   </h3>
-                  <p className="text-center text-base text-gray-600">
+                  <p className="text-center text-base text-muted-foreground">
                     {item.description}
                   </p>
                 </div>

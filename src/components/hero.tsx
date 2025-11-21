@@ -13,7 +13,7 @@ export function Hero() {
 
       <div className="container relative z-10 px-6 text-center">
         <div
-          className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/80 px-4 py-2 shadow-lg backdrop-blur-sm dark:bg-gray-900/80"
+          className="mb-6 inline-flex items-center gap-2 rounded-full bg-card/80 px-4 py-2 shadow-lg backdrop-blur-sm"
           style={{ animation: 'fadeInUp 0.5s ease-out' }}
         >
           <Recycle className="size-5 text-green-600 dark:text-green-400" />

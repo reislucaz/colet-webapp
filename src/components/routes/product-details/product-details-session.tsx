@@ -31,11 +31,11 @@ export function ProductDetailsSession({ product }: { product: Product }) {
           <CardContent className="flex flex-col gap-2">
             <div className="flex w-full justify-between">
               <h3 className="text-3xl font-bold">{product.name}</h3>
-              <span className="flex w-fit items-center justify-center rounded-full bg-gray-200 px-4 py-2 text-xs font-medium shadow-md">
+              <span className="flex w-fit items-center justify-center rounded-full bg-muted px-4 py-2 text-xs font-medium text-muted-foreground shadow-md">
                 {product.category.name}
               </span>
             </div>
-            <div className="flex gap-2 text-gray-500">
+            <div className="flex gap-2 text-muted-foreground">
               <div className="flex gap-2">
                 <MapPin size={16} />
                 <p>{`${product.city}, ${product.state}`}</p>
@@ -46,7 +46,7 @@ export function ProductDetailsSession({ product }: { product: Product }) {
                 <p>{`Publicado em ${formattedDateFNS(new Date(product.createdAt))}`}</p>
               </div>
             </div>
-            <h2 className="text-4xl font-bold text-green-600">
+            <h2 className="text-4xl font-bold text-primary">
               {currencyFormatter.format(product.price)}
             </h2>
 
@@ -61,7 +61,7 @@ export function ProductDetailsSession({ product }: { product: Product }) {
               <PaymentSession product={product} />
             </Elements>
 
-            <span className="mt-4 border border-gray-200"></span>
+            <span className="mt-4 border border-border"></span>
             <div className="flex flex-col gap-2">
               <h3 className="font-medium">Descrição</h3>
               <p className="text-sm">{product.description}</p>

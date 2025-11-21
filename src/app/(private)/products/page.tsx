@@ -81,7 +81,7 @@ export default function MyProductsPage() {
             </p>
           </div>
           <Link href="/create-product">
-            <Button className="group rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 shadow-lg transition-all duration-300 hover:scale-105 hover:from-green-600 hover:to-emerald-700 hover:shadow-2xl">
+            <Button className="group">
               <Plus className="mr-2 size-4 transition-transform group-hover:rotate-90" />
               Novo Produto
             </Button>
@@ -156,11 +156,11 @@ export default function MyProductsPage() {
             )}
           </>
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 py-16 dark:border-gray-700">
-            <div className="rounded-full bg-gray-100 p-6 dark:bg-gray-800">
-              <Plus className="size-12 text-gray-400 dark:text-gray-600" />
+          <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border py-16">
+            <div className="rounded-full bg-muted p-6">
+              <Plus className="size-12 text-muted-foreground" />
             </div>
-            <h3 className="mt-4 text-lg font-semibold text-gray-900 dark:text-white">
+            <h3 className="mt-4 text-lg font-semibold text-foreground">
               Nenhum produto encontrado
             </h3>
             <p className="mt-2 text-sm text-muted-foreground">
@@ -170,7 +170,7 @@ export default function MyProductsPage() {
             </p>
             {!search && (
               <Link href="/create-product">
-                <Button className="mt-6 rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 shadow-lg transition-all duration-300 hover:scale-105 hover:from-green-600 hover:to-emerald-700 hover:shadow-2xl">
+                <Button className="mt-6">
                   <Plus className="mr-2 size-4" />
                   Criar Primeiro Produto
                 </Button>
