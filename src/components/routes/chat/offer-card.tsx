@@ -31,48 +31,48 @@ interface StatusConfig {
 
 const statusConfigs: Record<string, StatusConfig> = {
   pending: {
-    bg: 'bg-gradient-to-br from-background to-yellow-50/50 dark:from-gray-900 dark:to-yellow-900/10',
-    headerBg: 'bg-yellow-50/50 dark:bg-yellow-900/20',
-    textColor: 'text-yellow-800 dark:text-yellow-400',
-    badgeColor: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
+    bg: 'bg-gradient-to-br from-background to-yellow-500/10 dark:from-card dark:to-yellow-500/10',
+    headerBg: 'bg-yellow-500/10 dark:bg-yellow-500/20',
+    textColor: 'text-yellow-800 dark:text-yellow-300',
+    badgeColor: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-500/20 dark:text-yellow-300',
     icon: Clock,
-    iconColor: 'text-yellow-600 dark:text-yellow-400',
-    iconBg: 'bg-yellow-100 dark:bg-yellow-900/30',
+    iconColor: 'text-yellow-600 dark:text-yellow-300',
+    iconBg: 'bg-yellow-100 dark:bg-yellow-500/20',
     label: 'Aguardando Resposta',
-    border: 'border-l-yellow-600',
+    border: 'border-l-yellow-500',
   },
   accepted: {
-    bg: 'bg-gradient-to-br from-background to-green-50/50 dark:from-gray-900 dark:to-green-900/10',
-    headerBg: 'bg-green-50/50 dark:bg-green-900/20',
+    bg: 'bg-gradient-to-br from-background to-green-500/10 dark:from-card dark:to-green-500/10',
+    headerBg: 'bg-green-500/10 dark:bg-green-500/20',
     textColor: 'text-green-800 dark:text-green-400',
-    badgeColor: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
+    badgeColor: 'bg-green-100 text-green-800 dark:bg-green-500/20 dark:text-green-400',
     icon: CheckCircle,
     iconColor: 'text-green-600 dark:text-green-400',
-    iconBg: 'bg-green-100 dark:bg-green-900/30',
+    iconBg: 'bg-green-100 dark:bg-green-500/20',
     label: 'Aceita',
-    border: 'border-l-green-600',
+    border: 'border-l-green-500',
   },
   declined: {
-    bg: 'bg-gradient-to-br from-background to-red-50/50 dark:from-gray-900 dark:to-red-900/10',
-    headerBg: 'bg-red-50/50 dark:bg-red-900/20',
+    bg: 'bg-gradient-to-br from-background to-red-500/10 dark:from-card dark:to-red-500/10',
+    headerBg: 'bg-red-500/10 dark:bg-red-500/20',
     textColor: 'text-red-800 dark:text-red-400',
-    badgeColor: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
+    badgeColor: 'bg-red-100 text-red-800 dark:bg-red-500/20 dark:text-red-400',
     icon: XCircle,
     iconColor: 'text-red-600 dark:text-red-400',
-    iconBg: 'bg-red-100 dark:bg-red-900/30',
+    iconBg: 'bg-red-100 dark:bg-red-500/20',
     label: 'Recusada',
-    border: 'border-l-red-600',
+    border: 'border-l-red-500',
   },
   default: {
-    bg: 'bg-gradient-to-br from-background to-gray-50/50 dark:from-gray-900 dark:to-gray-800/50',
-    headerBg: 'bg-gray-50/50 dark:bg-gray-900/20',
-    textColor: 'text-gray-800 dark:text-gray-400',
-    badgeColor: 'bg-gray-100 text-gray-800 dark:bg-gray-900/30 dark:text-gray-400',
+    bg: 'bg-gradient-to-br from-background to-muted dark:from-card dark:to-muted',
+    headerBg: 'bg-muted/50 dark:bg-card',
+    textColor: 'text-foreground',
+    badgeColor: 'bg-muted text-muted-foreground',
     icon: Clock,
-    iconColor: 'text-gray-600 dark:text-gray-400',
-    iconBg: 'bg-gray-100 dark:bg-gray-900/30',
+    iconColor: 'text-muted-foreground',
+    iconBg: 'bg-muted',
     label: '',
-    border: 'border-l-gray-600',
+    border: 'border-l-border',
   },
 }
 
@@ -152,16 +152,16 @@ export function OfferCard({
           <Separator />
 
           <div className='space-y-2'>
-            <div className='flex items-center justify-between rounded-lg bg-background p-2 dark:bg-gray-800/50'>
+            <div className='flex items-center justify-between rounded-lg bg-muted p-2'>
               <div className='flex items-center gap-2'>
-                <User className='size-4 text-gray-600 dark:text-gray-400' />
-                <span className='text-sm font-medium text-gray-600 dark:text-gray-400'>
+                <User className='size-4 text-muted-foreground' />
+                <span className='text-sm font-medium text-muted-foreground'>
                   {isRecipient ? 'Comprador:' : 'Vendedor:'}
                 </span>
               </div>
             </div>
-            <div className='flex items-center justify-between rounded-lg bg-background p-2 dark:bg-gray-800/50'>
-              <span className='text-sm font-medium text-gray-600 dark:text-gray-400'>Data:</span>
+            <div className='flex items-center justify-between rounded-lg bg-muted p-2'>
+              <span className='text-sm font-medium text-muted-foreground'>Data:</span>
               <span className={`text-sm font-medium ${statusConfig.textColor}`}>
                 {formatDate(offer.createdAt.toString())}
               </span>
@@ -177,7 +177,7 @@ export function OfferCard({
                     onClick={onReject}
                     disabled={isAccepting || isDeclining}
                     variant='outline'
-                    className='flex-1 border-red-200 text-red-700 transition-all duration-300 hover:scale-105 hover:bg-red-50 hover:text-red-700 dark:border-red-900/30 dark:text-red-400 dark:hover:bg-red-900/20'
+                    className='flex-1 border-destructive text-destructive transition-all duration-300 hover:scale-105 hover:bg-destructive/10'
                   >
                     {isDeclining ? (
                       <>
@@ -194,7 +194,7 @@ export function OfferCard({
                   <Button
                     onClick={onAccept}
                     disabled={isAccepting || isDeclining}
-                    className='flex-1 bg-green-600 transition-all duration-300 hover:scale-105 hover:bg-green-700'
+                    className='flex-1 transition-all duration-300 hover:scale-105'
                   >
                     {isAccepting ? (
                       <>
@@ -216,7 +216,7 @@ export function OfferCard({
           {isSender && (
             <>
               <Separator />
-              <div className='rounded-lg bg-gray-50/50 p-3 text-center dark:bg-gray-800/50'>
+              <div className='rounded-lg bg-muted p-3 text-center'>
                 <p className={`text-sm font-medium ${statusConfig.textColor}`}>
                   {getOfferMessage(isPending, offer.status.toLowerCase(), true)}
                 </p>
@@ -227,7 +227,7 @@ export function OfferCard({
           {!isPending && (
             <>
               <Separator />
-              <div className='rounded-lg bg-gray-50/50 p-3 text-center dark:bg-gray-800/50'>
+              <div className='rounded-lg bg-muted p-3 text-center'>
                 <p className={`text-sm font-semibold ${statusConfig.textColor}`}>
                   {getCompletionMessage(offer.status.toLowerCase())}
                 </p>

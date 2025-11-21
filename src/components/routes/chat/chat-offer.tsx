@@ -5,10 +5,20 @@ import Loading from '../../../app/(private)/loading'
 import { OfferService } from '../../../services/offer-service'
 import { queryClient } from '../../../utils/query-client'
 import { OfferCard } from './offer-card'
+import { useState } from 'react'
+import { OfferConfirmationDialog } from './offer-confirmation-dialog'
 
 export function ChatOffer({ chatId }: { chatId?: string }) {
   const { data: session } = useSession()
   const userId = (session?.user as any)?.id || session?.user?.email || ''
+
+  const [dialogState, setDialogState] = useState<{
+    open: boolean
+    action: 'accept' | 'decline' | null
+  }>({
+    open: false,
+    action: null,
+  })
 
   const {
     data: offer,
@@ -37,9 +47,11 @@ export function ChatOffer({ chatId }: { chatId?: string }) {
       toast.success('Oferta recusada com sucesso')
       queryClient.invalidateQueries({ queryKey: ['chat-offer', chatId] })
       queryClient.invalidateQueries({ queryKey: ['chat-list'] })
+      setDialogState({ open: false, action: null })
     },
     onError: (error) => {
       toast.error('Erro ao recusar oferta: ' + error.message)
+      setDialogState({ open: false, action: null })
     },
   })
 
@@ -55,37 +67,32 @@ export function ChatOffer({ chatId }: { chatId?: string }) {
       queryClient.invalidateQueries({ queryKey: ['chat-offer', chatId] })
       queryClient.invalidateQueries({ queryKey: ['chat-list'] })
       queryClient.invalidateQueries({ queryKey: ['Orders'] })
+      setDialogState({ open: false, action: null })
     },
     onError: (error) => {
       toast.error('Erro ao aceitar oferta: ' + error.message)
+      setDialogState({ open: false, action: null })
     },
   })
 
   const handleRejectOffer = () => {
     if (!offer) return
-
-    // Confirmar ação
-    if (
-      window.confirm('Tem certeza que deseja recusar esta oferta? Esta ação não pode ser desfeita.')
-    ) {
-      declineOffer()
-    }
+    setDialogState({ open: true, action: 'decline' })
   }
 
   const handleAcceptOffer = () => {
     if (!offer) return
+    setDialogState({ open: true, action: 'accept' })
+  }
 
-    // Confirmar ação
-    if (
-      window.confirm(
-        'Tem certeza que deseja aceitar esta oferta? Um pedido será criado automaticamente.',
-      )
-    ) {
+  const handleConfirm = () => {
+    if (dialogState.action === 'accept') {
       acceptOffer()
+    } else if (dialogState.action === 'decline') {
+      declineOffer()
     }
   }
 
-  // Verificar se o usuário atual é o vendedor (recipient da oferta)
   const isRecipient = offer?.recipientId === userId
   const isSender = offer?.senderId === userId
 
@@ -98,7 +105,7 @@ export function ChatOffer({ chatId }: { chatId?: string }) {
   }
 
   if (error || !offer) {
-    return null // Não mostrar nada se não houver oferta
+    return null
   }
 
   return (
@@ -111,6 +118,18 @@ export function ChatOffer({ chatId }: { chatId?: string }) {
         onReject={handleRejectOffer}
         isAccepting={isAccepting}
         isDeclining={isDeclining}
+      />
+      <OfferConfirmationDialog
+        open={dialogState.open}
+        onOpenChange={(open) => setDialogState({ ...dialogState, open })}
+        onConfirm={handleConfirm}
+        title={dialogState.action === 'accept' ? 'Aceitar Oferta' : 'Recusar Oferta'}
+        description={
+          dialogState.action === 'accept'
+            ? 'Tem certeza que deseja aceitar esta oferta? Um pedido será criado automaticamente.'
+            : 'Tem certeza que deseja recusar esta oferta? Esta ação não pode ser desfeita.'
+        }
+        isPending={isAccepting || isDeclining}
       />
     </div>
   )
