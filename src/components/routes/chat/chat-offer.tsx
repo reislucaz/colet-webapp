@@ -66,9 +66,7 @@ export function ChatOffer({ chatId }: { chatId?: string }) {
 
     // Confirmar ação
     if (
-      window.confirm(
-        'Tem certeza que deseja recusar esta oferta? Esta ação não pode ser desfeita.',
-      )
+      window.confirm('Tem certeza que deseja recusar esta oferta? Esta ação não pode ser desfeita.')
     ) {
       declineOffer()
     }
@@ -93,7 +91,7 @@ export function ChatOffer({ chatId }: { chatId?: string }) {
 
   if (isLoading) {
     return (
-      <div className="p-4">
+      <div className='p-4'>
         <Loading />
       </div>
     )
@@ -104,7 +102,7 @@ export function ChatOffer({ chatId }: { chatId?: string }) {
   }
 
   return (
-    <div className="border-b bg-gray-50 p-4">
+    <div className='border-b p-4'>
       <OfferCard
         offer={offer}
         isRecipient={isRecipient}
