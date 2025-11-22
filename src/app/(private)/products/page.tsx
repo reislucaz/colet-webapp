@@ -13,10 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import {
-  StatusProduct,
-  formattedStatusProduct,
-} from '@/constants/product/product-status-enum'
+import { StatusProduct, formattedStatusProduct } from '@/constants/product/product-status-enum'
 import { coletApi } from '@/services/axios'
 import { useQuery } from '@tanstack/react-query'
 import { Plus, Search } from 'lucide-react'
@@ -25,6 +22,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { useDebounce } from 'use-debounce'
 import Loading from '../loading'
+import { productsQueryKey } from '@/constants/query-key/products-query-key'
 
 interface PaginatedResponse<T> {
   data: T[]
@@ -49,7 +47,7 @@ export default function MyProductsPage() {
   const limit = 9
 
   const { data: products, isLoading } = useQuery<PaginatedResponse<Product>>({
-    queryKey: ['myProducts', userId, debouncedSearch, status, page],
+    queryKey: [productsQueryKey.PAGED_PRODUCTS, userId, debouncedSearch, status, page],
     queryFn: async () => {
       const response = await coletApi.get('/products', {
         params: {
@@ -70,30 +68,30 @@ export default function MyProductsPage() {
   }
 
   return (
-    <div className="container py-8">
-      <div className="m-4 flex flex-col gap-6">
+    <div className='container py-8'>
+      <div className='m-4 flex flex-col gap-6'>
         <ProductsHeader />
 
-        <div className="flex items-center justify-between">
-          <div className="flex-1">
-            <p className="text-sm text-muted-foreground">
+        <div className='flex items-center justify-between'>
+          <div className='flex-1'>
+            <p className='text-sm text-muted-foreground'>
               {products?.total || 0} produto(s) encontrado(s)
             </p>
           </div>
-          <Link href="/create-product">
-            <Button className="group">
-              <Plus className="mr-2 size-4 transition-transform group-hover:rotate-90" />
+          <Link href='/create-product'>
+            <Button className='group'>
+              <Plus className='mr-2 size-4 transition-transform group-hover:rotate-90' />
               Novo Produto
             </Button>
           </Link>
         </div>
 
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-3 size-4 text-muted-foreground" />
+        <div className='flex flex-col gap-4 sm:flex-row sm:items-center'>
+          <div className='relative flex-1'>
+            <Search className='absolute left-3 top-3 size-4 text-muted-foreground' />
             <Input
-              placeholder="Buscar meus produtos..."
-              className="pl-10"
+              placeholder='Buscar meus produtos...'
+              className='pl-10'
               value={search}
               disabled={isLoading}
               onChange={(e) => setSearch(e.target.value)}
@@ -103,11 +101,11 @@ export default function MyProductsPage() {
             value={status}
             onValueChange={(value) => setStatus(value as StatusProduct | 'ALL')}
           >
-            <SelectTrigger className="w-full sm:w-[180px]">
-              <SelectValue placeholder="Status" />
+            <SelectTrigger className='w-full sm:w-[180px]'>
+              <SelectValue placeholder='Status' />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="ALL">Todos</SelectItem>
+              <SelectItem value='ALL'>Todos</SelectItem>
               {Object.entries(formattedStatusProduct).map(([key, value]) => (
                 <SelectItem key={key} value={key}>
                   {value}
@@ -118,37 +116,37 @@ export default function MyProductsPage() {
         </div>
 
         {isLoading ? (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
             {Array.from({ length: 6 }).map((_, i) => (
               <ProductSkeleton key={i} index={i} />
             ))}
           </div>
         ) : products?.total ? (
           <>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
               {products.data.map((product, index) => (
                 <ProductItem idx={index} product={product} key={product.id} />
               ))}
             </div>
 
             {products.total > limit && (
-              <div className="mt-8 flex justify-center gap-2">
+              <div className='mt-8 flex justify-center gap-2'>
                 <Button
-                  variant="outline"
+                  variant='outline'
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={page === 1}
-                  className="transition-all duration-300 hover:scale-105"
+                  className='transition-all duration-300 hover:scale-105'
                 >
                   Anterior
                 </Button>
-                <span className="flex items-center px-4 text-sm text-muted-foreground">
+                <span className='flex items-center px-4 text-sm text-muted-foreground'>
                   Página {page}
                 </span>
                 <Button
-                  variant="outline"
+                  variant='outline'
                   onClick={() => setPage((p) => p + 1)}
                   disabled={products.data.length < limit}
-                  className="transition-all duration-300 hover:scale-105"
+                  className='transition-all duration-300 hover:scale-105'
                 >
                   Próxima
                 </Button>
@@ -156,22 +154,22 @@ export default function MyProductsPage() {
             )}
           </>
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border py-16">
-            <div className="rounded-full bg-muted p-6">
-              <Plus className="size-12 text-muted-foreground" />
+          <div className='flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border py-16'>
+            <div className='rounded-full bg-muted p-6'>
+              <Plus className='size-12 text-muted-foreground' />
             </div>
-            <h3 className="mt-4 text-lg font-semibold text-foreground">
+            <h3 className='mt-4 text-lg font-semibold text-foreground'>
               Nenhum produto encontrado
             </h3>
-            <p className="mt-2 text-sm text-muted-foreground">
+            <p className='mt-2 text-sm text-muted-foreground'>
               {search
                 ? 'Tente ajustar seus filtros de busca.'
                 : 'Comece criando seu primeiro produto.'}
             </p>
             {!search && (
-              <Link href="/create-product">
-                <Button className="mt-6">
-                  <Plus className="mr-2 size-4" />
+              <Link href='/create-product'>
+                <Button className='mt-6'>
+                  <Plus className='mr-2 size-4' />
                   Criar Primeiro Produto
                 </Button>
               </Link>

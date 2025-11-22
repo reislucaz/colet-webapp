@@ -11,4 +11,27 @@ export class ProductService {
   static async getList(params?: any) {
     return await coletApi.get(ProductService.baseUrl, { params })
   }
+
+  static async getOne(id: string): Promise<Product> {
+    const response = await coletApi.get(`${ProductService.baseUrl}/${id}`)
+    return response.data
+  }
+
+  static async uploadImages(productId: string, files: File[]): Promise<Product> {
+    const formData = new FormData()
+    files.forEach((file) => {
+      formData.append('images', file)
+    })
+
+    const response = await coletApi.post(
+      `${ProductService.baseUrl}/${productId}/images`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
+    )
+    return response.data
+  }
 }

@@ -1,4 +1,4 @@
-import { FormFieldsConstant, IFormFieldSelectSlot } from '@/@types/form-field'
+import { FormFieldsConstant } from '@/@types/form-field'
 import { States } from '@/constants/state'
 import {
   CreateProductInput,
@@ -12,6 +12,9 @@ import { useForm } from 'react-hook-form'
 export function useProductFormField() {
   const form = useForm<CreateProductInput>({
     resolver: zodResolver(createProductSchema),
+    defaultValues: {
+      images: [],
+    },
   })
 
   const [categories, setCategories] = useState<

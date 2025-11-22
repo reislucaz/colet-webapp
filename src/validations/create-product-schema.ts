@@ -23,6 +23,7 @@ export const createProductSchema = z.object({
   category: z.string({
     required_error: 'Campo obrigatório',
   }),
+  images: z.any().optional(),
 })
 
 export type CreateProductType = z.infer<typeof createProductSchema>
