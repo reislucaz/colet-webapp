@@ -1,5 +1,4 @@
 'use client'
-/* eslint-disable tailwindcss/classnames-order */
 import { Icon } from '@/shared/icon'
 import { AnimatePresence, motion } from 'motion/react'
 import Link from 'next/link'
@@ -7,8 +6,8 @@ import { Category } from '../../@types/category'
 
 export function ProductsCategories({ categories }: { categories: Category[] }) {
   return (
-    <AnimatePresence mode='wait'>
-      <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 items-center justify-center'>
+    <AnimatePresence mode="wait">
+      <div className="grid grid-cols-2 items-center justify-center gap-6 md:grid-cols-3 lg:grid-cols-5">
         {categories.map((item, index) => {
           return (
             <motion.div
@@ -21,17 +20,19 @@ export function ProductsCategories({ categories }: { categories: Category[] }) {
                   ease: 'easeInOut',
                 },
               }}
-              className='group p-6 bg-gray-50 dark:bg-gray-950 rounded-2xl hover:bg-gradient-to-br hover:from-textPrimary/5 hover:to-primary/5 transition-all duration-300 cursor-pointer border border-gray-100 dark:border-gray-900 hover:border-primary/5 hover:shadow-lg text-center'
+              className="group cursor-pointer rounded-2xl border border-gray-100 bg-gray-50 p-6 text-center transition-all duration-300 hover:border-primary/5 hover:bg-gradient-to-br hover:from-textPrimary/5 hover:to-primary/5 hover:shadow-lg dark:border-gray-900 dark:bg-gray-950"
               layout
             >
               <Link href={`/products?category=${item.id}`} key={index}>
-                <div className='size-16 bg-background rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300 shadow-sm'>
+                <div className="mx-auto mb-4 flex size-16 items-center justify-center rounded-xl bg-background shadow-sm transition-transform duration-300 group-hover:scale-110">
                   <Icon
                     name={item.iconKey}
-                    className='size-8 text-gray-600 dark:text-gray-300 group-hover:text-primary'
+                    className="size-8 text-gray-600 group-hover:text-primary dark:text-gray-300"
                   />
                 </div>
-                <h3 className='font-semibold text-gray-900 dark:text-gray-100 mb-2'>{item.name}</h3>
+                <h3 className="mb-2 font-semibold text-gray-900 dark:text-gray-100">
+                  {item.name}
+                </h3>
               </Link>
             </motion.div>
           )

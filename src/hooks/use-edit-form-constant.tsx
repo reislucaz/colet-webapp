@@ -61,7 +61,7 @@ export function useEditFormConstant(categories: Category[]) {
     {
       name: 'images',
       label: 'Imagens do produto',
-      type: 'file', // Assuming you have a file input handler
+      type: 'file',
       className: 'col-span-full',
     },
   ]

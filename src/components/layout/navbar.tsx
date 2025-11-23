@@ -81,10 +81,8 @@ export function Navbar() {
   return (
     <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
-        {/* Logo */}
         <Logo />
 
-        {/* Desktop Navigation */}
         <div className="ml-auto hidden md:flex md:gap-6">
           {navigation.map((item) => {
             const isActive = pathname === item.href
@@ -105,7 +103,6 @@ export function Navbar() {
         </div>
 
         <div className="ml-auto flex items-center gap-4">
-          {/* User Menu */}
           <ModeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -155,7 +152,6 @@ export function Navbar() {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* Mobile Menu Button */}
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="md:hidden">

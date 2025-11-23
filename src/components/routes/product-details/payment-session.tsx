@@ -66,7 +66,6 @@ export function PaymentSession({
   const elements = useElements()
   const { data: session } = useSession()
 
-  // Inicializar Stripe quando o pedido for criado
   useEffect(() => {
     if (orderData && !clientSecret) {
       coletApi
@@ -194,7 +193,6 @@ export function PaymentSession({
 
   const handleCloseDialog = () => {
     if (orderData && currentStep !== 'payment-result') {
-      // Se há um pedido criado mas não finalizado, deletar
       deleteOrder()
     }
     resetPayment()
@@ -212,7 +210,6 @@ export function PaymentSession({
     )
   }
 
-  // Loading inicial apenas se não temos dados do pedido
   if (!orderData && currentStep === 'payment-info') {
     return <Loading />
   }

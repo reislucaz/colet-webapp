@@ -33,7 +33,7 @@ type Props = {
 export const FormFieldMaskedInput = forwardRef(
   (
     { mask, onChange, onBlur, value, ...props }: Props,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
     _: ForwardedRef<HTMLInputElement | null>,
   ) => {
     const inputRef = useRef(null)
@@ -56,12 +56,10 @@ export const FormFieldMaskedInput = forwardRef(
           },
         )
 
-        // Set initial value if provided
         if (value !== undefined && value !== null && value !== '') {
           maskRef.current.value = mask?.mask(String(value)) ?? String(value)
         }
 
-        // Cleanup function to destroy the IMask instance when the component unmounts
         return () => {
           maskRef.current?.destroy()
         }

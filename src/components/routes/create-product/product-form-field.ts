@@ -1,3 +1,5 @@
+'use client'
+
 import { FormFieldsConstant } from '@/@types/form-field'
 import { States } from '@/constants/state'
 import {
@@ -24,7 +26,6 @@ export function useProductFormField() {
     }[]
   >([])
 
-  // convert states enum to array of objects
   const states = Object.values(States).map((value) => ({
     value,
     label: value,

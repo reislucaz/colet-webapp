@@ -1,14 +1,9 @@
+/** biome-ignore-all lint/a11y/useKeyWithClickEvents: <explanation> */
 'use client'
 
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ChatSkeleton } from '@/components/ui/chat-skeleton'
 import { Input } from '@/components/ui/input'
 import { useToast } from '@/components/ui/use-toast'
@@ -51,7 +46,6 @@ export default function MessagesPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
 
-  // Fetch chats
   const fetchChats = useCallback(async () => {
     setIsLoading(true)
     try {
@@ -68,7 +62,6 @@ export default function MessagesPage() {
     }
   }, [toast])
 
-  // Fetch messages for a chat
   const fetchMessages = useCallback(
     async (chatId: string) => {
       try {
@@ -85,7 +78,6 @@ export default function MessagesPage() {
     [toast],
   )
 
-  // Send a new message
   const sendMessage = async () => {
     if (!newMessage.trim() || !selectedChat) return
 
@@ -125,37 +117,33 @@ export default function MessagesPage() {
   }
 
   return (
-    <div className="container py-8">
-      <div className="mb-8 flex items-center justify-between">
+    <div className='container py-8'>
+      <div className='mb-8 flex items-center justify-between'>
         <div>
-          <h1 className="text-3xl font-bold">Mensagens</h1>
-          <p className="mt-2 text-muted-foreground">
-            Gerencie suas conversas e mensagens
-          </p>
+          <h1 className='text-3xl font-bold'>Mensagens</h1>
+          <p className='mt-2 text-muted-foreground'>Gerencie suas conversas e mensagens</p>
         </div>
       </div>
 
-      <div className="flex h-[calc(100vh-200px)] w-full gap-4">
-        {/* Chat list */}
-        <Card className="h-full w-1/4">
+      <div className='flex h-[calc(100vh-200px)] w-full gap-4'>
+        <Card className='h-full w-1/4'>
           <CardHeader>
-            <div className="relative">
-              <Search className="absolute left-2 top-2.5 size-4 text-muted-foreground" />
+            <div className='relative'>
+              <Search className='absolute left-2 top-2.5 size-4 text-muted-foreground' />
               <Input
-                placeholder="Buscar conversas..."
-                className="pl-8"
+                placeholder='Buscar conversas...'
+                className='pl-8'
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className='space-y-4'>
             {filteredChats.length === 0 ? (
-              <div className="text-center text-muted-foreground">
-                Nenhuma conversa encontrada
-              </div>
+              <div className='text-center text-muted-foreground'>Nenhuma conversa encontrada</div>
             ) : (
               filteredChats.map((chat) => (
+                // biome-ignore lint/a11y/noStaticElementInteractions: <explanation>
                 <div
                   key={chat.id}
                   className={`flex cursor-pointer items-center gap-4 rounded-lg p-2 transition-colors hover:bg-muted ${
@@ -164,22 +152,18 @@ export default function MessagesPage() {
                   onClick={() => setSelectedChat(chat.id)}
                 >
                   <Avatar>
-                    <AvatarFallback>
-                      {chat.participants[0]?.name.charAt(0) || 'U'}
-                    </AvatarFallback>
+                    <AvatarFallback>{chat.participants[0]?.name.charAt(0) || 'U'}</AvatarFallback>
                   </Avatar>
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium leading-none">
-                      {chat.title}
-                    </p>
+                  <div className='min-w-0 flex-1'>
+                    <p className='truncate text-sm font-medium leading-none'>{chat.title}</p>
                     {chat.lastMessage && (
-                      <p className="truncate text-sm text-muted-foreground">
+                      <p className='truncate text-sm text-muted-foreground'>
                         {chat.lastMessage.content}
                       </p>
                     )}
                   </div>
                   {chat.lastMessage && (
-                    <div className="text-xs text-muted-foreground">
+                    <div className='text-xs text-muted-foreground'>
                       {timeAgo(new Date(chat.lastMessage.createdAt))}
                     </div>
                   )}
@@ -190,45 +174,38 @@ export default function MessagesPage() {
         </Card>
 
         {/* Chat messages */}
-        <Card className="flex h-full w-3/4 flex-col">
+        <Card className='flex h-full w-3/4 flex-col'>
           {!selectedChat ? (
-            <div className="flex flex-1 items-center justify-center p-4 text-muted-foreground">
+            <div className='flex flex-1 items-center justify-center p-4 text-muted-foreground'>
               Selecione uma conversa para começar
             </div>
           ) : (
             <>
               <CardHeader>
-                <div className="flex items-center gap-4">
+                <div className='flex items-center gap-4'>
                   <Avatar>
                     <AvatarFallback>
-                      {chats
-                        .find((c) => c.id === selectedChat)
-                        ?.participants[0]?.name.charAt(0) || 'U'}
+                      {chats.find((c) => c.id === selectedChat)?.participants[0]?.name.charAt(0) ||
+                        'U'}
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <CardTitle>
-                      {chats.find((c) => c.id === selectedChat)?.title}
-                    </CardTitle>
+                    <CardTitle>{chats.find((c) => c.id === selectedChat)?.title}</CardTitle>
                     <CardDescription>Online</CardDescription>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="flex-1 space-y-4 overflow-y-auto">
+              <CardContent className='flex-1 space-y-4 overflow-y-auto'>
                 {messages.map((message) => (
                   <div
                     key={message.id}
                     className={`flex gap-4 ${
-                      message.sender.id === session?.user?.id
-                        ? 'justify-end'
-                        : 'justify-start'
+                      message.sender.id === session?.user?.id ? 'justify-end' : 'justify-start'
                     }`}
                   >
                     {message.sender.id !== session?.user?.id && (
                       <Avatar>
-                        <AvatarFallback>
-                          {message.sender.name.charAt(0)}
-                        </AvatarFallback>
+                        <AvatarFallback>{message.sender.name.charAt(0)}</AvatarFallback>
                       </Avatar>
                     )}
                     <div
@@ -238,7 +215,7 @@ export default function MessagesPage() {
                           : 'bg-muted'
                       }`}
                     >
-                      <p className="text-sm">{message.content}</p>
+                      <p className='text-sm'>{message.content}</p>
                       <p
                         className={`mt-1 text-xs ${
                           message.sender.id === session?.user?.id
@@ -251,29 +228,27 @@ export default function MessagesPage() {
                     </div>
                     {message.sender.id === session?.user?.id && (
                       <Avatar>
-                        <AvatarFallback>
-                          {message.sender.name.charAt(0)}
-                        </AvatarFallback>
+                        <AvatarFallback>{message.sender.name.charAt(0)}</AvatarFallback>
                       </Avatar>
                     )}
                   </div>
                 ))}
               </CardContent>
-              <div className="border-t p-4">
+              <div className='border-t p-4'>
                 <form
-                  className="flex gap-2"
+                  className='flex gap-2'
                   onSubmit={(e) => {
                     e.preventDefault()
                     sendMessage()
                   }}
                 >
                   <Input
-                    placeholder="Digite sua mensagem..."
+                    placeholder='Digite sua mensagem...'
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                   />
-                  <Button type="submit">
-                    <Send className="size-4" />
+                  <Button type='submit'>
+                    <Send className='size-4' />
                   </Button>
                 </form>
               </div>
