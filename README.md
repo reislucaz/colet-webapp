@@ -1,7 +1,5 @@
 # 🚀 Colet WebApp
 
-![Capa do Projeto](https://exemplo.com/imagem_da_capa.png) <!-- Sugestão: Adicione uma imagem ou gif da aplicação -->
-
 ## 🎯 Sobre o Projeto
 
 O **Colet** é uma plataforma inovadora projetada para conectar empresas de reciclagem a outras empresas e indivíduos, criando um marketplace para a compra e venda de materiais excedentes e recicláveis.
