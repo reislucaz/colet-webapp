@@ -23,8 +23,7 @@ interface Message {
 
 export function ChatInterface() {
   const { data: session } = useSession()
-  const { setChatId, messages, selectedChat, setSelectedChat } =
-    useChatContext()
+  const { setChatId, messages, selectedChat, setSelectedChat } = useChatContext()
   const { data: chats, isLoading } = useQuery({
     queryKey: ['chat-list'],
     queryFn: ChatService.findMany,
@@ -35,14 +34,11 @@ export function ChatInterface() {
   }
 
   return (
-    <div className="flex h-[calc(100vh-200px)] w-full gap-4">
-      {/* Chat list */}
-      <div className="h-full w-1/4 overflow-y-auto rounded-lg border">
-        <div className="border-b p-4 font-medium">Conversas</div>
+    <div className='flex h-[calc(100vh-200px)] w-full gap-4'>
+      <div className='h-full w-1/4 overflow-y-auto rounded-lg border'>
+        <div className='border-b p-4 font-medium'>Conversas</div>
         {chats?.length === 0 ? (
-          <div className="p-4 text-center text-muted-foreground">
-            Nenhuma conversa encontrada
-          </div>
+          <div className='p-4 text-center text-muted-foreground'>Nenhuma conversa encontrada</div>
         ) : (
           chats?.map((chat) => {
             return (
@@ -58,31 +54,24 @@ export function ChatInterface() {
           })
         )}
       </div>
-      <Card className="flex h-full w-3/4 flex-col">
+      <Card className='flex h-full w-3/4 flex-col'>
         {!selectedChat ? (
-          <div className="flex flex-1 items-center justify-center p-4 text-muted-foreground">
+          <div className='flex flex-1 items-center justify-center p-4 text-muted-foreground'>
             Selecione uma conversa para começar
           </div>
         ) : (
-          <div className="relative flex h-full flex-col">
-            <div className="border-b p-4 font-medium">
-              {selectedChat?.participants.find(
-                (participant) => participant.id !== session?.user.id,
-              )?.name || 'Conversa'}
+          <div className='relative flex h-full flex-col'>
+            <div className='border-b p-4 font-medium'>
+              {selectedChat?.participants.find((participant) => participant.id !== session?.user.id)
+                ?.name || 'Conversa'}
             </div>
-            <CardContent className="flex-1 space-y-4 overflow-y-auto p-4">
+            <CardContent className='flex-1 space-y-4 overflow-y-auto p-4'>
               {selectedChat && <ChatOffer chatId={selectedChat.id} />}
               {messages.map((message) => (
-                <ChatMessages
-                  key={message.id}
-                  message={message}
-                  selectedChat={selectedChat}
-                />
+                <ChatMessages key={message.id} message={message} selectedChat={selectedChat} />
               ))}
             </CardContent>
-            {selectedChat && (
-              <ChatSubmitMessageButton selectedChat={selectedChat} />
-            )}
+            {selectedChat && <ChatSubmitMessageButton selectedChat={selectedChat} />}
           </div>
         )}
       </Card>

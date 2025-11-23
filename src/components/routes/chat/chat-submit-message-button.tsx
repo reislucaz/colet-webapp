@@ -6,17 +6,11 @@ import { Button } from '../../ui/button'
 import { Input } from '../../ui/input'
 import { queryClient } from '@/utils/query-client'
 
-export function ChatSubmitMessageButton({
-  selectedChat,
-}: {
-  selectedChat: Chat
-}) {
+export function ChatSubmitMessageButton({ selectedChat }: { selectedChat: Chat }) {
   const { data: session } = useSession()
   const { socketRef } = useChatContext()
   const sendMessage = async () => {
     if (!newMessage.trim() || !selectedChat) return
-    console.log('Sending message:', newMessage)
-    console.log('Socket:', socketRef?.current?.active)
     socketRef?.current?.emit('message', {
       chatId: selectedChat.id,
       user: session?.user.id,
@@ -25,24 +19,25 @@ export function ChatSubmitMessageButton({
     queryClient.invalidateQueries({
       queryKey: ['chat-list'],
     })
+    setNewMessage('')
   }
 
   const [newMessage, setNewMessage] = useState('')
   return (
-    <div className="border-t p-4">
+    <div className='border-t p-4'>
       <form
-        className="flex gap-2"
+        className='flex gap-2'
         onSubmit={(e) => {
           e.preventDefault()
           sendMessage()
         }}
       >
         <Input
-          placeholder="Digite sua mensagem..."
+          placeholder='Digite sua mensagem...'
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
         />
-        <Button type="submit">Enviar</Button>
+        <Button type='submit'>Enviar</Button>
       </form>
     </div>
   )
