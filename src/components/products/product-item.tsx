@@ -13,7 +13,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui
 import { toast } from '../ui/use-toast'
 import { useMutation } from '@tanstack/react-query'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
 
 export function ProductItem({ product, idx }: { product: Product; idx: number }) {
   const { mutate: deleteProduct } = useMutation({

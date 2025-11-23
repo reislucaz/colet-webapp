@@ -15,7 +15,7 @@ import {
 import { Card, CardContent } from '../../ui/card'
 import { PaymentSession } from './payment-session'
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL?.replace('/api', '')
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL
 
 export function ProductDetailsSession({ product }: { product: Product }) {
   const stripe = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!)
